@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"menu_blip",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.096712,
+  "exportDir":"",
+  "name":"menu_blip",
+  "parent":{
+    "name":"Sound Effects",
+    "path":"folders/Sounds/Sound Effects.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"menu_blip.wav",
+  "volume":0.1,
+}

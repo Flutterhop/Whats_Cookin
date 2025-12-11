@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_shoot03",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.080104,
+  "exportDir":"",
+  "name":"snd_shoot03",
+  "parent":{
+    "name":"Sound Effects",
+    "path":"folders/Sounds/Sound Effects.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_shoot03.wav",
+  "volume":0.1,
+}

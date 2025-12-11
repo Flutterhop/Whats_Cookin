@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"display_write_specs",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"display_write_specs",
+  "parent":{
+    "name":"display_util",
+    "path":"folders/Objects/_Core/Display/display_util.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

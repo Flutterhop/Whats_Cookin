@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_core_save_data_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_core_save_data_lib",
+  "parent":{
+    "name":"_core",
+    "path":"folders/Objects/_Core/_System/_core.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

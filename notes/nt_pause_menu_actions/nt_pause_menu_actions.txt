@@ -1,0 +1,258 @@
+function pause_input_right(player){
+	switch(pause_menu_state){
+		case "main_menu":
+				
+		break;
+	
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+						
+				break;
+				case "settings_keyboard":
+				break;
+				case "settings_controller":
+				break;
+				case "settings_video":
+					handle_h_increment(pause_menu_state,"right",settings_menu_state);
+				break;
+				case "settings_audio":
+					handle_h_increment(pause_menu_state,"right",settings_menu_state);
+				break;
+			}
+		break;			
+	}
+
+}
+
+function pause_input_left(){
+	switch(pause_menu_state){
+		case "main_menu":
+				
+		break;
+	
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+						
+				break;
+				case "settings_keyboard":
+				break;
+				case "settings_controller":
+				break;
+				case "settings_video":
+					handle_h_increment(pause_menu_state,"left",settings_menu_state);
+				break;
+				case "settings_audio":
+					handle_h_increment(pause_menu_state,"left",settings_menu_state);
+				break;
+			}
+		break;			
+	}
+}
+
+function pause_input_up(player){
+	switch(pause_menu_state){
+		case "main_menu":
+			handle_v_increment(pause_menu_state,"up",settings_menu_state);
+		break;
+	
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+					handle_v_increment(pause_menu_state,"up",settings_menu_state);
+				break;
+				case "settings_keyboard":
+				break;
+				case "settings_controller":
+				break;
+				case "settings_video":
+				break;
+				case "settings_audio":
+					handle_v_increment(pause_menu_state,"up",settings_menu_state);
+				break;
+			}
+		break;			
+	}
+}
+
+function pause_input_down(player){
+	switch(pause_menu_state){
+		case "main_menu":
+			handle_v_increment(pause_menu_state,"down",settings_menu_state);
+		break;
+	
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+					handle_v_increment(pause_menu_state,"down",settings_menu_state);
+				break;
+				case "settings_keyboard":
+				break;
+				case "settings_controller":
+				break;
+				case "settings_video":
+				break;
+				case "settings_audio":
+					handle_v_increment(pause_menu_state,"down",settings_menu_state);
+				break;
+			}
+		break;			
+	}
+}
+function pause_input_action_1(player){
+	switch(pause_menu_state){
+		case "main_menu":
+			switch(active_element.object_index){
+				case obj_button_unpause:
+					handle_pause();
+					pause_menu_state = "";
+					settings_menu_state = "";
+				break
+				case obj_button_settings:	
+					pause_menu_state = "settings_menu";
+					settings_menu_state = "settings_main";
+					max_elements = ds_list_size(settings_menu_buttons);
+					enable_settings_menu();
+						
+				break;
+				case obj_button_quit:
+					switch(global.game_state){
+						case paused_game:
+							handle_pause();
+							switch(obj_game_manager.game_mode){
+								case GameMode.Adventure:
+									obj_game_manager.quit_adventure();
+								break;
+								case GameMode.Arena:
+									obj_game_manager.quit_default();
+								break;
+								case GameMode.Default:
+									obj_game_manager.quit_default();
+								break;
+							}
+						break;
+						case paused_menu:
+							game_end();
+						break;
+						case paused_shop:
+							handle_pause();
+							obj_game_manager.quit_default();
+						break;
+					}	
+				break;
+				case obj_button_retry:
+					handle_pause();
+					start_reset = time_source_create(time_source_game, 10, time_source_units_frames, obj_game_manager.reset_arena);
+					time_source_start(start_reset);
+				break;
+		}
+		break;
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+					switch(active_element.object_index){
+						case obj_button_keyboard_settings:
+							//settings_menu_state = "settings_keyboard";
+						break;
+						case obj_button_controller_settings:
+							//settings_menu_state = "settings_controller";
+						break;
+						case obj_button_video_settings:
+							disable_settings_menu();
+							pause_menu_state = "settings_menu";
+							settings_menu_state = "settings_video";
+							enable_video_settings_menu();
+						break;
+						case obj_button_audio_settings:
+							disable_settings_menu();
+							pause_menu_state = "settings_menu";
+							settings_menu_state = "settings_audio";
+							enable_audio_settings_menu();
+						break;
+					}
+				break;
+				case "settings_keyboard":
+				break;
+				case "settings_controller":
+				break;
+				case "settings_video":
+				break;
+				case "settings_audio":
+				break;
+			}
+		break;
+			
+		
+	}
+}
+
+
+
+
+function pause_input_action_2(player){
+	
+	switch(pause_menu_state){
+		case "main_menu":
+			switch(active_element){
+				case obj_button_unpause:
+					handle_pause();
+					pause_menu_state = "";
+					settings_menu_state = "";
+				break;
+				case obj_button_settings:	
+					handle_pause();
+					pause_menu_state = "";
+					settings_menu_state = "";						
+				break;
+				case obj_button_quit:
+					handle_pause();
+					pause_menu_state = "";
+					settings_menu_state = "";
+				break;
+				case obj_button_retry:
+					handle_pause();
+					pause_menu_state = "";
+					settings_menu_state = "";
+					break;
+		}
+		break;
+		case "settings_menu":
+			switch(settings_menu_state){
+				case "settings_main":
+					settings_menu_state = "";
+					pause_menu_state = "main_menu";
+					disable_settings_menu();
+				break;
+				case "settings_keyboard":
+					//pause_menu_state = "settings_menu";
+					//settings_menu_state = "settings_main";
+					//max_elements = ds_list_size(settings_menu_buttons);
+					//enable_settings_menu();
+				break;
+				case "settings_controller":
+					//pause_menu_state = "settings_menu";
+					//settings_menu_state = "settings_main";
+					//max_elements = ds_list_size(settings_menu_buttons);
+					//enable_settings_menu();
+				break;
+				case "settings_video":
+					disable_video_settings_menu();
+					pause_menu_state = "settings_menu";
+					settings_menu_state = "settings_main";
+					max_elements = ds_list_size(settings_menu_buttons);
+					enable_settings_menu();
+				break;
+				case "settings_audio":
+					disable_audio_settings_menu();
+					pause_menu_state = "settings_menu";
+					settings_menu_state = "settings_main";
+					max_elements = ds_list_size(settings_menu_buttons);
+					enable_settings_menu();
+				break;
+			}
+		break;
+			
+		
+	}
+}

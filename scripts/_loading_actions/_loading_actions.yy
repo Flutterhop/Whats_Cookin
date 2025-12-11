@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_loading_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_loading_actions",
+  "parent":{
+    "name":"Menus",
+    "path":"folders/Objects/_Core/Game/Menus.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_particle_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_particle_lib",
+  "parent":{
+    "name":"Effects",
+    "path":"folders/Objects/_Core/Effects.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

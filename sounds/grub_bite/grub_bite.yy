@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"grub_bite",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":0.24,
+  "exportDir":"",
+  "name":"grub_bite",
+  "parent":{
+    "name":"Sound Effects",
+    "path":"folders/Sounds/Sound Effects.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"grub_bite.mp3",
+  "volume":1.0,
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_typing_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_typing_actions",
+  "parent":{
+    "name":"Typing",
+    "path":"folders/Objects/_Core/UI_UX/Typing.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"__view_get",
+  "isCompatibility":true,
+  "isDnD":false,
+  "name":"__view_get",
+  "parent":{
+    "name":"display_util",
+    "path":"folders/Objects/_Core/Display/display_util.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

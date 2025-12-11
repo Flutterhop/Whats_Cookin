@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_core_pause_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_core_pause_lib",
+  "parent":{
+    "name":"pause",
+    "path":"folders/Objects/_Core/_System/pause.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

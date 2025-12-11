@@ -1,0 +1,3 @@
+if(iframes){
+	iframes = false;
+}

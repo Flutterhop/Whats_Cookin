@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_settings_handler",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_settings_handler",
+  "parent":{
+    "name":"Menus",
+    "path":"folders/Objects/_Core/Game/Menus.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

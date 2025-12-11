@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"game_start",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.2172562,
+  "exportDir":"",
+  "name":"game_start",
+  "parent":{
+    "name":"Sound Effects",
+    "path":"folders/Sounds/Sound Effects.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"game_start.wav",
+  "volume":0.1,
+}

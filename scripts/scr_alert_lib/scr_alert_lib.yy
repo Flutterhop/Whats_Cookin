@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_alert_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_alert_lib",
+  "parent":{
+    "name":"UI_UX",
+    "path":"folders/Objects/_Core/UI_UX.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

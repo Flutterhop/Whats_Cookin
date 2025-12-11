@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"nt_pause_menu_actions",
+  "name":"nt_pause_menu_actions",
+  "parent":{
+    "name":"input",
+    "path":"folders/Objects/_Core/_System/input.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_typing_on_screen_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_typing_on_screen_lib",
+  "parent":{
+    "name":"Typing",
+    "path":"folders/Objects/_Core/UI_UX/Typing.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_input_manager_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_input_manager_actions",
+  "parent":{
+    "name":"input",
+    "path":"folders/Objects/_Core/_System/input.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

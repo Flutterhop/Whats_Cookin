@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_core_game_lib",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_core_game_lib",
+  "parent":{
+    "name":"Game",
+    "path":"folders/Objects/_Core/Game.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

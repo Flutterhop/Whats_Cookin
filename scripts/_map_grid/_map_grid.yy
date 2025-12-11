@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"_map_grid",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"_map_grid",
+  "parent":{
+    "name":"Environment",
+    "path":"folders/Objects/Environment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

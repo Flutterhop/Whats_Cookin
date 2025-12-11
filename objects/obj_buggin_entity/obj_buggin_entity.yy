@@ -1,6 +1,6 @@
 {
   "$GMObject":"",
-  "%Name":"obj_entity",
+  "%Name":"obj_buggin_entity",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
@@ -10,11 +10,11 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_entity",
+  "name":"obj_buggin_entity",
   "overriddenProperties":[],
   "parent":{
-    "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "name":"Buggin",
+    "path":"folders/Objects/_Core/Entity/Buggin.yy",
   },
   "parentObjectId":null,
   "persistent":false,

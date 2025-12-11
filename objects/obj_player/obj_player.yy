@@ -30,12 +30,12 @@
   "managed":true,
   "name":"obj_player",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},"propertyId":{"name":"entity_name","path":"objects/obj_entity/obj_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Player",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_buggin_entity","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"propertyId":{"name":"entity_name","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Player",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_living_entity_parent","path":"objects/obj_living_entity_parent/obj_living_entity_parent.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_living_entity_parent/obj_living_entity_parent.yy",},"resource":{"name":"spr_wiz_shadow","path":"sprites/spr_wiz_shadow/spr_wiz_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_wiz_shadow",},
   ],
   "parent":{
     "name":"Player",
-    "path":"folders/Objects/Player.yy",
+    "path":"folders/Objects/Characters/Player.yy",
   },
   "parentObjectId":{
     "name":"obj_living_entity_parent",

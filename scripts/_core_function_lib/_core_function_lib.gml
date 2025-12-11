@@ -40,13 +40,13 @@ function is_null(item_to_check){
 }
 
 function core_disable_game_layers(){
-	instance_deactivate_object(obj_entity);
+	instance_deactivate_object(obj_buggin_entity);
 	instance_deactivate_object(_obj_manager_parent);
 	instance_deactivate_object(obj_ui_element);
 }
 
 function core_enable_game_layers(){
-	instance_activate_object(obj_entity);
+	instance_activate_object(obj_buggin_entity);
 	instance_activate_object(_obj_manager_parent);
 	instance_activate_object(obj_ui_element);
 }

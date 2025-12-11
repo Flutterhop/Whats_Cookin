@@ -10,15 +10,15 @@
   "managed":true,
   "name":"obj_projectile_parent",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},"propertyId":{"name":"can_be_grappled","path":"objects/obj_entity/obj_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_buggin_entity","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"propertyId":{"name":"can_be_grappled","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
   ],
   "parent":{
-    "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "name":"Buggin",
+    "path":"folders/Objects/_Core/Entity/Buggin.yy",
   },
   "parentObjectId":{
-    "name":"obj_entity",
-    "path":"objects/obj_entity/obj_entity.yy",
+    "name":"obj_buggin_entity",
+    "path":"objects/obj_buggin_entity/obj_buggin_entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

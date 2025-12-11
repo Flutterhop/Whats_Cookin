@@ -22,12 +22,12 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_parent","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"propertyId":{"name":"move_speed","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_parent","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"propertyId":{"name":"min_idle","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"60",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_enemy_parent","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"propertyId":{"name":"max_idle","path":"objects/obj_enemy_parent/obj_enemy_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"120",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},"propertyId":{"name":"entity_name","path":"objects/obj_entity/obj_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Bee",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_buggin_entity","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"propertyId":{"name":"entity_name","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Bee",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_living_entity_parent","path":"objects/obj_living_entity_parent/obj_living_entity_parent.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_living_entity_parent/obj_living_entity_parent.yy",},"resource":{"name":"spr_bee_shadow","path":"sprites/spr_bee_shadow/spr_bee_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_bee_shadow",},
   ],
   "parent":{
     "name":"bee",
-    "path":"folders/Objects/Enemies/bee.yy",
+    "path":"folders/Objects/Characters/NPC/Enemies/Buggin/bee.yy",
   },
   "parentObjectId":{
     "name":"obj_enemy_parent",

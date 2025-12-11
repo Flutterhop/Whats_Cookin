@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"_entity_core",
   "parent":{
-    "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "name":"Buggin",
+    "path":"folders/Objects/_Core/Entity/Buggin.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

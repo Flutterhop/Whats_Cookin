@@ -6,12 +6,12 @@
   "name":"obj_terrain_entity_parent",
   "overriddenProperties":[],
   "parent":{
-    "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "name":"Buggin",
+    "path":"folders/Objects/_Core/Entity/Buggin.yy",
   },
   "parentObjectId":{
-    "name":"obj_entity",
-    "path":"objects/obj_entity/obj_entity.yy",
+    "name":"obj_buggin_entity",
+    "path":"objects/obj_buggin_entity/obj_buggin_entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

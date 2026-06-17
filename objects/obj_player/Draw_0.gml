@@ -17,3 +17,9 @@ switch(direction_facing){
 
 	break;
 }
+
+if(not_null(held_item)){
+	if(not_null(held_item.item_sprite)){
+		draw_sprite_ext(held_item.item_sprite,0,x,y - 2,1,1,0,c_white,1);
+	}
+}

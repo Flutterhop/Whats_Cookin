@@ -8,19 +8,23 @@
   "instanceCreationOrder":[
     {"name":"inst_A2D6D00","path":"rooms/rm_Dev_Build/rm_Dev_Build.yy",},
     {"name":"inst_48FBEF48","path":"rooms/rm_Dev_Build/rm_Dev_Build.yy",},
+    {"name":"inst_2046B291","path":"rooms/rm_Dev_Build/rm_Dev_Build.yy",},
   ],
   "isDnd":false,
   "layers":[
-    {"$GMRInstanceLayer":"","%Name":"Bullets","depth":0,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Bullets","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
+    {"$GMRInstanceLayer":"","%Name":"Bullets","depth":0,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
+        {"$GMRInstance":"v4","%Name":"inst_2046B291","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2046B291","objectId":{"name":"obj_apple","path":"objects/obj_apple/obj_apple.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":384.0,"y":160.0,},
+      ],"layers":[],"name":"Bullets","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":100,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_A2D6D00","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_A2D6D00","objectId":{"name":"obj_session","path":"objects/obj_session/obj_session.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":32.0,"y":96.0,},
         {"$GMRInstance":"v4","%Name":"inst_48FBEF48","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_48FBEF48","objectId":{"name":"obj_turret_defense","path":"objects/obj_turret_defense/obj_turret_defense.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":368.0,"y":112.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"rocks","depth":200,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"rocks","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":34,"TileCompressedData":[
-          -426,-2147483648,1,1,-7,-2147483648,1,2,-49,-2147483648,1,1,-69,-2147483648,-2,2,-32,-2147483648,1,2,
-          -32,-2147483648,1,2,-15,-2147483648,1,2,-17,-2147483648,1,2,-33,-2147483648,1,2,-3,-2147483648,1,2,-29,
-          -2147483648,1,2,-33,-2147483648,1,2,-12,-2147483648,1,1,-20,-2147483648,-2,2,-33,-2147483648,1,2,-28,
-          -2147483648,1,2,-5,-2147483648,-3,2,3,-2147483648,2,2,-31,-2147483648,1,2,-257,-2147483648,
+          -426,-2147483648,1,1,-7,-2147483648,1,2,-49,-2147483648,1,1,-43,-2147483648,1,0,-25,-2147483648,-2,2,
+          -6,-2147483648,1,0,-25,-2147483648,1,2,-8,-2147483648,1,0,-23,-2147483648,1,2,-9,-2147483648,1,0,-5,
+          -2147483648,1,2,-17,-2147483648,1,2,-9,-2147483648,1,0,-23,-2147483648,1,2,-3,-2147483648,1,2,-29,-2147483648,
+          1,2,-33,-2147483648,1,2,-12,-2147483648,1,1,-20,-2147483648,-2,2,-33,-2147483648,1,2,-28,-2147483648,
+          1,2,-5,-2147483648,-3,2,3,-2147483648,2,2,-31,-2147483648,1,2,-257,-2147483648,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tls_rocks","path":"tilesets/tls_rocks/tls_rocks.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"Ground_dirt","depth":300,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Ground_dirt","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":34,"TileCompressedData":[
           -108,-2147483648,1,1,-4,2,1,3,-27,-2147483648,2,1,14,-4,5,2,13,3,-26,-2147483648,1,4,-6,5,1,6,-26,-2147483648,
@@ -57,7 +61,7 @@
   },
   "sequenceId":null,
   "views":[
-    {"hborder":0,"hport":270,"hspeed":1,"hview":270,"inherit":false,"objectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"vborder":0,"visible":true,"vspeed":1,"wport":480,"wview":480,"xport":38,"xview":0,"yport":135,"yview":0,},
+    {"hborder":0,"hport":270,"hspeed":1,"hview":270,"inherit":false,"objectId":{"name":"obj_player","path":"objects/obj_player/obj_player.yy",},"vborder":0,"visible":true,"vspeed":1,"wport":480,"wview":480,"xport":38,"xview":30,"yport":135,"yview":100,},
     {"hborder":32,"hport":270,"hspeed":-1,"hview":270,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":480,"wview":480,"xport":0,"xview":38,"yport":0,"yview":0,},
     {"hborder":32,"hport":1080,"hspeed":-1,"hview":1080,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":1920,"wview":1920,"xport":0,"xview":0,"yport":0,"yview":0,},
     {"hborder":32,"hport":1080,"hspeed":-1,"hview":1080,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":1920,"wview":1920,"xport":0,"xview":0,"yport":0,"yview":0,},

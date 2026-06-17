@@ -1,3 +1,4 @@
 {
-  "spr_Char_{walk_up}{walk_down}{walk_left}{walk_down_angle}{walk_up_angle}":"8e15308ed361073f9d6dc0f25ae5bf6f0433a7c53942928f55d57b8d00d4a9d1"
+  "spr_Char_{walk_up}{walk_down}{walk_left}{walk_down_angle}{walk_up_angle}":"8e15308ed361073f9d6dc0f25ae5bf6f0433a7c53942928f55d57b8d00d4a9d1",
+  "spr_char_{walk_unarmed_up}{walk_unarmed_down}{walk_unarmed_left}{walk_twohand_down}{walk_twohand_left}{walk_twohand_up}{interact_down}{interact_up}{interact_left}{hold_down}{hold_up}{hold_left}{attack_twohand_down}":"5adf2a0cc930594246bb27225912adabd9dd9926bd40c9ec988a99c17a6e192c"
 }

@@ -1,3 +1,8 @@
+
+
+
+
+
 ////@description Contains the ds_grid for the game map. Creating a new Map_Grid will create a ds_grid automatically with the dimensions provided.
 ////@function Map_Grid
 ////@param {string} Name Grid Name
@@ -123,6 +128,33 @@ function Grid_Cell(new_x_pos,new_y_pos) constructor{
 				cell_content = item_to_set;
 			}else{
 				show_debug_message("Cell already occupied, overwriting with new content.")
+			}
+		}
+
+	}
+	static get_content = function(){
+		if(not_null(cell_content)){
+			return cell_content;
+		}else{
+			show_debug_message("No content in this cell. Returning blank.");
+			return "";
+		}
+
+	}
+
+}
+
+function Grid_Cell_Content(new_structure_content = 0) constructor{
+
+	structure_content = new_structure_content;
+	
+	static set_content = function(item_to_set){
+		if(not_null(item_to_set)){
+			//Warn if cell is occupied.
+			if(is_null(cell_content)){
+				cell_content = item_to_set;
+			}else{
+				show_debug_message("Structure already occupied, overwriting with new content.")
 			}
 		}
 

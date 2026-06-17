@@ -1,2 +1,2 @@
-direction_facing = "left";
-move_speed = 4
+event_user(EV_INIT);
+event_user(EV_METHOD_BINDING);

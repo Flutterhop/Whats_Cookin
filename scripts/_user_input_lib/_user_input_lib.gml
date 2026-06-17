@@ -101,7 +101,7 @@ function input_interpret_controls(){
 				}else if(global.priority_enforced && !has_priority){
 					//No input for you!
 				}else if(!global.priority_enforced){
-					if(temp_player.up){
+					if(temp_player.up && method_get_index(input_up) != -1){
 						input_up(temp_player);}
 					if(temp_player.down){input_down(temp_player);}
 					if(temp_player.left){input_left(temp_player);}
@@ -132,7 +132,7 @@ function input_interpret_player_controls(){
 					if(global.priority_enforced){
 			
 					}else if(!global.priority_enforced){
-						if(temp_player.up){input_up(temp_player);}
+						if(temp_player.up && method_get_index(input_up) != -1){input_up(temp_player);}
 						if(temp_player.down){input_down(temp_player);}
 						if(temp_player.left){input_left(temp_player);}
 						if(temp_player.right){input_right(temp_player);}

@@ -30,7 +30,8 @@ function prototype(){
 	npc3.spawn_npc(get_screen_center_x() - 60,get_screen_center_y(),"Instances");
 	npc4.spawn_npc(get_screen_center_x() - 80,get_screen_center_y(),"Instances");
 
-	var char = instance_create_layer(get_screen_center_x(),get_screen_center_y(),"Instances",obj_player);
+	var user_01 = new User(0,"Default",false,new Player(0,0,0,instance_create_layer(get_screen_center_x(),get_screen_center_y(),"Instances",obj_player)),"");
+	
 	
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Here is another event!",ev_priority.standard);

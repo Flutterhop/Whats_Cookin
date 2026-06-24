@@ -28,7 +28,7 @@
   "origin":9,
   "parent":{
     "name":"queen",
-    "path":"folders/Sprites/Characters/Enemies/Buggin/_Boss/queen.yy",
+    "path":"folders/Sprites/Enemies/_Boss/queen.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -13,6 +13,7 @@ if(global.debug){
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 5,"F5 - Give Health",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 6,"F6 - ",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 7,"F7 - Go to rm_end",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
+		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 8,"F8 - Create a debug shop.",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
 
 	}
 	

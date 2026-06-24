@@ -1,3 +1,5 @@
-direction_facing = "left";
-move_speed = 4
+event_inherited()
+
 held_item = ""
+
+

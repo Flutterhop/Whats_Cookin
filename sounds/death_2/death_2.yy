@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":0,
   "conversionMode":0,
-  "duration":3.668277,
+  "duration":3.6682994,
   "exportDir":"",
   "name":"death_2",
   "parent":{
@@ -20,7 +20,7 @@
   "preload":false,
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
-  "sampleRate":5512,
+  "sampleRate":11025,
   "soundFile":"death_2.ogg",
-  "volume":1.0,
+  "volume":0.1,
 }

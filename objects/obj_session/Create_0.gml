@@ -20,18 +20,14 @@ function prototype(){
 			}
 		}
     }
-	var npc1 = new NPC(obj_npc,"Test_Guy",1,,5,npc_size.medium,grid,1);
-	var npc2 = new NPC(obj_npc,"Test_Guy",1,,5,npc_size.medium,grid,1);
-	var npc3 = new NPC(obj_npc,"Test_Guy",1,,5,npc_size.medium,grid,1);
-	var npc4 = new NPC(obj_npc,"Test_Guy",1,,5,npc_size.medium,grid,1);
-
-	npc1.spawn_npc(get_screen_center_x() - 20,get_screen_center_y(),"Instances");
-	npc2.spawn_npc(get_screen_center_x() - 40,get_screen_center_y(),"Instances");
-	npc3.spawn_npc(get_screen_center_x() - 60,get_screen_center_y(),"Instances");
-	npc4.spawn_npc(get_screen_center_x() - 80,get_screen_center_y(),"Instances");
-
-	var user_01 = new User(0,"Default",false,new Player(0,0,0,instance_create_layer(get_screen_center_x(),get_screen_center_y(),"Instances",obj_player)),"");
-	
+	initialize_character_entities();
+	var npc1 = new Enemy_Entity(enemy_type.generic,[enemy_trait.Standard],npc_size.medium,grid,5,"Bee",Character_Type.CH_ENEMY_NPC,1,false,obj_npc_bee);
+	npc1.spawn_npc(get_screen_center_x() / 2, get_screen_center_y() / 2,"Instances");
+	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_turret_defense)
+	turret1.spawn_entity(400,120,"Instances")
+	var player_entity = new Player_Entity(0,5,"Player 0",entity_type.EN_Character,5,false,obj_player);
+	player_entity.spawn_entity(get_screen_center_x(), get_screen_center_y(),"Instances")
+	var user = new User(0,"Player 0",false,player_entity.instance,"")
 	
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Here is another event!",ev_priority.standard);
@@ -50,5 +46,13 @@ function prototype(){
 	event_handler.create_event(ev_type.gather,"tower_02 took 3 damage",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Player 'sandy' hit by 'rat' for 5 hitpoints",ev_priority.standard);
 	event_handler.create_event(ev_type.debug,"Loading next level...",ev_priority.low);
+	var apple_inst = instance_create_layer(get_screen_center_x() - 20,get_screen_center_y(),"Instances",obj_apple)
+	var apple_01 = new Item_Food(10,
+								["Sweet"],
+								item_entity_type.Food,
+								"Apple",
+								entity_type.EN_Item,
+								apple_inst)
+	apple_inst.item_struct = apple_01;
 	
 }

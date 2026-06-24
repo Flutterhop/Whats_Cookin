@@ -34,7 +34,4 @@ if(shake && global.game_state == active_game){
 	}
 }
 
-if(InputCheck(INPUT_VERB.DEBUG)){
-	zoom = 4;
 
-}

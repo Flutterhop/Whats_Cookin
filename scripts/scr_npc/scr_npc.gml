@@ -11,7 +11,7 @@ enum npc_size{
 ///
 ////@description Main NPC struct. Facilitates taking damage, as well as creating instances. Data handling.
 ////@function NPC
-function NPC(new_obj_reference,_new_name,_new_base_hp,new_current_hp = "",new_move_speed = "",new_size = npc_size.medium,new_grid = "",new_damage = 1) : Character(_new_name,_new_base_hp,new_current_hp = "",new_move_speed = "",new_damage = 1) constructor{
+function NPC_Entity(new_size = npc_size.medium,new_grid = "",new_move_speed, new_name,new_type,new_health = 1,new_invincible = false,new_object_reference) : Character_Entity(new_move_speed, new_name,new_type,new_health = 1,new_invincible = false,new_object_reference) constructor{
 
 	size = new_size;
 	
@@ -19,13 +19,18 @@ function NPC(new_obj_reference,_new_name,_new_base_hp,new_current_hp = "",new_mo
 	////This should only contain a path object when the npc is instanced in a room.
 	grid = new_grid;
 	npc_path = ""; 
-	npc_instance = "";
-	obj_reference = new_obj_reference;
 	
 	static spawn_npc = function(x_pos,y_pos,layer_to_spawn){
-		npc_instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,obj_reference);
-		npc_instance.path = path_add();
-		npc_instance.character_struct = self;
+		//Find NPC in global map
+		var entity = ds_map_find_value(global.character_entities,name)
+		var obj_reference
+		if(not_null(entity)){
+			var obj_name = string_concat("obj_","npc_",string_lower(name));
+			obj_reference = asset_get_index(obj_name)
+		}
+		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,obj_reference);
+		instance.path = path_add();
+		instance.struct = self;
 	}
 	
 	static detect_target = function(_target){
@@ -33,7 +38,7 @@ function NPC(new_obj_reference,_new_name,_new_base_hp,new_current_hp = "",new_mo
 	}
 	
 	static kill_npc = function(){
-		instance_destroy(npc_instance,true);
+		instance_destroy(instance,true);
 	}
 
 }

@@ -3,7 +3,17 @@ event_inherited();
 init_player_objects			= method(id,player_init_player_objects);
 apply_movement				= method(id,player_apply_movement);
 check_bounds				= method(id,player_check_bounds);
-determine_face				= method(id,player_determine_face);
+fire_staff					= method(id,player_fire_staff);
+determine_staff_face		= method(id,player_determine_staff_face);
+determine_dagger_face		= method(id,player_determine_dagger_face);
+melee_attack				= method(id,player_melee_attack);
+read_dagger_collision		= method(id,player_read_dagger_collision);
+handle_dagger_dash			= method(id,player_handle_dagger_dash);
+read_dash_collision			= method(id,player_read_dash_collision);
+set_dash_attack_sprite		= method(id,player_set_dash_attack_sprite);
+handle_dash					= method(id,player_handle_dash);
+set_attack_sprite			= method(id,player_set_attack_sprite);
+update_damage				= method(id,player_update_damage);
 handle_dash_effect			= method(id,player_handle_dash_effect);
 check_collision				= method(id,player_check_collision);
 handle_damage_timer			= method(id,player_handle_damage_timer);
@@ -16,8 +26,6 @@ start_round					= method(id,player_start_round);
 end_round					= method(id,player_end_round);
 set_game_over				= method(id,player_game_over);
 respawn						= method(id,player_respawn);
-collect_reward				= method(id,player_collect_reward);
-
 
 ///CORE FUNCTION///
 set_priority_enforcement	= method(id,core_set_priority_enforcement);
@@ -32,16 +40,17 @@ toggle_shop					= method(id,state_toggle_shop);
 check_player_status			= method(id,state_check_player_status);
 
 ///INPUT FUNCTION///
-player_input_read			= method(id,input_read);
 determine_priority			= method(id,input_determine_priority);
 interpret_controls			= method(id,input_interpret_controls);
 interpret_player_controls	= method(id,input_interpret_player_controls);
+scan_inputs					= method(id,input_scan_inputs);
 
 input_up					= method(id,player_input_up);
 input_down					= method(id,player_input_down);
 input_right					= method(id,player_input_right);
 input_left					= method(id,player_input_left);
 input_action_1				= method(id,player_input_action_1);
+input_action_1_pressed		= method(id,player_input_action_1_pressed);
 input_action_1_released		= method(id,player_input_action_1_released);
-input_action_2				= method(id,player_input_action_2);
+input_action_2_pressed		= method(id,player_input_action_2_pressed);
 input_action_3				= method(id,player_input_action_3);

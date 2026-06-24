@@ -7,7 +7,7 @@
   "managed":true,
   "name":"obj_button_quit",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_pause_menu_button_parent","path":"objects/obj_pause_menu_button_parent/obj_pause_menu_button_parent.yy",},"propertyId":{"name":"button_index","path":"objects/obj_pause_menu_button_parent/obj_pause_menu_button_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"2",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_pause_menu_button_parent","path":"objects/obj_pause_menu_button_parent/obj_pause_menu_button_parent.yy",},"propertyId":{"name":"button_index","path":"objects/obj_pause_menu_button_parent/obj_pause_menu_button_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"3",},
   ],
   "parent":{
     "name":"pause_main_buttons",

@@ -1,11 +1,12 @@
 enum pause_state{
 	main_menu = 0,
-	settings_menu = 1,
-	game_control_menu = 2,
-	keyboard_menu = 3,
-	controller_menu = 4,
-	video_menu = 5,
-	audio_menu = 6
+	controls = 1,
+	settings_menu = 2,
+	game_control_menu = 3,
+	keyboard_menu = 4,
+	controller_menu = 5,
+	video_menu = 6,
+	audio_menu = 7
 }
 
 
@@ -157,7 +158,13 @@ function pause_init_main_menus(){
 	}
 	var settings_assets = tag_get_asset_ids("pause_menu_settings",asset_object);
 	if(not_null(settings_assets)){
-		array_of_pause_menus[1] = new Pause_Menu("settings_menu",settings_assets,-510,obj_pause_settings_menu);
+		array_of_pause_menus[2] = new Pause_Menu("settings_menu",settings_assets,-510,obj_pause_settings_menu);
+		array_of_pause_menus[2].spawn_menu(get_screen_center_x(),get_screen_center_y());
+		array_of_pause_menus[2].hide_menu();
+	}
+	var controls_assets = tag_get_asset_ids("pause_menu_controls",asset_object);
+	if(not_null(controls_assets)){
+		array_of_pause_menus[1] = new Pause_Menu("controls",controls_assets,-510,obj_pause_menu,20);
 		array_of_pause_menus[1].spawn_menu(get_screen_center_x(),get_screen_center_y());
 		array_of_pause_menus[1].hide_menu();
 	}
@@ -242,27 +249,36 @@ function pause_set_pause_highlight(index){
 }
 	
 function pause_handle_v_increment(increment){
-	highlighted += increment;	
-	check_v_bounds();
-	set_pause_highlight(highlighted);
-	obj_audio_manager.play_sfx(menu_blip);
+	if(variable_instance_exists(self,"active_element")){
+		var parent = object_get_parent(active_element.object_index)
+		highlighted += increment;
+		check_v_bounds();
+		set_pause_highlight(highlighted);
+		if(parent != obj_pause_controls_parent){
+			obj_audio_manager.play_sfx(menu_blip);
+		}
+	}
 	
 }
 	
 function pause_handle_h_increment(increment){
-	var parent = object_get_parent(active_element.object_index)
-	if(parent == obj_setting_button_parent){
-		active_element.setting += increment;
-		check_h_bounds();
-		obj_audio_manager.play_sfx(menu_blip);
-	}else if(parent == obj_setting_input_player_select_parent){
-		if(active_element.object_index == obj_button_KB_player_select || active_element.object_index == obj_button_GP_player_select){
+	if(variable_instance_exists(self,"active_element")){
+		var parent = object_get_parent(active_element.object_index)
+		if(parent == obj_setting_button_parent){
 			active_element.setting += increment;
 			check_h_bounds();
-			active_element.pause_button_action();
 			obj_audio_manager.play_sfx(menu_blip);
-		}
+
+
+		}else if(parent == obj_setting_input_player_select_parent){
+			if(active_element.object_index == obj_button_KB_player_select || active_element.object_index == obj_button_GP_player_select){
+				active_element.setting += increment;
+				check_h_bounds();
+				active_element.pause_button_action();
+				obj_audio_manager.play_sfx(menu_blip);
+			}
 	
+		}
 	}
 
 }
@@ -305,6 +321,12 @@ function pause_center_arrows(){
 	adjust_arrows();
 	switch(current_menu.menu_name){
 		case "main_menu":
+			pause_arrow_1.x = active_element.x - pause_arrow_1.sprite_width * 3;
+			pause_arrow_1.y = active_element.y;
+			pause_arrow_2.x = active_element.x + pause_arrow_2.sprite_width * 3;
+			pause_arrow_2.y = active_element.y + 2;
+		break;
+		case "controls":
 			pause_arrow_1.x = active_element.x - pause_arrow_1.sprite_width * 3;
 			pause_arrow_1.y = active_element.y;
 			pause_arrow_2.x = active_element.x + pause_arrow_2.sprite_width * 3;

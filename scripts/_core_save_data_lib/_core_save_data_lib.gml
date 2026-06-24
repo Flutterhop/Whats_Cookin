@@ -68,7 +68,7 @@ function Buggin_Data(_user_data,_characters = "") constructor{
 		var number_of_characters = array_length(character_assets);
 		for(var i = 0; i < number_of_characters;i++){	
 			var char_string = string_split(sprite_get_name(character_assets[i]),"_",true,3);
-			var character = new Bug_Character(char_string[1],character_assets[i]);
+			var character = new Character(char_string[1],character_assets[i]);
 			switch(character.character_name){
 				case "wiz":
 					character.palette = wiz_palette;
@@ -96,7 +96,7 @@ function load_bug_character_data(characters){
 			var temp_char_string = string_split(sprite_get_name(character_assets[iterator]),"_",true,3);
 			if(temp_char_string[1] == "wiz"){
 				char_found = true;
-				characters[0] = new Bug_Character(temp_char_string[1],character_assets[iterator]);
+				characters[0] = new Character(temp_char_string[1],character_assets[iterator]);
 				return characters;
 			}
 			iterator++;

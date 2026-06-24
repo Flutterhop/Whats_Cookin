@@ -2,11 +2,11 @@ event_inherited();
 randomize();
 
 /// @description Display Properties
-ideal_width=480;
-ideal_height=270;
+ideal_width=960;
+ideal_height=540;
 zoom=1;
 current_zoom = zoom;
-max_zoom=4;
+max_zoom=1;
 display_width=display_get_width();
 display_height=display_get_height();
 
@@ -35,9 +35,10 @@ for(var i=1; i<=room_last; i++)
   }
 }
 scribble_font_bake_outline_and_shadow("fnt_Retro","main",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
-scribble_font_bake_outline_and_shadow("fnt_Retro_small","main_sm",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
-scribble_font_bake_outline_and_shadow("fnt_normal","standard",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
 
+scribble_font_bake_outline_and_shadow("fnt_Retro_small","main_sm",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
+
+scribble_font_bake_outline_and_shadow("fnt_bodoni","secondary_sm",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
 
 
 window_set_size(ideal_width,ideal_height);
@@ -54,3 +55,12 @@ function screenshake(_time, _magnitude, _fade){
 	shake_fade = _fade;
 }
 
+if !audio_group_is_loaded(audiogroup_music)
+{
+    audio_group_load(audiogroup_music);
+}
+
+if !audio_group_is_loaded(audiogroup_sfx)
+{
+    audio_group_load(audiogroup_sfx);
+}

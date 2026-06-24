@@ -40,13 +40,13 @@ function is_null(item_to_check){
 }
 
 function core_disable_game_layers(){
-	instance_deactivate_object(obj_buggin_entity);
+	instance_deactivate_object(obj_entity);
 	instance_deactivate_object(_obj_manager_parent);
 	instance_deactivate_object(obj_ui_element);
 }
 
 function core_enable_game_layers(){
-	instance_activate_object(obj_buggin_entity);
+	instance_activate_object(obj_entity);
 	instance_activate_object(_obj_manager_parent);
 	instance_activate_object(obj_ui_element);
 }
@@ -196,4 +196,20 @@ function create_if_none(_obj,_layer,x_pos = 0,y_pos = 0){
 		existing_objects = instance_find(_obj,0);
 	}
 	return existing_objects;
+}
+
+function no_list_dupes(_list,_item){
+	var size = ds_list_size(_list);
+	var no_dupes = true;
+	if(size > 0){
+		for(var i = 0;i<size;i++){
+			var cur_item = ds_list_find_value(_list,i);
+			if(not_null(cur_item)){
+				if(cur_item == _item){
+					no_dupes = false;
+				}
+			}
+		}
+	}
+	return no_dupes
 }

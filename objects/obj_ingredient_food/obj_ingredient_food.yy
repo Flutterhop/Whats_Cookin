@@ -6,8 +6,8 @@
   "name":"obj_ingredient_food",
   "overriddenProperties":[],
   "parent":{
-    "name":"Food",
-    "path":"folders/Objects/Items/Food.yy",
+    "name":"Ingredient",
+    "path":"folders/Objects/Items/Food/Ingredient.yy",
   },
   "parentObjectId":{
     "name":"_obj_food_item",

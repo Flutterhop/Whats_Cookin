@@ -3,7 +3,8 @@ enum ev_type{
 	combat,
 	craft,
 	gather,
-	dropbox
+	dropbox,
+	generic
 }
 enum ev_priority{
 	low,
@@ -11,8 +12,10 @@ enum ev_priority{
 	high,
 	critical
 }
+global.event_handler = new Event_Handler();
+
 ////@function Event Handler
-////@description Event Handler, add event structs to the queue for them to be processed and printed out in a debug console.
+////@description Add event structs to the queue for them to be processed and printed out in a debug console.
 function Event_Handler() constructor{
 	event_queue = ds_queue_create();
 	current_event = "";
@@ -100,8 +103,14 @@ function Console() constructor{
 	console_instance = ""
 	
 	static init_console = function(){
-		console_instance = instance_create_layer(get_screen_center_x(),get_screen_center_y(),"System",obj_console);
-		console_instance.visible = false;
+		if(layer_exists("System")){
+			console_instance = create_if_none(obj_console,"System",get_screen_center_x(),get_screen_center_y());
+			console_instance.visible = false;
+		}else{
+			var new_layer = layer_create(-999,"System");
+			layer_script_begin(new_layer,self.init_console)
+			//console_instance = create_if_none(obj_console,new_layer,get_screen_center_x(),get_screen_center_y());
+		}
 	}
 	
 	static toggle_console = function(){

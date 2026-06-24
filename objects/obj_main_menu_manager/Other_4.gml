@@ -1,14 +1,14 @@
 /// @description Insert description here
 // You can write your code in this editor
-
+audio_group_load(audiogroup_music);
 load_settings();
 set_default_settings();
 
 if(is_null(game_manager)){
 	game_manager = create_if_none(obj_game_manager,"System",x,y);
 }
-if !audio_is_playing(main_menu_music){
-	obj_audio_manager.play_music(main_menu_music, true)
+if !audio_is_playing(buggin_intro){
+	obj_audio_manager.play_music(buggin_intro, true, 0)
 }
 num_elements = instance_number(obj_menu_button);
 

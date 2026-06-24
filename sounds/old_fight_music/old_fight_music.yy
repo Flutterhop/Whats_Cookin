@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"old_fight_music",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":24.0,
+  "exportDir":"",
+  "name":"old_fight_music",
+  "parent":{
+    "name":"Unused",
+    "path":"folders/Sounds/Songs/Unused.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"old_fight_music.ogg",
+  "volume":0.3,
+}

@@ -27,7 +27,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"counter_tiles1",
+    "path":"sprites/counter_tiles1/counter_tiles1.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"buggin_intro",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":0,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":60.631565,
+  "exportDir":"",
+  "name":"buggin_intro",
+  "parent":{
+    "name":"Songs",
+    "path":"folders/Sounds/Songs.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"buggin_intro.ogg",
+  "volume":1.0,
+}

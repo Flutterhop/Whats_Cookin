@@ -86,7 +86,7 @@ function begin_firing(){
 	}else{
 		change_state(enemy_state,"idle","no target, returning to idle.");
 	}
-}		
+}
 
 
 

@@ -1,15 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
-
-
-if(instance_exists(obj_pause_menu)){
-	interpret_controls();
-}
-
 try{
 
-	read_all_input();
-	listen_for_input();
+	if(instance_exists(obj_pause_menu)){
+		interpret_controls();
+	}else{
+		read_all_input();
+		listen_for_input();
+	}
 
 }catch(_exception){
 	show_debug_message(_exception.message);

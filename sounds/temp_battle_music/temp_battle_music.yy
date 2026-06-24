@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"temp_battle_music",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":70.16487,
+  "exportDir":"",
+  "name":"temp_battle_music",
+  "parent":{
+    "name":"Unused",
+    "path":"folders/Sounds/Songs/Unused.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"temp_battle_music.mp3",
+  "volume":0.04,
+}

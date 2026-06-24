@@ -121,7 +121,7 @@ function state_toggle_shop(){
 
 function state_enable_shop(){
 	audio_group_stop_all(audiogroup_music)
-	obj_audio_manager.play_music(shop_music, true)
+	obj_audio_manager.play_music(Buggin_Out_Shop_Theme, true, 0)
 	global.display_shop = true;
 	global.game_state = shop;
 }

@@ -61,92 +61,32 @@ function input_read_all(){
 	for(var i = 0;i < INPUT_MAX_PLAYERS; i++){
 		if(InputPlayerIsConnected(i)){
 			var player = global.players[i];
-			input_read(global.game_state,player);
+			scan_inputs(player);
 			input_read_debug_inputs(global.game_state,player);
 		}
 	}
 }
-	
-function input_interpret_controls(){
-	
+
+function input_interpret_player_controls(){
 	if(object_index == _obj_manager_parent){return;}
 	var temp_player = 0;
 	for(var i = 0;i < array_length(global.players); i++){
 		temp_player = array_get(global.players,i);
-		if(temp_player != 0){
-			if(temp_player.input_allowed){
-				determine_priority();
-				if(global.priority_enforced && has_priority){
-					var _input = instance_find(obj_input_manager,0);
-					var target = "";
-					for(var j = 0; j < array_length(_input.priority_targets);j++){
-						target = _input.priority_targets[j];
-						if(temp_player.up){input_up(temp_player);}
-						if(temp_player.down){input_down(temp_player);}
-						if(temp_player.left){input_left(temp_player);}
-						if(temp_player.right){input_right(temp_player);}
-						if(temp_player.action_1){
-							input_action_1(temp_player);
-							}
-						if(temp_player.action_2){input_action_2(temp_player);}
-						if(temp_player.action_3){input_action_3(temp_player);}
-						if(temp_player.action_1_released){input_action_1_released(temp_player);}
-						if(not_null(target)){
-							if(target.consume_input){
-								input_reset_input(temp_player);
-								return;
-							}
-						}
+		if(not_null(temp_player)){	
+			if(not_null(temp_player.player_instance)){
+				if(temp_player.input_allowed && !temp_player.player_instance.is_shopping){
+					determine_priority();
+					if(global.priority_enforced){
+			
+					}else if(!global.priority_enforced){
+						scan_inputs(temp_player)
 					}
-				}else if(global.priority_enforced && !has_priority){
-					//No input for you!
-				}else if(!global.priority_enforced){
-					if(temp_player.up && method_get_index(input_up) != -1){
-						input_up(temp_player);}
-					if(temp_player.down){input_down(temp_player);}
-					if(temp_player.left){input_left(temp_player);}
-					if(temp_player.right){input_right(temp_player);}
-					if(temp_player.action_1){input_action_1(temp_player);}
-					if(temp_player.action_2){
-						input_action_2(temp_player);}
-					if(temp_player.action_3){input_action_3(temp_player);}
-					if(temp_player.action_1_released){input_action_1_released(temp_player);}
-				}else{
-					show_debug_message("Priority check went weird with it. [_user_input ln.103]");
 				}
 			}
 		}			
 	}	
 }
 
-function input_interpret_player_controls(){
-	
-	if(object_index == _obj_manager_parent){return;}
-	var temp_player = 0;
-	for(var i = 0;i < array_length(global.players); i++){
-		temp_player = array_get(global.players,i);
-		if(temp_player != 0){	
-			if(temp_player.player_instance != 0){
-				if(temp_player.input_allowed && !temp_player.player_instance.is_shopping){
-					determine_priority();
-					if(global.priority_enforced){
-			
-					}else if(!global.priority_enforced){
-						if(temp_player.up && method_get_index(input_up) != -1){input_up(temp_player);}
-						if(temp_player.down){input_down(temp_player);}
-						if(temp_player.left){input_left(temp_player);}
-						if(temp_player.right){input_right(temp_player);}
-						if(temp_player.action_1){input_action_1(temp_player);}else{ if(temp_player.player_instance != 0){temp_player.player_instance.holdDirection = false;}}
-						if(temp_player.action_2){input_action_2(temp_player);}
-						if(temp_player.action_3){input_action_3(temp_player);}
-						if(temp_player.action_1_released){input_action_1_released(temp_player);}
-					}
-				}
-			}
-		}			
-	}	
-}
-	
 function input_determine_priority(){
 	///if(!global.priority_enforced){return;}
 	var priority_count = 0; 
@@ -203,14 +143,7 @@ function input_determine_priority(){
 }
 	
 function input_reset_input(player){
-	player.up = false;
-	player.down = false;
-	player.left = false;
-	player.right = false;
-	player.action_1 = false;
-	player.action_2 = false;
-	player.action_3 = false;
-	player.action_1_released = false;
+	InputVerbConsumeAll(player.player_number)
 }
 	
 function input_add_player(_pad){
@@ -236,89 +169,6 @@ function input_remove_player(_pad){
 		}
 		if(array_get(global.players,0) == 0){
 			add_player("");
-		}
-	}
-}
-
-function input_read(game_state,player){
-	reset_globals();
-	player.device = InputPlayerGetDevice(player.player_number)
-	if(!InputPlayerGetBlocked(player.player_number)){
-		with(player){
-			//switch(InputPlayerGetDevice(player.player_number)){}
-			if(InputPressed(INPUT_VERB.DEBUG,player.player_number) && GM_build_type == "run"){
-				toggle_debug();
-			}
-		
-			action_3_released = false;
-			action_2_released = false;
-			action_1_released = false;
-			
-			if(InputCheck(INPUT_VERB.ACCEPT,player.player_number)&& (game_state == active_game || game_state == game_over)){
-				action_1 = true;
-			}else if(InputPressed(INPUT_VERB.ACCEPT,player.player_number)&& non_game_context){
-				action_1 = true;
-			}else{
-				action_1 = false;
-			}
-			if(InputPressed(INPUT_VERB.CANCEL,player.player_number)&& game_state == active_game){
-				action_2 = true;
-			}else if(InputPressed(INPUT_VERB.CANCEL,player.player_number)&& non_game_context){
-				action_2 = true;
-			}else{
-				action_2 = false;
-			}
-			if(InputCheck(INPUT_VERB.SPECIAL,player.player_number)&& game_state == active_game){
-				action_3 = true;
-			}else if(InputPressed(INPUT_VERB.SPECIAL,player.player_number)&& non_game_context){
-				action_3 = true;
-			}else{
-				action_3 = false;
-			}
-			if(InputReleased(INPUT_VERB.ACCEPT,player.player_number)){
-				action_1_released = true;						
-			}
-			if(InputReleased(INPUT_VERB.CANCEL,player.player_number)){
-				action_2_released = true;						
-			}
-			if(InputReleased(INPUT_VERB.SPECIAL,player.player_number)){
-				action_3_released = true;						
-			}
-			
-			if(InputCheck(INPUT_VERB.UP,player.player_number)&& game_state == active_game){
-				up = true;
-			}else if(InputPressed(INPUT_VERB.UP,player.player_number)&&  non_game_context){
-				up = true;
-			}else{
-				up = false;
-			}
-			if(InputCheck(INPUT_VERB.DOWN,player.player_number)&& game_state == active_game){
-				down = true;
-			}else if(InputPressed(INPUT_VERB.DOWN,player.player_number) &&  non_game_context){
-				down = true;
-			}else{
-				down = false;
-			}
-			if(InputCheck(INPUT_VERB.LEFT,player.player_number) && game_state == active_game){
-				left = true;
-			}else if(InputPressed(INPUT_VERB.LEFT,player.player_number) &&  non_game_context){
-				left = true;
-			}else{
-				left = false;
-			}
-			if(InputCheck(INPUT_VERB.RIGHT,player.player_number)&& game_state == active_game){
-				right = true;
-			}else if(InputPressed(INPUT_VERB.RIGHT,player.player_number) && non_game_context){
-				right = true;
-			}else{
-				right = false;
-			}
-			if(InputPressed(INPUT_VERB.PAUSE,player.player_number)){
-				start = true;
-				handle_pause(player);
-			}else{
-				start = false;
-			}
 		}
 	}
 }
@@ -375,23 +225,6 @@ function input_read_debug_inputs(game_state,player){
 	}
 }
 
-function reset_globals(){
-	global.up = false;
-	global.down = false;
-	global.left = false;
-	global.right = false;
-	global.horizontal_axis = 0;
-	global.vertical_axis = 0;
-	global.action_1 = false;
-	global.action_2 = false;
-	global.action_3 = false;
-	global.action_1_released = false;
-	global.action_2_released = false;
-	global.action_3_released = false;
-	global.start = false;
-
-}
-	
 function input_activate_delay(player,delay_multiplier,input_action){
 	var input = variable_instance_get(player,input_action);
 	variable_instance_set(player,input_action,false);
@@ -531,3 +364,77 @@ function input_player_set_config(_player){
 	}
 }
 	
+function input_interpret_controls(){
+	
+	if(object_index == _obj_manager_parent){return;}
+	var temp_player = 0;
+	for(var i = 0;i < array_length(global.players); i++){
+		temp_player = array_get(global.players,i);
+		if(not_null(temp_player)){
+			if(temp_player.input_allowed){
+				determine_priority();
+				if(global.priority_enforced && has_priority){
+					var _input = instance_find(obj_input_manager,0);
+					var target = "";
+					scan_inputs(temp_player)
+					for(var j = 0; j < array_length(_input.priority_targets);j++){
+						target = _input.priority_targets[j];
+						
+
+					}
+				}else if(global.priority_enforced && !has_priority){
+					//No input for you!
+				}else if(!global.priority_enforced){
+					scan_inputs(temp_player)
+				}
+
+			}
+		}			
+	}	
+}
+
+function input_scan_inputs(temp_player){
+
+	if(!InputPlayerGetBlocked(temp_player.player_number)){
+		if(!InputCheckMany(-1,temp_player.player_number)){exit;}
+		if(InputPressed(INPUT_VERB.DEBUG,temp_player.player_number) && GM_build_type == "run"){
+			toggle_debug();
+		}
+		//Up
+		if(InputCheck(INPUT_VERB.UP,temp_player.player_number)){if(variable_instance_exists(self,"input_up")){input_up(temp_player);}}
+		if(InputPressed(INPUT_VERB.UP,temp_player.player_number)){if(variable_instance_exists(self,"input_up_pressed")){input_up_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.UP,temp_player.player_number)){if(variable_instance_exists(self,"input_up_released")){input_up_released(temp_player);}}	
+		//Down
+		if(InputCheck(INPUT_VERB.DOWN,temp_player.player_number)){if(variable_instance_exists(self,"input_down")){input_down(temp_player);}}
+		if(InputPressed(INPUT_VERB.DOWN,temp_player.player_number)){if(variable_instance_exists(self,"input_down_pressed")){input_down_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.DOWN,temp_player.player_number)){if(variable_instance_exists(self,"input_down_released")){input_down_released(temp_player);}}	
+		//Left
+		if(InputCheck(INPUT_VERB.LEFT,temp_player.player_number)){if(variable_instance_exists(self,"input_left")){input_left(temp_player);}}
+		if(InputPressed(INPUT_VERB.LEFT,temp_player.player_number)){if(variable_instance_exists(self,"input_left_pressed")){input_left_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.LEFT,temp_player.player_number)){if(variable_instance_exists(self,"input_left_released")){input_left_released(temp_player);}}	
+		//Right
+		if(InputCheck(INPUT_VERB.RIGHT,temp_player.player_number)){if(variable_instance_exists(self,"input_right")){input_right(temp_player);}}
+		if(InputPressed(INPUT_VERB.RIGHT,temp_player.player_number)){if(variable_instance_exists(self,"input_right_pressed")){input_right_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.RIGHT,temp_player.player_number)){if(variable_instance_exists(self,"input_right_released")){input_right_released(temp_player);}}
+		//Action 1 //Reading Released first to manage hold direction logic.
+		if(InputReleased(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_released")){input_action_1_released(temp_player);}}
+		if(InputCheck(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1")){input_action_1(temp_player);}}
+		if(InputPressed(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_pressed")){input_action_1_pressed(temp_player);}}
+		//Action 2
+		if(InputCheck(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2")){input_action_2(temp_player);}}
+		if(InputPressed(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_pressed")){input_action_2_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_released")){input_action_2_released(temp_player);}}
+		//Action 3
+		if(InputCheck(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3")){input_action_3(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_pressed")){input_action_3_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_released")){input_action_3_released(temp_player);}}
+		//PAUSE
+		if(InputCheck(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause")){input_pause(temp_player);}}
+		if(InputPressed(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause_pressed")){input_pause_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause_released")){input_pause_released(temp_player);}}
+	}else{
+		if(global.debug){
+			show_debug_message("Input scan blocked.")
+		}
+	}
+}

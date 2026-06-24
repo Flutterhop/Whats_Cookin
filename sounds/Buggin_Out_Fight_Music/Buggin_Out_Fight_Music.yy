@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"Buggin_Out_Fight_Music",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":40.0,
+  "exportDir":"",
+  "name":"Buggin_Out_Fight_Music",
+  "parent":{
+    "name":"Songs",
+    "path":"folders/Sounds/Songs.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"Buggin_Out_Fight_Music.ogg",
+  "volume":1.0,
+}

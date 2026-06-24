@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_ingredient",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_ingredient",
+  "parent":{
+    "name":"Ingredient",
+    "path":"folders/Objects/Items/Food/Ingredient.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

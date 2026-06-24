@@ -25,18 +25,22 @@ function load_settings(){
 						var included_string = string_insert("include_",enemy_name,0);
 						var exclusion = ini_read_string(enemy_name,included_string,"true");
 						var uses_spawner = ini_read_string(enemy_name,"uses_spawner","false");
+						preview_sprite = ini_read_string(enemy_name,"preview_sprite","");
 					break;
 					case obj_enemy_maneater:
 						enemy_name = string_replace(enemy_name,"obj_enemy_","");
 						var included_string = string_insert("include_",enemy_name,0);
 						var exclusion = ini_read_string(enemy_name,included_string,"true");
 						var uses_spawner = ini_read_string(enemy_name,"uses_spawner","false");
+						preview_sprite = ini_read_string(enemy_name,"preview_sprite","");
+
 					break;
 					case obj_enemy_big_grub:
 						enemy_name = string_replace(enemy_name,"obj_enemy_","");
 						var included_string = string_insert("include_",enemy_name,0);
 						var exclusion = ini_read_string(enemy_name,included_string,"true");
 						var uses_spawner = ini_read_string(enemy_name,"uses_spawner","false");
+						preview_sprite = ini_read_string(enemy_name,"preview_sprite","");						
 					break;
 					default:
 						enemy_name = string_replace(enemy_name,"obj_enemy_","");
@@ -59,7 +63,8 @@ function load_settings(){
 
 				var number_of = ini_read_real(enemy_name,"number_of",1);
 				var enemy_health = ini_read_real(enemy_name,"health",1);
-				var struct = new enemy_struct(current_enemy,number_of,enemy_health,is_included,,uses_spawner,preview_sprite);
+				var sprite = asset_get_index(preview_sprite)
+				var struct = new enemy_struct(current_enemy,number_of,enemy_health,is_included,,uses_spawner,sprite);
 				ds_list_add(global.enemy_structs,struct);
 			}
 
@@ -111,6 +116,8 @@ function save_settings(){
 					case obj_bramble_hazard:
 						enemy_name = string_replace(enemy_name,"obj_","");
 						enemy_name = string_replace(enemy_name,"_hazard","");
+						var preview_string = string_concat(sprite_prefix,enemy_name,preview_afix);
+						ini_write_string(enemy_name,"preview_sprite",preview_string);
 						if(exclusion == true){
 							exclusion = "true";
 						}else{
@@ -168,6 +175,7 @@ function set_default_settings(){
 				var preview_afix = "_preview";
 				var uses_spawner = "true";
 				var exclusion = temp_struct.is_included;
+				var preview_string
 			
 				switch(temp_struct.asset){
 					case obj_enemy_bee:
@@ -241,27 +249,32 @@ function set_default_settings(){
 						enemy_number_of = 2;
 						exclusion = "true";
 						uses_spawner = "false";
+						enemy_name = string_replace(enemy_name,"obj_","");
+						enemy_name = string_replace(enemy_name,"_hazard","");
 					break;
 					default:
-						enemy_name = string_replace(enemy_name,"obj_enemy_","");
 						if(exclusion == true){
 							exclusion = "true";
 						}else{
 							exclusion = "false";
 						}
-						var preview_string = string_concat(sprite_prefix,enemy_name,preview_afix);
-						ini_write_string(enemy_name,"preview_sprite",preview_string);
+
+
 					break;
 				}
+										
 				if (asset_has_tags(temp_struct.asset,"minion",asset_object) || asset_has_tags(temp_struct.asset,"boss",asset_object)){
 					ini_write_string(enemy_name,"uses_spawner","false");
 					exclusion = false;
 				}
+				enemy_name = string_replace(enemy_name,"obj_enemy_","");
+				preview_string = string_concat(sprite_prefix,enemy_name,preview_afix);
 				temp_struct.is_included = exclusion;
 				temp_struct.number_of = enemy_number_of;
 				temp_struct.enemy_health = enemy_hp;
 				temp_struct.uses_spawner = uses_spawner;
 				var included_string = string_insert("include_",enemy_name,0);
+				ini_write_string(enemy_name,"preview_sprite",preview_string);
 				ini_write_string(enemy_name,included_string,exclusion);
 				ini_write_string(enemy_name,"number_of",enemy_number_of);
 				ini_write_string(enemy_name,"health",enemy_hp);

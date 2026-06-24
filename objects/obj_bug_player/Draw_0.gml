@@ -58,15 +58,8 @@ if(global.debug && global.debug_setting == debug_type.player_debug){
 	draw_set_color(c_white);
 	draw_set_font(fnt_normal);
 	if(player != 0){
-		draw_text(x - 40, y,string_concat("up: ",player.up));
-		draw_text(x - 40, y + 15,string_concat("down: ",player.down));
-		draw_text(x - 40, y + 30,string_concat("left: ",player.left));
-		draw_text(x - 40, y + 45,string_concat("right: ",player.right));
-
-		draw_text(x - 40, y + 60,string_concat("action_1: ",player.action_1));
-		draw_text(x - 40, y + 75,string_concat("action_2: ",player.action_2));
 		
-		draw_text(x + 40, y,string_concat("face: ",face));
+		draw_text(x + 40, y,string_concat("dir: ",dir));
 		draw_text(x + 40, y + 15,string_concat("player_direction: ",player_direction));
 		draw_text(x + 40, y + 30,string_concat("holdDirection: ",holdDirection));
 		draw_text(x + 40, y + 45,string_concat("xaxis: ",xaxis));
@@ -77,6 +70,38 @@ if(global.debug && global.debug_setting == debug_type.player_debug){
 		draw_text(x + 40, y + 105,string_concat("Music Group Gain: ",obj_audio_manager.musicVolume));
 		draw_text(x + 40, y + 120,string_concat("depth: ",depth));
 		draw_text(x + 40, y + 140,string_concat("palette_index ",player.palette_index));
+		//Draw melee hitbox
+		var top_left_x
+		var top_left_y
+		var bottom_right_x
+		var bottom_right_y
+		switch(direction_facing){
+			case "up":
+				top_left_x = x - 10
+				top_left_y = y - 40
+				bottom_right_x = x + 10 
+				bottom_right_y = y
+			break;
+			case "down":
+				top_left_x = x - 10
+				top_left_y = y
+				bottom_right_x = x + 10
+				bottom_right_y = y + 40
+			break;
+			case "left":
+				top_left_x = x - 40
+				top_left_y = y - 10
+				bottom_right_x = x
+				bottom_right_y = y + 10 
+			break;
+			case "right":
+				top_left_x = x
+				top_left_y = y - 10
+				bottom_right_x = x + 40
+				bottom_right_y = y + 10
+			break;
+		}
+		draw_rectangle(top_left_x,top_left_y,bottom_right_x,bottom_right_y,true)
 	}
 
 }
@@ -95,4 +120,5 @@ if(shield_bramble > 0){
 		alarm[11] = bramble_effect_timer;
 	}
 }
+
 pal_swap_reset();

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_environment",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_environment",
+  "parent":{
+    "name":"Environment",
+    "path":"folders/Objects/Environment.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

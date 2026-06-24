@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"bug_loop",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":12.042449,
+  "exportDir":"",
+  "name":"bug_loop",
+  "parent":{
+    "name":"Songs",
+    "path":"folders/Sounds/Songs.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"bug_loop.mp3",
+  "volume":1.0,
+}

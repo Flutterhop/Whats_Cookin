@@ -11,13 +11,20 @@ function core_generate_medkit(){
 	var horizontal_position = irandom_range(area_width_min,area_width_max);
 	var vertical_position = irandom_range(area_height_min,area_height_max);
 	if(!position_meeting(horizontal_position,vertical_position,obj_hazard_parent) && !position_meeting(horizontal_position,vertical_position,obj_bug_player_entity) && !position_meeting(horizontal_position,vertical_position,obj_spawner)){
-		instance_create_layer(horizontal_position,vertical_position,"Terrain",obj_medkit);
+		layer_sequence_create("Terrain",horizontal_position,vertical_position,seq_medkit_spawn)
+		
 		//here
 		show_debug_message("spawning medkit");
 	}else{
 		show_debug_message("That space is occupied by something. looping again...");
 	}
 }
+function spawn_medkit(){
+	var xpos = layer_sequence_get_x(self.elementID)
+	var ypos = layer_sequence_get_y(self.elementID)
+	instance_create_layer(xpos,ypos,"Terrain",obj_medkit);
+}
+
 
 function core_check_player_medkit(){
 	for(var i = 0; i  < array_length(global.players);i++){
@@ -365,7 +372,7 @@ function core_spawn_players(){
 				_player.player_instance = instance_create_layer(room_width / 2 + i * 20,room_height / 2,"Spawns",obj_bug_player_entity,{
 																																	player : _player,
 																																	player_number : _player.player_number,
-																																	face : 0,
+																																	dir : 0,
 																																	holdDirection : false,
 																																	}
 																																	);	
@@ -411,6 +418,7 @@ function core_end_game(){
 	game_manager_clear_players();
 	bet_value = 100;
 	audio_stop_all();
+	obj_audio_manager.play_sfx(death, "low", 1)
 	if (!instance_exists(obj_blackout)) {
 		var blackout = instance_create_layer(0, 0, "Effects", obj_blackout);
 		blackout.fade_in();

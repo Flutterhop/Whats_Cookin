@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"jingle_01",
+  "audioGroupId":{
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":0,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":2.1681633,
+  "exportDir":"",
+  "name":"jingle_01",
+  "parent":{
+    "name":"jingle",
+    "path":"folders/Sounds/Songs/jingle.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"jingle_01.mp3",
+  "volume":1.0,
+}

@@ -9,19 +9,12 @@
   ],
   "managed":true,
   "name":"obj_acid_projectile",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_buggin_entity","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"propertyId":{"name":"entity_name","path":"objects/obj_buggin_entity/obj_buggin_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Acid Projectile",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_projectile_parent","path":"objects/obj_projectile_parent/obj_projectile_parent.yy",},"propertyId":{"name":"range","path":"objects/obj_projectile_parent/obj_projectile_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"200",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_projectile_parent","path":"objects/obj_projectile_parent/obj_projectile_parent.yy",},"propertyId":{"name":"projectile_speed","path":"objects/obj_projectile_parent/obj_projectile_parent.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"10",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"queen",
-    "path":"folders/Objects/Characters/NPC/Enemies/Buggin/boss/queen.yy",
+    "path":"folders/Objects/Enemies/boss/queen.yy",
   },
-  "parentObjectId":{
-    "name":"obj_projectile_parent",
-    "path":"objects/obj_projectile_parent/obj_projectile_parent.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

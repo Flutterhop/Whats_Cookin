@@ -27,17 +27,11 @@ center_arrows				= method(id,pause_center_arrows);
 adjust_arrows				= method(id,pause_adjust_arrows);	
 
 
-
-
 ///INPUT FUNCTION///
-input_up = method(id,pause_input_up);
-input_down = method(id,pause_input_down);
-input_right = method(id,pause_input_right);
-input_left = method(id,pause_input_left);
-input_action_1 = method(id,pause_input_action_1);
-input_action_2 = method(id,pause_input_action_2);
-input_action_3 = method(id,pause_input_action_3);
-input_action_1_released = method(id,pause_input_action_1_released);
-
-
-
+input_up_pressed					= method(id,pause_input_up_pressed);
+input_down_pressed					= method(id,pause_input_down_pressed);
+input_right_pressed					= method(id,pause_input_right_pressed);
+input_left_pressed					= method(id,pause_input_left_pressed);
+input_action_1_pressed				= method(id,pause_input_action_1_pressed);
+input_action_2_pressed				= method(id,pause_input_action_2_pressed);
+input_pause_pressed					= method(id,pause_input_pause_pressed);

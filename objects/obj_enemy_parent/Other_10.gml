@@ -16,11 +16,6 @@ direction_facing = "left";
 
 move_timer_set = false;
 
-//knockback
-knockback_timer = 0;  // Tracks the duration of knockback, change in collision to adjust
-dir = 0; //changed by bullet's direction
-knockback_strength = 1;  // Adjust for desired knockback force
-
 has_local_avoidance = true;
 avoid_radius_x = sprite_width;
 avoid_radius_y = sprite_height;

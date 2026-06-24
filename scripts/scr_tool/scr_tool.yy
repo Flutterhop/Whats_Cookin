@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_tool",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_tool",
+  "parent":{
+    "name":"Tools",
+    "path":"folders/Objects/Items/Tools.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

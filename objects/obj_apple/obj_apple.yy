@@ -3,13 +3,14 @@
   "%Name":"obj_apple",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_apple",
   "overriddenProperties":[],
   "parent":{
-    "name":"Food",
-    "path":"folders/Objects/Items/Food.yy",
+    "name":"Ingredient",
+    "path":"folders/Objects/Items/Food/Ingredient.yy",
   },
   "parentObjectId":{
     "name":"obj_ingredient_food",
@@ -33,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_apple",
-    "path":"sprites/spr_apple/spr_apple.yy",
+    "name":"spr_item_apple",
+    "path":"sprites/spr_item_apple/spr_item_apple.yy",
   },
   "spriteMaskId":null,
   "visible":true,

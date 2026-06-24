@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_defense_structure",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_defense_structure",
+  "parent":{
+    "name":"Defense",
+    "path":"folders/Objects/Structures/Defense.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"v1",
+  "%Name":"EchoLicense",
+  "name":"EchoLicense",
+  "parent":{
+    "name":"Echo",
+    "path":"folders/Extensions/RefresherTowelGames/Echo.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

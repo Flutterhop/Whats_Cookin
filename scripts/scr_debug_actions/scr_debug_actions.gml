@@ -1,4 +1,3 @@
-
 function debug_input_f1(player){
 	toggle_debug_mode();
 }
@@ -92,7 +91,11 @@ function debug_input_f8(player){
 		var enemies = global.enemy_structs;
 	switch(global.debug_setting){
 		case debug_type.player_debug:
-			
+			global.display_shop = true
+			global.game_state = shop
+			global.players[0].character = new Character("wiz",spr_wiz_idle,0)
+			global.players[0].is_active = true
+			obj_game_manager.spawn_players()
 		break;
 		case debug_type.enemy_debug:
 			///spawn_debug_entity(ds_list_find_value(enemies,6));

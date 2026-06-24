@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_item_entity",
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Objects/_Core/Entity/Cookin.yy",
+    "name":"Items",
+    "path":"folders/Objects/Items.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

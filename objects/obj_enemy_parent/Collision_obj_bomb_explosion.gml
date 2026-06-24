@@ -5,7 +5,7 @@ if(visible){
 				return;
 			}
 		}
-		take_damage(0,other.damage,,60);
+		take_damage(,other.damage,,60);
 		if (hp <= 0){
 			instance_create_depth(x,y,-1000,obj_explosion);
 			instance_destroy();

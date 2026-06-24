@@ -1,5 +1,9 @@
 global._users = array_create(0);
 
+enum weapon_type{
+	staff = 10,
+	dagger = 20
+}
 
 function User(_user_index,_user_name,new_is_guest, new_player_data = "",new_saves_data = "") constructor{
 //this will be used later to load settings for player profiles and such.
@@ -185,9 +189,138 @@ function User(_user_index,_user_name,new_is_guest, new_player_data = "",new_save
 	load_user_binding();
 }
 	
-
+///@description Base player struct. Holds game session information but also input variables.
+///@param {int} index This is the players user index.
+function Player(new_index, new_player_number = 0, new_device = "", new_player_instance = 0) constructor{
 	
-function load_users(_number_to_load){
+	///USER GAME INFO
+	index = new_index;
+	player_number = new_player_number;
+	device = new_device;
+	player_instance = new_player_instance;
+	is_active = false;
+	in_game = false;
+	weapon = weapon_type.dagger
+	///INPUT CONTROL
+	input_allowed = true;
+	input_ready = true;
+	input_delay = 10;
+	input_timer = 0;
+	
+	///DEBUG INPUTS
+	f1 = false;
+	f2 = false;
+	f3 = false;
+	f4 = false;
+	f5 = false;
+	f6 = false;
+	f7 = false;
+	f8 = false;
+	f9 = false;
+	
+	
+	static set_palette_index = function(_index){
+		palette_index = _index;
+	}
+	static get_next_palette = function(){
+		palette_index = palette_index + 1;
+		var colors = pal_swap_get_pal_count(character.palette) - 1;
+		if(palette_index > colors){
+			palette_index = 0;
+		}	
+	}
+	static get_prev_palette = function(){
+		palette_index = palette_index - 1;
+		var colors = pal_swap_get_pal_count(character.palette) - 1;
+		if(palette_index < 0){
+			palette_index = colors;
+		}
+	}
+	static toggle_weapon = function(){
+		if(weapon == weapon_type.staff){
+			weapon = weapon_type.dagger
+		}else if(weapon == weapon_type.dagger){
+			weapon = weapon_type.staff
+		}
+	}
+	static set_character = function(){
+		get_player_bug_characters(self);
+	}
+	character = "";
+	palette_index = 0;
+	switch(player_number){
+		case 1:
+			palette_index = 0;
+		break;
+		case 2:
+			palette_index = 1;
+		break;
+		case 3:
+			palette_index = 2;
+		break;
+		case 4:
+			palette_index = 3;
+		break;
+	}
+	
+	static player_has_item = function(item){
+		var has_item = false;
+		if(not_null(player_instance.item_list)){
+			var size = ds_list_size(player_instance.item_list);
+			if(size > 0){
+				for(var i = 0; i < size;i++){
+					var cur_item = ds_list_find_value(player_instance.item_list,i);
+					if(is_instanceof(cur_item,item_struct)){
+						if(cur_item.index == item.index){
+							has_item = true;
+						}
+					}
+				}
+			}
+		}
+		
+		return has_item;
+	}
+	
+	static get_player_item = function(item_index){
+		if(not_null(player_instance.item_list)){
+			var size = ds_list_size(player_instance.item_list);
+			if(size > 0){
+				for(var i = 0; i < size;i++){
+					var cur_item = ds_list_find_value(player_instance.item_list,i);
+					if(is_instanceof(cur_item,item_struct)){
+						if(cur_item.index == item_index){
+							return cur_item
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	static is_item_upgraded = function(item_index){
+		if(not_null(player_instance.item_list)){
+			var size = ds_list_size(player_instance.item_list);
+			if(size > 0){
+				for(var i = 0; i < size;i++){
+					var cur_item = ds_list_find_value(player_instance.item_list,i);
+					if(is_instanceof(cur_item,item_struct)){
+						if(cur_item.index == item_index){
+							if cur_item.number_purchased == cur_item.limit{
+								return true
+							}
+						}
+					}
+				}
+			}
+		}
+		return false
+	}
+	
+}
+
+/// @description Loads user data from profile data file. This also adds guest users for anyone after player 1
+function load_users(_number_to_load,_current_game){
 	var file_string = "user_profiles.json";
 	var _file = file_text_open_read(file_string);
 
@@ -211,7 +344,7 @@ function load_users(_number_to_load){
 				
 				if(is_null(current_active_user) || current_active_user.user_index == current_user.user_index){
 					var new_user_obj = new User(current_user.user_index,current_user.user_name,false, new Player(current_user.player_data.index,i,InputPlayerGetDevice(i)));
-					new_user_obj.saves_data = current_user.saves_data;
+					new_user_obj.saves_data = current_user.saves_data
 					new_user_obj.input_config = current_user.input_config;
 					InputBindingsImport(InputDeviceIsGamepad(new_user_obj.player_data.device),new_user_obj.input_config,new_user_obj.player_data.player_number);
 					global._users[i] = new_user_obj;
@@ -246,8 +379,7 @@ function save_users(){
 function insert_first_user(){
 	InputPlayerSetDevice(INPUT_KBM,0);
 	var user = new User(0,"Default",false,new Player(0,0,InputPlayerGetDevice(0)));
-	////This line is incorrect but came from buggin repo, commenting out for now.
-	////array_push(user.saves_data);
+	array_push(global._users,user.saves_data);
 	user.set_user_data();
 	var file_string = string_concat(working_directory,"user_profiles.json");
 	var _file = file_text_open_write(file_string);
@@ -256,3 +388,13 @@ function insert_first_user(){
 	file_text_close(_file);
 	user.save_user_binding();
 }
+
+function find_player_user(_player){
+	for(var i = 0;i < array_length(global._users);i++){
+		var current_user = global._users[i];
+		if(current_user.user_index == _player.index){
+			return current_user;
+		}
+	}
+}
+

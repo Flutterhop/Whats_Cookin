@@ -9,13 +9,22 @@ if (abs(hspeed) > 0.2 || abs(vspeed) > 0.2) {
 	effects_create_particle("dust",x,y + sprite_height/2,rate)
 }
 
-
 if(hp_current < 1 && !dead){
 	set_game_over();
 }else if(!dead){
 	apply_movement();
 	check_collision();
-	determine_face();
+	if(player.weapon == weapon_type.staff){
+		determine_staff_face();
+	}else{
+		read_dagger_collision();
+		if(player_is_dashing){
+			read_dash_collision();
+		}else{
+			determine_dagger_face();
+		}
+	}
+
 	handle_dash_effect();
 	handle_damage_timer();
 	up_num = 0;

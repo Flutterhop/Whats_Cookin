@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.24,
+  "duration":0.20090704,
   "exportDir":"",
   "name":"grub_bite",
   "parent":{

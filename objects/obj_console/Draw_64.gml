@@ -14,7 +14,7 @@ if(not_null(scribble_object)){
 			scribble_object.scale(text_scale);
 			scribble_object.wrap(sprite_width,sprite_height,false);
 			scribble_object.padding(10,10,0,0);
-			scribble_object.starting_format("standard",event.get_message_color());
+			scribble_object.starting_format("main",event.get_message_color());
 			scribble_object.draw(bbox_left,bbox_top + ( height * (i)));
 		}
 	}

@@ -33,7 +33,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"preview_object","filters":[],"listItems":[],"multiselect":false,"name":"preview_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"obj_enemy_bee","path":"objects/obj_enemy_bee/obj_enemy_bee.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"obj_enemy_bee","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"preview_object","filters":[],"listItems":[],"multiselect":false,"name":"preview_object","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"obj_enemy_bee","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"number_of_enemies","filters":[],"listItems":[],"multiselect":false,"name":"number_of_enemies","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"anchor_point_x","filters":[],"listItems":[],"multiselect":false,"name":"anchor_point_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"247","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"anchor_point_y","filters":[],"listItems":[],"multiselect":false,"name":"anchor_point_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},

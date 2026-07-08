@@ -21,13 +21,14 @@ function prototype(){
 		}
     }
 	initialize_character_entities();
-	var npc1 = new Enemy_Entity(enemy_type.generic,[enemy_trait.Standard],npc_size.medium,grid,5,"Bee",Character_Type.CH_ENEMY_NPC,1,false,obj_npc_bee);
+	var npc1 = new Enemy_Entity("Bee",Character_Type.CH_ENEMY_NPC,5,false,obj_npc_bee,0.5,npc_size.medium,grid,enemy_type.generic,[enemy_trait.Standard]);
+
 	npc1.spawn_npc(get_screen_center_x() / 2, get_screen_center_y() / 2,"Instances");
 	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_turret_defense)
 	turret1.spawn_entity(400,120,"Instances")
-	var player_entity = new Player_Entity(0,5,"Player 0",entity_type.EN_Character,5,false,obj_player);
+	var player_entity = new Player_Entity("Player 0",entity_type.EN_Character,5,false,obj_player,2,0);
 	player_entity.spawn_entity(get_screen_center_x(), get_screen_center_y(),"Instances")
-	var user = new User(0,"Player 0",false,player_entity.instance,"")
+	var user = new User(0,"Player 0",false,player_entity,"")
 	
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Here is another event!",ev_priority.standard);
@@ -46,13 +47,19 @@ function prototype(){
 	event_handler.create_event(ev_type.gather,"tower_02 took 3 damage",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Player 'sandy' hit by 'rat' for 5 hitpoints",ev_priority.standard);
 	event_handler.create_event(ev_type.debug,"Loading next level...",ev_priority.low);
-	var apple_inst = instance_create_layer(get_screen_center_x() - 20,get_screen_center_y(),"Instances",obj_apple)
-	var apple_01 = new Item_Food(10,
-								["Sweet"],
-								item_entity_type.Food,
-								"Apple",
+	var apple_01 = new Item_Ingredient("Apple",
 								entity_type.EN_Item,
-								apple_inst)
-	apple_inst.item_struct = apple_01;
+								3,
+								false,
+								obj_apple,
+								item_entity_type.Food,
+								spr_item_apple,
+								spr_item_apple,
+								10,
+								["Sweet"],
+								false,
+								2
+								)
+	apple_01.spawn_entity(get_screen_center_x() - 20,get_screen_center_y(),"Instances")
 	
 }

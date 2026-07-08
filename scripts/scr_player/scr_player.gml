@@ -1,75 +1,50 @@
-function Player_Entity(new_player_number = 0,new_move_speed, new_name,new_type,new_health,new_invincible,new_object_reference) : Character_Entity (new_move_speed, new_name,new_type,new_health,new_invincible,new_object_reference) constructor {
-	player_number = new_player_number;
-	face = dir_face.south / 45;
-	direction_facing = get_direction(face);
-	player_state = "idle"
 
-
-	static init_state_machine = function(){
-		state_machine = new Statement(instance)
-		var idle_state = new StatementState(state_machine,"idle")
-			.AddEnter(function(){
-				image_index = 0
-			})
-			.AddUpdate(function(){
-				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,player_number);
-				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0) * move_speed);
-				determine_sprite();
-				handle_held_item();
-	
-				if(speed > 0){
-					state_machine.ChangeState("move")
-				}
-		});	
-		var move_state = new StatementState(state_machine,"move")
-			.AddEnter(function(){
-			
-			})
-			.AddUpdate(function(){
-				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,player_number);
-				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0) * move_speed);
-				move_wrap(true,true,sprite_width);
-				if(speed > 0 && speed < 1){image_index++}else{image_speed = speed;}
-				if(speed == 0){
-					state_machine.ChangeState("idle")
-				}
-				determine_sprite();
-				handle_held_item();
-				update_sprites();
-
-		});
-
-		state_machine
-		.AddState(idle_state)
-		.AddState(move_state)
-
-		state_machine.ChangeState("idle")
-
-	}
-}
 
 ///METHODS WITHOUT PLAYER PREFIX ARE USED BY THE PLAYER ENTITY STRUCT
 function get_direction(face_num){
-	if(face_num == 0 or face_num == 1 or face_num == 7){direction_facing = "right";}
-	else if(face_num == 3 or face_num == 4 or face_num == 5){direction_facing = "left";}
-	else if(face_num == 2){direction_facing = "up";}
-	else if(face_num == 6){direction_facing = "down";}
+	var direction_text = ""
+	if(face_num == 0 or face_num == 1 or face_num == 7){
+		direction_text = "right";}
+	else if(face_num == 3 or face_num == 4 or face_num == 5){
+		direction_text = "left";}
+	else if(face_num == 2){
+		direction_text = "up";}
+	else if(face_num == 6){
+		direction_text = "down";}
+	return direction_text
 }
 
 function player_determine_sprite(){
-	update_sprites(player_state)
-	
 	var return_sprite
 	var sprite_var_name
-	
+	var direction_affix = "left"
+	determine_direction();
 	sprite_var_name = string_concat(struct.direction_facing,"_sprite");
-	return_sprite = variable_instance_get(self,sprite_var_name);
+	var skin_prefix = string_concat("spr_","char");
+	if(struct.direction_facing == "right"){
+		direction_affix = "left"
+	}else{
+		direction_affix = struct.direction_facing
+	}
+	return_sprite = asset_get_index(string_concat(skin_prefix,"_",struct.state_machine.state.name,"_",direction_affix));
+	sprite_index = return_sprite
 }
 
-
+function player_determine_direction(){
+	switch(direction){
+		case dir_face.east:struct.direction_facing = "right";break;
+		case dir_face.north_east:struct.direction_facing = "right";break;
+		case dir_face.north: struct.direction_facing = "up";break;
+		case dir_face.north_west:struct.direction_facing = "left";break;
+		case dir_face.west:struct.direction_facing = "left";break;
+		case dir_face.south_west:struct.direction_facing = "left"break;
+		case dir_face.south:struct.direction_facing = "down"break;
+		case dir_face.south_east:struct.direction_facing = "right"break;
+	}
+}
 function player_update_sprites(state){
 	var skin_prefix = string_concat("spr_","char");
-	if(not_null(held_item)){
+	if(not_null(state)){
 		left_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_left"));
 		up_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_up"));
 		down_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_down"));
@@ -77,51 +52,108 @@ function player_update_sprites(state){
 }
 
 function player_read_interaction_collision(){
-	//If weapon is active, create a collision box to read for valid hits
+	var target = detect_interaction(obj_item_entity);
+	if(not_null(target)){
+		pick_up_item(target)
+	}
+}
+
+function player_pick_up_item(target_item){
+	if(is_struct(target_item.struct)){
+		target_item.struct.pick_up()
+		held_item = target_item;
+	}
+}
+
+function player_drop_item(){
+	if(not_null(held_item)){
+		var x_pos = 0
+		var y_pos = 0
+		var increment = 15
+		switch(direction){
+			case dir_face.east:x_pos += increment;y_pos += 0;break;
+			case dir_face.north_east:x_pos += increment;y_pos -= increment;break;
+			case dir_face.north:x_pos += 0;y_pos -= increment;break;
+			case dir_face.north_west:x_pos -= increment;y_pos -= increment;break;
+			case dir_face.west:x_pos -= increment;y_pos += 0;break;
+			case dir_face.south_west:x_pos -= increment;y_pos += increment;break;
+			case dir_face.south:x_pos += 0;y_pos += increment;break;
+			case dir_face.south_east:x_pos += increment;y_pos += increment;break;
+		}
+		var collisions = ds_list_create()
+		var targets = [obj_item_entity]
+		collision_rectangle_list(top_left_x,
+								top_left_y,
+								bottom_right_x,
+								bottom_right_y,
+								targets,
+								true,
+								true,
+								collisions,
+								true
+								)
+		var total_collisions = ds_list_size(collisions)
+		if(total_collisions > 0){
+			var target = ds_list_find_value(collisions,0);
+			pick_up_item(target)
+		}
+			held_item.struct.drop(x_pos,y_pos);
+			held_item = "";
+		}
+}
+
+function player_handle_held_item(){
+	if(not_null(held_item)){
+		held_item.x = x;
+		held_item.y = y;
+	}
+}
+
+function player_detect_interactions(target_entities){
 	var top_left_x
 	var top_left_y
 	var bottom_right_x
 	var bottom_right_y
+	var x_increment = 10
+	var y_increment = 15
+	switch(direction){
+		case dir_face.east:x_pos += increment;y_pos += 0;break;
+		case dir_face.north_east:x_pos += increment;y_pos -= increment;break;
+		case dir_face.north:x_pos += 0;y_pos -= increment;break;
+		case dir_face.north_west:x_pos -= increment;y_pos -= increment;break;
+		case dir_face.west:x_pos -= increment;y_pos += 0;break;
+		case dir_face.south_west:x_pos -= increment;y_pos += increment;break;
+		case dir_face.south:x_pos += 0;y_pos += increment;break;
+		case dir_face.south_east:x_pos += increment;y_pos += increment;break;
+	}
 	switch(struct.direction_facing){
 		case "up":
-			top_left_x = x - 7
-			top_left_y = y - 25
-			bottom_right_x = x + 7 
-			top_left_x = x - 10
-			top_left_y = y - 40
-			bottom_right_x = x + 10 
+			top_left_x = x - x_increment
+			top_left_y = y - y_increment
+			bottom_right_x = x + x_increment
 			bottom_right_y = y
 		break;
 		case "down":
-			top_left_x = x - 7
-			top_left_x = x - 10
+			top_left_x = x - x_increment
 			top_left_y = y
-			bottom_right_x = x + 7
-			bottom_right_y = y + 25
-			bottom_right_x = x + 10
-			bottom_right_y = y + 40
+			bottom_right_x = x + x_increment
+			bottom_right_y = y + y_increment
 		break;
 		case "left":
-			top_left_x = x - 25
-			top_left_y = y - 7
-			top_left_x = x - 40
-			top_left_y = y - 10
+			top_left_x = x - x_increment
+			top_left_y = y - y_increment
 			bottom_right_x = x
-			bottom_right_y = y + 7 
-			bottom_right_y = y + 10 
+			bottom_right_y = y + y_increment
 		break;
 		case "right":
 			top_left_x = x
-			top_left_y = y - 7
-			bottom_right_x = x + 25
-			bottom_right_y = y + 7
-			top_left_y = y - 10
-			bottom_right_x = x + 40
-			bottom_right_y = y + 10
+			top_left_y = y - y_increment
+			bottom_right_x = x + x_increment
+			bottom_right_y = y + y_increment
 		break;
 	}
 	var collisions = ds_list_create()
-	var targets = [obj_item_entity]
+	var targets = target_entities
 	collision_rectangle_list(top_left_x,
 							top_left_y,
 							bottom_right_x,
@@ -135,27 +167,7 @@ function player_read_interaction_collision(){
 	var total_collisions = ds_list_size(collisions)
 	if(total_collisions > 0){
 		var target = ds_list_find_value(collisions,0);
-		pick_up_item(target)
+		return target;
 	}
-}
 
-function player_pick_up_item(target_item){
-	if(is_struct(target_item.item_struct)){
-		target_item.item_struct.pick_up()
-		held_item = target_item;
-	}
-}
-
-function player_drop_item(){
-	if(not_null(held_item)){
-		held_item.item_struct.drop();
-		held_item = "";
-	}
-}
-
-function player_handle_held_item(){
-	if(not_null(held_item)){
-		held_item.x = x;
-		held_item.y = y;
-	}
 }

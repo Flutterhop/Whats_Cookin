@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"obj_str_counter",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_str_counter",
   "overriddenProperties":[],
@@ -9,7 +11,10 @@
     "name":"Kitchen",
     "path":"folders/Objects/Structures/Kitchen.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_kitchen_structure",
+    "path":"objects/obj_kitchen_structure/obj_kitchen_structure.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

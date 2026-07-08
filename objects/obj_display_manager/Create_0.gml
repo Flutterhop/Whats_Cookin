@@ -2,10 +2,10 @@ event_inherited();
 randomize();
 
 /// @description Display Properties
-ideal_width=960;
-ideal_height=540;
-zoom=1;
-current_zoom = zoom;
+ideal_width=480;
+ideal_height=270;
+zoom=4;
+current_zoom = 1;
 max_zoom=1;
 display_width=display_get_width();
 display_height=display_get_height();

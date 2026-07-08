@@ -11,7 +11,3 @@ enum Flavor{
 	Umami
 }
 
-function Item_Food(new_value,new_flavors,new_item_type,new_name,new_type,new_instance) : Item_Entity(new_item_type,new_name,new_type,new_instance) constructor {
-	value = new_value;
-	flavors = new_flavors;
-}

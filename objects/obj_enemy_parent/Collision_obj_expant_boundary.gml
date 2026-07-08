@@ -1,1 +1,0 @@
-other.solid = false

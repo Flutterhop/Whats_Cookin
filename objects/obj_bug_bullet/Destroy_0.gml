@@ -1,1 +1,0 @@
-effects_create_particle("bullet_impact",x,y,1);

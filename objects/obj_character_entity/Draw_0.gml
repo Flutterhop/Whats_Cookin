@@ -1,4 +1,6 @@
 
 if(not_null(struct)){
-	scribble(struct.state_machine.GetStateName()).draw(x,y)
+	if(not_null(struct.state_machine)){
+		scribble(struct.state_machine.GetStateName()).starting_format("main_sm").draw(x,y)
+	}
 }

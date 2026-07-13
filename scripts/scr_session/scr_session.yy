@@ -6,7 +6,7 @@
   "name":"scr_session",
   "parent":{
     "name":"Session",
-    "path":"folders/Objects/_Core/Session.yy",
+    "path":"folders/Objects/Session.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

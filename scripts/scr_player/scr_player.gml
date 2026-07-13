@@ -52,9 +52,34 @@ function player_update_sprites(state){
 }
 
 function player_read_interaction_collision(){
-	var target = detect_interaction(obj_item_entity);
-	if(not_null(target)){
-		pick_up_item(target)
+	//Determine the type of interaction based on player state.
+	//check if the target position is occupied
+	var can_put = struct.state_machine.IsInState("hold") ? true : false
+	var can_pick = !struct.state_machine.IsInState("hold") ? true : false;
+	
+	//1. check for environment
+	var environment_target = detect_interactions(obj_environment_entity);
+	if(not_null(environment_target)){
+		//Environment entity is blocking interaction
+		return;
+	}
+	// 2. check for structure
+	var structure_target = detect_interactions(obj_structure_entity);
+	if(not_null(structure_target)){
+		can_put = structure_target.struct.can_put_item();
+		if(can_put and not_null(held_item)){
+			structure_target.struct.insert_item(held_item);
+			struct.state_machine.ChangeState("idle");
+			held_item.struct.drop(structure_target.x,structure_target.y);
+			held_item = "";
+			return;
+		}
+	}
+	var item_target = detect_interactions(obj_item_entity);
+	if(not_null(item_target) and can_pick){
+		pick_up_item(item_target)
+	}else if(not_null(item_target and can_put)){
+		drop_item(item_target)
 	}
 }
 
@@ -62,30 +87,19 @@ function player_pick_up_item(target_item){
 	if(is_struct(target_item.struct)){
 		target_item.struct.pick_up()
 		held_item = target_item;
+		if(not_null(held_item)){struct.state_machine.ChangeState("hold")}
 	}
 }
 
 function player_drop_item(){
 	if(not_null(held_item)){
-		var x_pos = 0
-		var y_pos = 0
-		var increment = 15
-		switch(direction){
-			case dir_face.east:x_pos += increment;y_pos += 0;break;
-			case dir_face.north_east:x_pos += increment;y_pos -= increment;break;
-			case dir_face.north:x_pos += 0;y_pos -= increment;break;
-			case dir_face.north_west:x_pos -= increment;y_pos -= increment;break;
-			case dir_face.west:x_pos -= increment;y_pos += 0;break;
-			case dir_face.south_west:x_pos -= increment;y_pos += increment;break;
-			case dir_face.south:x_pos += 0;y_pos += increment;break;
-			case dir_face.south_east:x_pos += increment;y_pos += increment;break;
-		}
 		var collisions = ds_list_create()
+		var coords = get_interact_shape(direction);
 		var targets = [obj_item_entity]
-		collision_rectangle_list(top_left_x,
-								top_left_y,
-								bottom_right_x,
-								bottom_right_y,
+		collision_rectangle_list(x+coords[0],
+								y+coords[1],
+								x+coords[2],
+								y+coords[3],
 								targets,
 								true,
 								true,
@@ -94,12 +108,16 @@ function player_drop_item(){
 								)
 		var total_collisions = ds_list_size(collisions)
 		if(total_collisions > 0){
-			var target = ds_list_find_value(collisions,0);
-			pick_up_item(target)
+			//If collisions exist then we cant place an item
+			return
 		}
-			held_item.struct.drop(x_pos,y_pos);
-			held_item = "";
-		}
+		var x_pos = (coords[0] + coords[2])/2 
+		var y_pos = (coords[1] + coords[3])/2 
+		held_item.struct.drop(x + x_pos,y + y_pos);
+		held_item = "";
+		if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
+	}
+		
 }
 
 function player_handle_held_item(){
@@ -109,55 +127,18 @@ function player_handle_held_item(){
 	}
 }
 
+/**
+ * Function Description
+ * @param {any*} target_entities Description
+ */
 function player_detect_interactions(target_entities){
-	var top_left_x
-	var top_left_y
-	var bottom_right_x
-	var bottom_right_y
-	var x_increment = 10
-	var y_increment = 15
-	switch(direction){
-		case dir_face.east:x_pos += increment;y_pos += 0;break;
-		case dir_face.north_east:x_pos += increment;y_pos -= increment;break;
-		case dir_face.north:x_pos += 0;y_pos -= increment;break;
-		case dir_face.north_west:x_pos -= increment;y_pos -= increment;break;
-		case dir_face.west:x_pos -= increment;y_pos += 0;break;
-		case dir_face.south_west:x_pos -= increment;y_pos += increment;break;
-		case dir_face.south:x_pos += 0;y_pos += increment;break;
-		case dir_face.south_east:x_pos += increment;y_pos += increment;break;
-	}
-	switch(struct.direction_facing){
-		case "up":
-			top_left_x = x - x_increment
-			top_left_y = y - y_increment
-			bottom_right_x = x + x_increment
-			bottom_right_y = y
-		break;
-		case "down":
-			top_left_x = x - x_increment
-			top_left_y = y
-			bottom_right_x = x + x_increment
-			bottom_right_y = y + y_increment
-		break;
-		case "left":
-			top_left_x = x - x_increment
-			top_left_y = y - y_increment
-			bottom_right_x = x
-			bottom_right_y = y + y_increment
-		break;
-		case "right":
-			top_left_x = x
-			top_left_y = y - y_increment
-			bottom_right_x = x + x_increment
-			bottom_right_y = y + y_increment
-		break;
-	}
+	var rect_coords = get_interact_shape(direction)
 	var collisions = ds_list_create()
 	var targets = target_entities
-	collision_rectangle_list(top_left_x,
-							top_left_y,
-							bottom_right_x,
-							bottom_right_y,
+	collision_rectangle_list(x+rect_coords[0],
+							y+rect_coords[1],
+							x+rect_coords[2],
+							y+rect_coords[3],
 							targets,
 							true,
 							true,
@@ -170,4 +151,65 @@ function player_detect_interactions(target_entities){
 		return target;
 	}
 
+}
+
+function get_interact_shape(query_direction){
+	var top_left_x = 0
+	var top_left_y = 0
+	var bottom_right_x = 0
+	var bottom_right_y = 0
+	var x_increment = 15
+	var y_increment = 15
+	switch(query_direction){
+		case dir_face.east://0
+			top_left_x += x_increment;
+			top_left_y -= y_increment;
+			bottom_right_x += x_increment * 2;
+			bottom_right_y += y_increment;
+		break;
+		case dir_face.north_east://1
+			top_left_x += x_increment;
+			top_left_y -= y_increment * 2;
+			bottom_right_x += x_increment * 2;
+			bottom_right_y -= y_increment;
+		break;
+		case dir_face.north://2
+			top_left_x -= x_increment;
+			top_left_y -= y_increment * 2;
+			bottom_right_x += x_increment;
+			bottom_right_y -= y_increment;
+		break;
+		case dir_face.north_west://3
+			top_left_x -= x_increment * 2;
+			top_left_y -= y_increment * 2;
+			bottom_right_x -= x_increment;
+			bottom_right_y -= y_increment;
+		break;
+		case dir_face.west://4
+			top_left_x -= x_increment * 2;
+			top_left_y -= y_increment;
+			bottom_right_x -= x_increment;
+			bottom_right_y += y_increment;
+		break;
+		case dir_face.south_west://5
+			top_left_x -= x_increment * 2;
+			top_left_y += y_increment;
+			bottom_right_x -= x_increment;
+			bottom_right_y += y_increment * 2;
+		break;
+		case dir_face.south://6
+			top_left_x -= x_increment;
+			top_left_y += y_increment;
+			bottom_right_x += x_increment;
+			bottom_right_y += y_increment * 2;
+		break;
+		case dir_face.south_east://7
+			top_left_x += x_increment;
+			top_left_y += y_increment;
+			bottom_right_x += x_increment * 2;
+			bottom_right_y += y_increment * 2;
+		break;
+	}
+	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
+	return return_coords
 }

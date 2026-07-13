@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_cookin_entity",
+  "%Name":"_cookin_entity",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_cookin_entity",
+  "name":"_cookin_entity",
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Objects/_Core/Entity/Cookin.yy",
+    "name":"Entity",
+    "path":"folders/Objects/_Core/Entity.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

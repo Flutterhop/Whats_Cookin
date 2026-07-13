@@ -1,0 +1,1 @@
+cam_follow = method(id,set_camera_follow);

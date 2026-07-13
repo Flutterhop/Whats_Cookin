@@ -29,3 +29,9 @@ if(not_null(held_item)){
 		draw_sprite_ext(held_item.struct.item_sprite,0,x,y - 2,.5,.5,0,c_white,1);
 	}
 }
+var interact_coord = get_interact_shape(direction);
+
+var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
+var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
+draw_rectangle_colour(x + interact_coord[0],y + interact_coord[1],x + interact_coord[2],y + interact_coord[3],c_black,c_black,c_black,c_black,true)
+draw_circle_colour(x_pos,y_pos,2,c_red,c_red,true)

@@ -1,13 +1,13 @@
 {
   "$GMTileSet":"v1",
-  "%Name":"tls_counters",
+  "%Name":"tls_counter",
   "autoTileSets":[],
   "macroPageTiles":{
     "SerialiseHeight":0,
     "SerialiseWidth":0,
     "TileSerialiseData":[],
   },
-  "name":"tls_counters",
+  "name":"tls_counter",
   "out_columns":3,
   "out_tilehborder":2,
   "out_tilevborder":2,

@@ -44,7 +44,7 @@ function init_state_machine(){
 				if(speed == 0){
 					struct.state_machine.ChangeState("idle")
 				}
-				if(not_null(held_item)){struct.state_machine.ChangeState("hold")}
+
 				determine_sprite();
 				handle_held_item();
 			}

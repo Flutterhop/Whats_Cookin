@@ -15,6 +15,7 @@ read_interaction_collision	= method(id,player_read_interaction_collision);
 pick_up_item				= method(id,player_pick_up_item);
 drop_item					= method(id,player_drop_item);
 handle_held_item			= method(id,player_handle_held_item);
+detect_interactions			= method(id,player_detect_interactions);
 
 input_up					= method(id,player_input_up);
 input_down					= method(id,player_input_down);

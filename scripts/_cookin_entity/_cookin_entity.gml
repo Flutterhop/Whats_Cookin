@@ -74,8 +74,8 @@ function Item_Entity(new_name,new_type,new_health = 1,new_invincible = false,new
 	};
 	static drop = function(x_pos = 0, y_pos = 0){
 		if(not_null(x_pos) or not_null(y_pos)){
-			instance.x += x_pos;
-			instance.y += y_pos;
+			instance.x = x_pos;
+			instance.y = y_pos;
 		}
 		if(held){
 			held = false;
@@ -171,22 +171,51 @@ function Item_Equipment(new_name,new_type,new_health = 1,new_invincible = false,
 	flavors = new_flavors;
 }
 
-function Cookin_Structure(new_name,new_type,new_health,new_invincible,new_object_reference)
+function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid_x,new_grid_y,new_inventory = [],new_limit = 1)
 : Cookin_Entity(new_name,new_type,new_health,new_invincible,new_object_reference) constructor{
+	grid_x = new_grid_x;
+	grid_y = new_grid_y;
+	inventory = new_inventory;
+	limit = new_limit;
+	
+	
+	init_structure = function(x_pos,y_pos,_layer,args = []){
+		if(array_length(args) > 0){
+			//Idk if this works
+			instance = instance_create_layer(x_pos,y_pos,_layer,object_reference,args);
+		}else{
+			instance = instance_create_layer(x_pos,y_pos,_layer,object_reference);
+		}
+		instance.struct = self;
+	}
+
+	
+	static can_put_item = function(){
+		if(array_length(inventory) >= limit){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	static insert_item = function(target_item){
+		array_push(inventory,target_item)
+	}
+	
+	
 
 
 }
 
-function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference)
-: Cookin_Structure(new_name,new_type,new_health,new_invincible,new_object_reference) constructor{
+function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid_x,new_grid_y,new_inventory = [],new_limit = 1)
+: Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
 	target_objects = [obj_enemy_npc];
 	
 	
 	
 }
 
-function Kitchen_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_inventory)
-: Cookin_Structure(new_name,new_type,new_health,new_invincible,new_object_reference) constructor{
-	inventory = new_inventory;
-
+function Kitchen_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid_x,new_grid_y,new_inventory = [],new_limit = 1)
+: Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid_x,new_grid_y) constructor{
+	
+	
 }

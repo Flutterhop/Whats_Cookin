@@ -1,8 +1,4 @@
 
-
-
-
-
 ////@description Contains the ds_grid for the game map. Creating a new Map_Grid will create a ds_grid automatically with the dimensions provided.
 ////@function Map_Grid
 ////@param {string} Name Grid Name
@@ -14,12 +10,15 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	height = _new_height;
 	mp_cell_width = _new_mp_width;
 	mp_cell_height = _new_mp_height;
-	cell_width = 16;
-	cell_height = 16;
+	cell_width = 32;
+	cell_height = 32;
 	starting_x = 0;
 	starting_y = 0;
 	allow_diagonal = true;
 	is_precise = false;
+	obstacle_tiles_to_check = ["rocks"];
+	structure_tiles_to_check = ["kitchen_structures"];
+	instances_to_check = [obj_structure_entity];
 	
 	
 	//This may need to default to width = 15, height = 9
@@ -29,8 +28,73 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	//cell width and height may change depending on how we want entities to navigate the space.
 	//the number of vertical and horizontal cells is determined by the space alloted in the 
 	//given room. in our case a room of size 544x544 gives us a clean 32x32 cell count.
-	mp_grid_data = mp_grid_create(0,0,room_width / cell_width,room_height / cell_height,mp_cell_width,mp_cell_height);
+	mp_grid_data = mp_grid_create(0,0,room_width / mp_cell_width,room_height / mp_cell_height,mp_cell_width,mp_cell_height);
 	
+	static init_grid_data = function(){
+		for (var i = 0; i < width; i++;){
+			for (var j = 0; j < height; j++;){
+				var cell = ds_grid_get(grid_data,i,j);
+				if(is_null(cell)){
+					var tile_x_pos = (i * cell_width) + (cell_width / 2);
+					var tile_y_pos = (j * cell_height) + (cell_height / 2);
+					cell = new Grid_Cell(tile_x_pos,tile_y_pos,"");
+					ds_grid_set(grid_data,i,j,cell);
+				}
+			}
+	    }
+	}
+	static init_mp_grid_data = function(){
+		////INIT TILE PATHING DATA BASED ON EXISTING TILEMAP DATA
+		var _w = room_width / mp_cell_width;
+		var _h = room_height / mp_cell_height;
+		for (var i = 0; i < _w; i++;){
+			for (var j = 0; j < _h; j++;){
+				//Check All Tile Layers
+				var tile_layer_counter = array_length(obstacle_tiles_to_check)
+				for(var k = 0; k < tile_layer_counter; k++){
+					var o_tile_x_pos = (i * mp_cell_width) + (mp_cell_width / 2);
+					var o_tile_y_pos = (j * mp_cell_height) + (mp_cell_height / 2);
+					var tiles = layer_tilemap_get_id(obstacle_tiles_to_check[k])
+					var tile = tilemap_get_at_pixel(tiles,o_tile_x_pos ,o_tile_y_pos )
+					var result = (tile != -1) && (tile != 0);
+			        if(result){ // Gets the center position of the tile cell
+						mp_grid_add_cell(mp_grid_data, i, j);
+					}
+				}
+				//check structure layers to spawn instances
+				var structure_tile_counter = array_length(structure_tiles_to_check);
+				for(var l = 0; l < structure_tile_counter; l++){
+					 // Gets the center position of the tile cell
+					var tile_x_pos = (i * cell_width) + (cell_width / 2);
+					var tile_y_pos = (j * cell_width) + (cell_width / 2);
+					var tiles = layer_tilemap_get_id(structure_tiles_to_check[l])
+					var tile = tilemap_get_at_pixel(tiles,tile_x_pos ,tile_y_pos )
+					var result = (tile != -1) && (tile != 0);
+					//If structure tile is found we need to spawn it.
+			        if(result){
+						//get the current tileset, retrieve its name, and check against the tileset name
+						var tileset = tilemap_get_tileset(tiles)
+						var tileset_name = tileset_get_name(tileset);
+						//This removes the tls_ part of the tileset.
+						tileset_name = string_delete(tileset_name,0,4);
+						var entity = retrieve_entity(tileset_name,global.structure_entities);
+						entity.spawn_entity(tile_x_pos,tile_y_pos,"Structures");
+					}
+				}
+				//Check Instances
+				var instance_x_pos = (i * mp_cell_width) + (mp_cell_width / 2);
+				var instance_y_pos = (j * mp_cell_height) + (mp_cell_height / 2);
+				var _instances = ds_list_create()
+				instance_position_list(instance_x_pos,instance_y_pos,instances_to_check,_instances,true);
+				if(ds_list_size(_instances) > 0){
+					var is_occupied = mp_grid_get_cell(mp_grid_data,instance_x_pos,instance_y_pos);
+					if(is_occupied == -1){
+						mp_grid_add_instances(mp_grid_data,ds_list_find_value(_instances,0),true);
+					}
+				}
+			}
+	    }
+	}
 	////@description Add objects for avoidance in the mp_grid
 	////@function add_obstacles
 	////@param {array} items_to_add array of items to add as obstacles.
@@ -68,9 +132,18 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		if(is_instanceof(cell,Grid_Cell)){
 			var contents = struct_get(cell,"cell_content");
 			// if contents are null and not an instance, we can place the item.
-			if(is_null(contents) && !instance_exists(contents)){
+			if(is_null(contents)){
 				//place item here.
-				ds_grid_set(grid_data,x_coord,y_coord,item_to_insert);
+				cell.cell_content = item_to_insert
+				if(is_null(cell.cell_content.instance)){
+					var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
+					var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
+					//Check if structure
+					var struct_type = instanceof(cell.cell_content)
+					if(struct_type == "Defense_Structure" or struct_type == "Kitchen_Structure"){
+						cell.cell_content.init_structure(tile_x_pos,tile_y_pos,"Instances")
+					}
+				}
 			}
 		}
 	}
@@ -114,12 +187,14 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	static draw_grid = function(){
 	
 	}
+		
+	init_grid_data();
 }
 
-function Grid_Cell(new_x_pos,new_y_pos) constructor{
+function Grid_Cell(new_x_pos,new_y_pos,new_content = "") constructor{
 	x_pos = new_x_pos;
 	y_pos = new_y_pos;
-	cell_content = "";
+	cell_content = new_content;
 	
 	static set_content = function(item_to_set){
 		if(not_null(item_to_set)){

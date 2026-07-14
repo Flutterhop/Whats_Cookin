@@ -30,12 +30,16 @@ function input_load_bind_rules(){
 				);
 }
 
+function insert_new_player(new_player){
+	array_push(global.players,new_player)
+}
+
 function input_get_number_active_players(){
 	var active_player_count = 0;
 	for(var i  = 0; i < array_length(global.players);i++){
 		var player = array_get(global.players,i);
 		if(player != 0){
-			if(player.player_instance != 0){
+			if(player.instance != 0){
 				if(player.is_active){
 					active_player_count++;
 				}
@@ -73,8 +77,8 @@ function input_interpret_player_controls(){
 	for(var i = 0;i < array_length(global.players); i++){
 		temp_player = array_get(global.players,i);
 		if(not_null(temp_player)){	
-			if(not_null(temp_player.player_instance)){
-				if(temp_player.input_allowed && !temp_player.player_instance.is_shopping){
+			if(not_null(temp_player.instance)){
+				if(temp_player.input_allowed){
 					determine_priority();
 					if(global.priority_enforced){
 			
@@ -146,14 +150,12 @@ function input_reset_input(player){
 	InputVerbConsumeAll(player.player_number)
 }
 	
-function input_add_player(_pad){
-	if(global.game_state != active_game){
-		for(var i = 0; i < array_length(global.players);i++){
-			var current_player = global.players[i];
-			if(is_null(current_player)){
-				var user = new Player(i,);
-				array_set(global.players,i,user);
-			}
+function input_add_player(player){
+	for(var i = 0; i < array_length(global.players);i++){
+		var current_player = global.players[i];
+		if(is_null(current_player)){
+			array_set(global.players,i,player);
+			return
 		}
 	}
 }
@@ -352,6 +354,7 @@ function input_listen_for_input(){
 function input_player_return(){
 	
 }
+	
 function input_player_set_config(_player){
 	var user = find_player_user(_player);
 	var gamepad_check = InputDeviceIsGamepad(_player.device);
@@ -396,7 +399,7 @@ function input_interpret_controls(){
 function input_scan_inputs(temp_player){
 
 	if(!InputPlayerGetBlocked(temp_player.player_number)){
-		if(!InputCheckMany(-1,temp_player.player_number)){exit;}
+		//if(!InputCheckMany(-1,temp_player.player_number)){exit;}
 		if(InputPressed(INPUT_VERB.DEBUG,temp_player.player_number) && GM_build_type == "run"){
 			toggle_debug();
 		}
@@ -426,7 +429,9 @@ function input_scan_inputs(temp_player){
 		if(InputReleased(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_released")){input_action_2_released(temp_player);}}
 		//Action 3
 		if(InputCheck(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3")){input_action_3(temp_player);}}
-		if(InputPressed(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_pressed")){input_action_3_pressed(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL,temp_player.player_number)){
+			if(variable_instance_exists(self,"input_action_3_pressed")){
+				input_action_3_pressed(temp_player);}}
 		if(InputReleased(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_released")){input_action_3_released(temp_player);}}
 		//PAUSE
 		if(InputCheck(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause")){input_pause(temp_player);}}

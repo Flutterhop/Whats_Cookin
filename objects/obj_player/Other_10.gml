@@ -1,7 +1,7 @@
 event_inherited()
 
-held_item = ""
-
+held_item = "";
+held_structure = "";
 
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
@@ -9,19 +9,18 @@ function init_state_machine(){
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
 			with(owner){
+				determine_sprite(); 
 				image_index = 0
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
-				if(InputPressed(INPUT_VERB.ACCEPT,struct.player_number)){
-					input_action_1_pressed(struct)
-				}
+				interpret_player_controls();
 				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
 				if(not_null(held_item)){struct.state_machine.ChangeState("hold")}
 				determine_sprite(); 
-				handle_held_item();
+				handle_holding();
 				image_speed = 0;
 				if(speed > 0){
 					struct.state_machine.ChangeState("move")
@@ -34,9 +33,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				if(InputPressed(INPUT_VERB.ACCEPT,struct.player_number)){
-					input_action_1_pressed(struct)
-				}
+				interpret_player_controls();
 				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
 				move_wrap(true,true,100);
@@ -46,7 +43,7 @@ function init_state_machine(){
 				}
 
 				determine_sprite();
-				handle_held_item();
+				handle_holding();
 			}
 
 	});
@@ -56,17 +53,13 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				if(InputPressed(INPUT_VERB.ACCEPT,struct.player_number)){
-					input_action_1_pressed(struct)
-				}
+				interpret_player_controls();
 				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
 				move_wrap(true,true,100);
 				if(speed > 0 && speed < 1){image_speed = 2}else{image_speed = 0;}
-
-				if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
 				determine_sprite();
-				handle_held_item();
+				handle_holding();
 			}
 
 	});

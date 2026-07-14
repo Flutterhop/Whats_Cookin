@@ -1,12 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_str_counter",
+  "%Name":"obj_str_ingredient_storage",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_str_counter",
+  "name":"obj_str_ingredient_storage",
   "overriddenProperties":[],
   "parent":{
     "name":"Kitchen",
@@ -29,18 +28,11 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"assemble_sprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"assemble_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_counter_blue","path":"sprites/spr_counter_blue/spr_counter_blue.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_counter_blue","varType":5,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"counter_tiles1",
-    "path":"sprites/counter_tiles1/counter_tiles1.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

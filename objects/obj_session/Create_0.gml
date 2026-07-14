@@ -38,7 +38,7 @@ function prototype(){
 	event_handler.create_event(ev_type.gather,"tower_02 took 3 damage",ev_priority.low);
 	event_handler.create_event(ev_type.combat,"Player 'sandy' hit by 'rat' for 5 hitpoints",ev_priority.standard);
 	event_handler.create_event(ev_type.debug,"Loading next level...",ev_priority.low);
-	var apple_01 = new Item_Ingredient("Apple",
+	var apple_01 = new Food_Ingredient("Apple",
 								entity_type.EN_Item,
 								3,
 								false,

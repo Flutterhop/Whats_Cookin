@@ -14,8 +14,13 @@ update_sprites				= method(id,player_update_sprites);
 read_interaction_collision	= method(id,player_read_interaction_collision);
 pick_up_item				= method(id,player_pick_up_item);
 drop_item					= method(id,player_drop_item);
-handle_held_item			= method(id,player_handle_held_item);
+handle_holding				= method(id,player_handle_holding);
 detect_interactions			= method(id,player_detect_interactions);
+read_structure_collision	= method(id,player_read_structure_collision);
+deploy_structure			= method(id,player_deploy_structure);
+assemble_structure			= method(id,player_assemble_structure);
+
+
 
 input_up					= method(id,player_input_up);
 input_down					= method(id,player_input_down);
@@ -25,3 +30,4 @@ input_action_1				= method(id,player_input_action_1);
 input_action_1_pressed		= method(id,player_input_action_1_pressed);
 input_action_2				= method(id,player_input_action_2);
 input_action_3				= method(id,player_input_action_3);
+input_action_3_pressed		= method(id,player_input_action_3_pressed);

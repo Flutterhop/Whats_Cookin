@@ -56,6 +56,77 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 	}
 }
 
+////@description Main Character struct. Facilitates taking damage, as well as creating instances. Data handling.
+////@function Character
+function Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed = 1)
+: Cookin_Entity(new_name,new_type,new_health,new_invincible,new_object_reference) constructor{
+	
+	move_speed = new_move_speed
+
+	////INSTANCE CONTEXT VARS
+	stun_amount = 0;
+	knockback_amount = 0;
+	
+	
+}
+
+function Player_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed = 1,new_player_number = 0)
+: Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed) constructor{
+	
+	player_number = new_player_number;
+	input_allowed = true
+	
+	///INPUT CONTROL
+	input_allowed = true;
+	input_ready = true;
+	input_delay = 10;
+	input_timer = 0;
+	
+	static spawn_entity = function(x_pos,y_pos,new_layer){
+		var new_struct = self
+		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
+		input_add_player(self);
+		call_later(30,time_source_units_frames,call_state_machine)
+	}
+}
+
+function NPC_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference,new_move_speed,new_size = npc_size.medium,new_grid = "")
+: Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed) constructor{
+
+	size = new_size;
+	
+	////npc_path represents the variable which holds the path asset created in code when finding a path.
+	////This should only contain a path object when the npc is instanced in a room.
+	grid = new_grid;
+	npc_path = ""; 
+	
+	static spawn_npc = function(x_pos,y_pos,layer_to_spawn){
+		//Find NPC in global map
+		//var entity = ds_map_find_value(global.character_entities,name)
+		var new_struct = self
+		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct});
+		call_later(30,time_source_units_frames,call_state_machine)
+		instance.path = path_add();
+		instance.struct = self;
+	}
+	
+	static detect_target = function(_target){
+		
+	}
+	
+	static kill_npc = function(){
+		instance_destroy(instance,true);
+	}
+	
+}
+
+function Enemy_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference,new_move_speed,new_size = npc_size.medium,new_grid = "",new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
+: NPC_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed,new_size,new_grid) constructor{
+	en_type = new_enemy_type
+	enemy_traits = new_enemy_traits
+	target_objects = [obj_player];
+}
+
 function Item_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder)
 		: Cookin_Entity(new_name,new_type,new_health,new_invincible,new_object_reference) constructor {
 	item_type	= new_item_type;
@@ -100,72 +171,25 @@ function Item_Food(new_name,new_type,new_health = 1,new_invincible = false,new_o
 	flavors = new_flavors;
 }
 
-function Item_Ingredient(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"],is_raw = false,new_cost = 1)
+function Food_Ingredient(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"],is_raw = false,new_cost = 1)
 : Item_Food(new_name,new_type,new_health,new_invincible,new_object_reference,new_item_type,new_item_sprite,new_item_icon,new_value,new_flavors) constructor {
 	raw = is_raw
 	cost = new_cost
 }
 
-////@description Main Character struct. Facilitates taking damage, as well as creating instances. Data handling.
-////@function Character
-function Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed = 1)
-: Cookin_Entity(new_name,new_type,new_health,new_invincible,new_object_reference) constructor{
-	
-	move_speed = new_move_speed
-
-	////INSTANCE CONTEXT VARS
-	stun_amount = 0;
-	knockback_amount = 0;
-	
-	
-}
-
-function Player_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed = 1,new_player_number = 0)
-: Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed) constructor{
-	player_number = new_player_number;
-	face = dir_face.south / 45;
-	direction_facing = get_direction(face);
-	player_state = "idle"		
-}
-
-function NPC_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference,new_move_speed,new_size = npc_size.medium,new_grid = "")
-: Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed) constructor{
-
-	size = new_size;
-	
-	////npc_path represents the variable which holds the path asset created in code when finding a path.
-	////This should only contain a path object when the npc is instanced in a room.
-	grid = new_grid;
-	npc_path = ""; 
-	
-	static spawn_npc = function(x_pos,y_pos,layer_to_spawn){
-		//Find NPC in global map
-		//var entity = ds_map_find_value(global.character_entities,name)
-		var new_struct = self
-		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct});
-		call_later(30,time_source_units_frames,call_state_machine)
-		instance.path = path_add();
-		instance.struct = self;
-	}
-	
-	static detect_target = function(_target){
-		
-	}
-	
-	static kill_npc = function(){
-		instance_destroy(instance,true);
-	}
-	
-}
-
-function Enemy_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference,new_move_speed,new_size = npc_size.medium,new_grid = "",new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
-: NPC_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_move_speed,new_size,new_grid) constructor{
-	en_type = new_enemy_type
-	enemy_traits = new_enemy_traits
-	target_objects = [obj_player];
+function Food_Meal(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"],is_raw = false,new_cost = 1)
+: Item_Food(new_name,new_type,new_health,new_invincible,new_object_reference,new_item_type,new_item_sprite,new_item_icon,new_value,new_flavors) constructor {
+	raw = is_raw
+	cost = new_cost
 }
 
 function Item_Equipment(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])
+: Item_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_item_type,new_item_sprite,new_item_icon) constructor {
+	value = new_value;
+	flavors = new_flavors;
+}
+
+function Item_Tool(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])
 : Item_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_item_type,new_item_sprite,new_item_icon) constructor {
 	value = new_value;
 	flavors = new_flavors;
@@ -177,8 +201,7 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 	grid_y = new_grid_y;
 	inventory = new_inventory;
 	limit = new_limit;
-	
-	
+		
 	init_structure = function(x_pos,y_pos,_layer,args = []){
 		if(array_length(args) > 0){
 			//Idk if this works
@@ -189,9 +212,15 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 		instance.struct = self;
 	}
 
-	
 	static can_put_item = function(){
 		if(array_length(inventory) >= limit){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	static can_take_item = function(){
+		if(array_length(inventory) <= 0){
 			return false;
 		}else{
 			return true;
@@ -200,7 +229,42 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 	static insert_item = function(target_item){
 		array_push(inventory,target_item)
 	}
-	
+	static remove_item = function(){
+		if(array_length(inventory) > 0){
+			return array_pop(inventory);
+		}
+		return;
+	}
+	static is_empty = function(){
+		return array_length(inventory) > 0 ? false : true;
+	}
+	static has_inventory = function(){
+		return array_length(inventory) > 0 ? true : false;
+	}
+	static can_assemble = function(){
+		if(state_machine.IsInState("assemble")){
+			return false;
+		}
+		return true
+	}
+	static can_deploy = function(){
+		if(state_machine.IsInState("assemble")){
+			return true;
+		}
+		return false
+	}
+	static assemble = function(){
+		if(not_null(state_machine.GetState("assemble"))){
+			state_machine.QueueState("assemble");
+		}
+	}
+	static deploy = function(x_pos,y_pos){
+		if(not_null(state_machine.GetState("empty"))){
+			state_machine.QueueState("empty");
+			instance.x = x_pos;
+			instance.y = y_pos;
+		}
+	}
 	
 
 

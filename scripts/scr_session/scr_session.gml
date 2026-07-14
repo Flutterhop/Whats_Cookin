@@ -15,13 +15,13 @@ function initialize_item_entities(){
 	ds_map_clear(global.item_entities);
 	var entity
 	///INGREDIENTS
-	entity = new Item_Ingredient(false,5,10,[Flavor.Sweet],item_entity_type.Food,
+	entity = new Food_Ingredient(false,5,10,[Flavor.Sweet],item_entity_type.Food,
 											"Apple",
 											entity_type.EN_Item,
 											""
 											);
 	ds_map_add(global.item_entities,entity.name,entity);
-	entity = new Item_Ingredient(true,30,100,[Flavor.Salty],item_entity_type.Food,
+	entity = new Food_Ingredient(true,30,100,[Flavor.Salty],item_entity_type.Food,
 											"Chicken",
 											entity_type.EN_Item,
 											""

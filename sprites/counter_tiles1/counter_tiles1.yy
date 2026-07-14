@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Kitchen",
-    "path":"folders/Sprites/Structures/Kitchen.yy",
+    "name":"counters",
+    "path":"folders/Sprites/Structures/Kitchen/counters.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

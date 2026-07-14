@@ -18,7 +18,7 @@ function init_state_machine(){
 				}
 			}
 		});
-	var pursue_state = new StatementState(struct.state_machine,"pursue_state")
+	var pursue_state = new StatementState(struct.state_machine,"pursue")
 		.AddUpdate(function(){
 			with(owner){
 				var dir = point_direction(x,y,target.x,target.y);
@@ -45,7 +45,7 @@ function init_state_machine(){
 					}
 				}
 				if(not_null(target) && instance_exists(target)){
-					struct.state_machine.ChangeState("pursue_state");
+					struct.state_machine.ChangeState("pursue");
 				}
 			}
 		});

@@ -1,11 +1,17 @@
 {
   "$GMTileSet":"v1",
   "%Name":"tls_counter",
-  "autoTileSets":[],
+  "autoTileSets":[
+    {"$GMAutoTileSet":"","%Name":"autotile_1","closed_edge":false,"name":"autotile_1","resourceType":"GMAutoTileSet","resourceVersion":"2.0","tiles":[0,0,0,3,0,1,0,4,0,0,5,2,7,6,8,9,],},
+  ],
   "macroPageTiles":{
-    "SerialiseHeight":0,
-    "SerialiseWidth":0,
-    "TileSerialiseData":[],
+    "SerialiseHeight":16,
+    "SerialiseWidth":11,
+    "TileCompressedData":[
+      -113,0,-4,7,-6,0,1,5,-4,9,1,1,-5,0,1,5,-4,9,1,1,-5,0,1,5,-4,9,1,1,-5,0,1,5,-4,9,1,1,-5,0,1,8,-4,9,1,
+      6,-3,0,
+    ],
+    "TileDataFormat":1,
   },
   "name":"tls_counter",
   "out_columns":3,
@@ -34,5 +40,5 @@
   "tileWidth":32,
   "tilexoff":0,
   "tileyoff":0,
-  "tile_count":12,
+  "tile_count":10,
 }

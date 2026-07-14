@@ -28,5 +28,8 @@ function player_input_action_2(_player){
 }
 	
 function player_input_action_3(player){
+}
 
+function player_input_action_3_pressed(player){
+	read_structure_collision()
 }

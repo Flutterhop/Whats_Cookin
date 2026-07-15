@@ -161,15 +161,13 @@ function player_read_interaction_collision(){
 			var taken_item = structure_target.struct.remove_item();
 			if(not_null(taken_item)){
 				pick_up_item(taken_item)
-			}
-			
-			
+			}			
 		}
 	}
 	var item_target = detect_interactions(obj_item_entity);
 	if(not_null(item_target) and can_pick){
 		pick_up_item(item_target)
-	}else if(not_null(held_item and can_put)){
+	}else if(not_null(held_item) and can_put){
 		drop_item(held_item)
 	}
 }
@@ -237,8 +235,9 @@ function player_read_structure_collision(){
 	// 3a. if true then structure cannot be deployed
 	var item_target = detect_interactions(obj_item_entity);
 	if(is_null(item_target) and can_deploy){
-		deploy_structure();
-		struct.state_machine.ChangeState("idle");
+		if(deploy_structure()){
+			struct.state_machine.ChangeState("idle");
+		}
 	}
 
 }
@@ -249,6 +248,7 @@ function player_deploy_structure(){
 		var coords = get_interact_shape(direction);
 		var targets = [obj_item_entity,obj_structure_entity]
 		with(held_structure){
+
 			collision_rectangle_list(x+coords[0],
 									y+coords[1],
 									x+coords[2],
@@ -263,19 +263,35 @@ function player_deploy_structure(){
 		var total_collisions = ds_list_size(collisions)
 		if(total_collisions > 0){
 			//If collisions exist then we cant place an item
-			return
+			return false
 		}
-		var x_pos = (coords[0] + coords[2])/2 
-		var y_pos = (coords[1] + coords[3])/2 
-		held_structure.struct.deploy(x + x_pos,y + y_pos);
+		var x_pos = ((coords[0] + x) + (coords[2] + x))/2 
+		var y_pos = ((coords[1] + y) + (coords[3] + y))/2
+		x_pos /= struct.grid.cell_width
+		y_pos /= struct.grid.cell_height
+		x_pos = floor(x_pos)
+		y_pos = floor(y_pos)
+		held_structure.struct.deploy(x_pos,y_pos);
 		held_structure = "";
+		return true
 	}
 		
 }
 
 function player_assemble_structure(target_structure){
+	var coords = get_interact_shape(direction);
 	if(is_struct(target_structure.struct)){
-		target_structure.struct.assemble()
+		var x_pos = ((coords[0] + x) + (coords[2] + x))/2 
+		var y_pos = ((coords[1] + y) + (coords[3] + y))/2
+		x_pos /= struct.grid.cell_width
+		y_pos /= struct.grid.cell_height
+		x_pos = floor(x_pos)
+		y_pos = floor(y_pos)
+		var x1 = floor((x_pos - struct.grid.cell_width / 2) + x)
+		var y1 = floor((y_pos - struct.grid.cell_height / 2) + y)
+		var x2 = floor((x_pos + struct.grid.cell_width / 2) + x)
+		var y2 = floor((y_pos + struct.grid.cell_height / 2) + y)
+		target_structure.struct.assemble(x1,y1,x2,y2)
 		held_structure = target_structure;
 		if(not_null(target_structure)){struct.state_machine.ChangeState("hold")}
 	}

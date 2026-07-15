@@ -5,5 +5,5 @@
 event_inherited();
 
 function init_state_machine(){
-	
+
 }

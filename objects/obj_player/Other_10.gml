@@ -18,7 +18,7 @@ function init_state_machine(){
 				interpret_player_controls();
 				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
-				if(not_null(held_item)){struct.state_machine.ChangeState("hold")}
+				if(not_null(held_item) or not_null(held_structure)){struct.state_machine.ChangeState("hold")}
 				determine_sprite(); 
 				handle_holding();
 				image_speed = 0;

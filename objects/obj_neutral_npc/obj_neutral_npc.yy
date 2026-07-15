@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"obj_non_enemy_npc",
+  "%Name":"obj_neutral_npc",
   "eventList":[],
   "managed":true,
-  "name":"obj_non_enemy_npc",
+  "name":"obj_neutral_npc",
   "overriddenProperties":[],
   "parent":{
     "name":"Non-Enemies",

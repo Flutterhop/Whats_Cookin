@@ -9,8 +9,8 @@ if(not_null(grid)){
 				var tile_bottom_y_pos = (j * grid.cell_height)
 				var tile_top_x_pos = (i * grid.cell_width) + (grid.cell_width);
 				var tile_top_y_pos = (j * grid.cell_height) + (grid.cell_height);
-				//draw_rectangle_colour(tile_top_x_pos,tile_top_y_pos,tile_bottom_x_pos,tile_bottom_y_pos,c_blue,c_blue,c_blue,c_blue,true);
-				//scribble(string_concat(cell.x_pos)).starting_format("main_sm").draw(cell.x_pos - 10,cell.y_pos - 20)
+				draw_rectangle_colour(tile_top_x_pos,tile_top_y_pos,tile_bottom_x_pos,tile_bottom_y_pos,c_blue,c_blue,c_blue,c_blue,true);
+				//scribble(string_concat(string(cell.cell_content,"occupied"))).starting_format("main_sm").draw(cell.x_pos - 10,cell.y_pos - 20)
 				//scribble(string_concat(cell.y_pos)).starting_format("main_sm").draw(cell.x_pos - 10,cell.y_pos - 10)
 			}
 		}

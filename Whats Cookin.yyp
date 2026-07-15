@@ -348,7 +348,7 @@
     {"id":{"name":"obj_meal_food","path":"objects/obj_meal_food/obj_meal_food.yy",},},
     {"id":{"name":"obj_menu_entity","path":"objects/obj_menu_entity/obj_menu_entity.yy",},},
     {"id":{"name":"obj_mess_environment","path":"objects/obj_mess_environment/obj_mess_environment.yy",},},
-    {"id":{"name":"obj_non_enemy_npc","path":"objects/obj_non_enemy_npc/obj_non_enemy_npc.yy",},},
+    {"id":{"name":"obj_neutral_npc","path":"objects/obj_neutral_npc/obj_neutral_npc.yy",},},
     {"id":{"name":"obj_npc_bee","path":"objects/obj_npc_bee/obj_npc_bee.yy",},},
     {"id":{"name":"obj_npc","path":"objects/obj_npc/obj_npc.yy",},},
     {"id":{"name":"obj_particle_manager","path":"objects/obj_particle_manager/obj_particle_manager.yy",},},

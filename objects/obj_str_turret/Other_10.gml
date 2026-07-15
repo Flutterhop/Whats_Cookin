@@ -49,11 +49,23 @@ function init_state_machine(){
 				}
 			}
 		});
+		
+			
+	var assemble_state = new StatementState(struct.state_machine,"assemble")
+		.AddUpdate(function(){
+			with(owner){
+				
+			}
+	});
+	
+	struct.state_machine
+	.AddState(assemble_state)
 	
 	struct.state_machine
 	.AddState(idle_state)
 	.AddState(pursue_state)
-	.AddState(detect_state);
+	.AddState(detect_state)
+	.AddState(assemble_state);
 	
 	struct.state_machine.ChangeState("idle")
 

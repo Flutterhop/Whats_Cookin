@@ -37,7 +37,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 				if(is_null(cell)){
 					var tile_x_pos = (i * cell_width) + (cell_width / 2);
 					var tile_y_pos = (j * cell_height) + (cell_height / 2);
-					cell = new Grid_Cell(tile_x_pos,tile_y_pos,"");
+					cell = new Grid_Cell(i,j,"");
 					ds_grid_set(grid_data,i,j,cell);
 				}
 			}
@@ -79,6 +79,8 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 						tileset_name = string_delete(tileset_name,0,4);
 						var entity = retrieve_entity(tileset_name,global.structure_entities);
 						entity.spawn_entity(tile_x_pos,tile_y_pos,"Structures");
+						tilemap_set(tiles,0,i,j);
+						mp_grid_clear_cell(mp_grid_data,i,j);
 					}
 				}
 				//Check Instances
@@ -114,7 +116,17 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	////@param {string} y_pos y position
 	////@param {string} removal_object Object or instance to remove.
 	static remove_obstacle = function(x_pos,y_pos,removal_object){
-		var result = mp_grid_clear_cell(mp_grid_data,floor(x_pos / mp_cell_width),floor(y_pos / mp_cell_height));
+		var x_coord = floor(x_pos / mp_cell_width)
+		var y_coord = floor(y_pos / mp_cell_height)
+		var result = mp_grid_clear_cell(mp_grid_data,x_coord,y_coord);
+		if(result){
+			show_debug_message("Removing item as obstacle.");
+		}else{
+			show_debug_message("Failed to remove item.");
+		}
+	}
+	static remove_multiple_obstacles = function(x1_pos,y1_pos,x2_pos,y2_pos,removal_object){
+		var result = mp_grid_clear_rectangle(mp_grid_data,x1_pos,y1_pos,x2_pos,y2_pos);
 		if(result){
 			show_debug_message("Removing item as obstacle.");
 		}else{
@@ -132,18 +144,21 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		if(is_instanceof(cell,Grid_Cell)){
 			var contents = struct_get(cell,"cell_content");
 			// if contents are null and not an instance, we can place the item.
-			if(is_null(contents)){
-				//place item here.
-				cell.cell_content = item_to_insert
-				if(is_null(cell.cell_content.instance)){
-					var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
-					var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
-					//Check if structure
-					var struct_type = instanceof(cell.cell_content)
-					if(struct_type == "Defense_Structure" or struct_type == "Kitchen_Structure"){
-						cell.cell_content.init_structure(tile_x_pos,tile_y_pos,"Instances")
-					}
+			//place item here.
+			cell.cell_content = item_to_insert
+			if(is_null(cell.cell_content.instance)){
+				var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
+				var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
+				//Check if structure
+				var struct_type = instanceof(cell.cell_content)
+				if(struct_type == "Defense_Structure" or struct_type == "Kitchen_Structure"){
+					cell.cell_content.init_structure(tile_x_pos,tile_y_pos,"Instances")
 				}
+			}else{
+				var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
+				var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
+				cell.cell_content.instance.x = tile_x_pos;
+				cell.cell_content.instance.y = tile_y_pos;
 			}
 		}
 	}

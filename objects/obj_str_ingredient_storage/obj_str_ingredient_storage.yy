@@ -32,7 +32,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_storage_box",
+    "path":"sprites/spr_storage_box/spr_storage_box.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

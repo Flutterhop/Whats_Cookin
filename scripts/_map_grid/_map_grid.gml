@@ -43,6 +43,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			}
 	    }
 	}
+		
 	static init_mp_grid_data = function(){
 		////INIT TILE PATHING DATA BASED ON EXISTING TILEMAP DATA
 		var _w = room_width / mp_cell_width;
@@ -110,6 +111,15 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			}
 		}
 	}
+		
+	static add_cell_obstacles = function(x_pos,y_pos){
+		var x1_pos = x_pos - (cell_width / 2)
+		var y1_pos = y_pos - (cell_height / 2)
+		var x2_pos = x_pos
+		var y2_pos = y_pos
+		mp_grid_add_rectangle(mp_grid_data,x1_pos,y1_pos,x2_pos,y2_pos);
+
+	}
 	////@description Attempts to remove objects from obstacle list.
 	////@function remove_obstacle
 	////@param {string} x_pos x position
@@ -125,7 +135,12 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			show_debug_message("Failed to remove item.");
 		}
 	}
-	static remove_multiple_obstacles = function(x1_pos,y1_pos,x2_pos,y2_pos,removal_object){
+		
+	static remove_multiple_obstacles = function(x_pos,y_pos,removal_object){
+		var x1_pos = x_pos - (cell_width / 2)
+		var y1_pos = y_pos - (cell_height / 2)
+		var x2_pos = x_pos + (cell_width / 2)
+		var y2_pos = y_pos + (cell_height / 2)
 		var result = mp_grid_clear_rectangle(mp_grid_data,x1_pos,y1_pos,x2_pos,y2_pos);
 		if(result){
 			show_debug_message("Removing item as obstacle.");
@@ -146,20 +161,22 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			// if contents are null and not an instance, we can place the item.
 			//place item here.
 			cell.cell_content = item_to_insert
+			var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
+			var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
 			if(is_null(cell.cell_content.instance)){
-				var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
-				var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
+				
 				//Check if structure
 				var struct_type = instanceof(cell.cell_content)
 				if(struct_type == "Defense_Structure" or struct_type == "Kitchen_Structure"){
 					cell.cell_content.init_structure(tile_x_pos,tile_y_pos,"Instances")
 				}
 			}else{
-				var tile_x_pos = (x_coord * cell_width) + (cell_width / 2);
-				var tile_y_pos = (y_coord * cell_height) + (cell_height / 2);
 				cell.cell_content.instance.x = tile_x_pos;
 				cell.cell_content.instance.y = tile_y_pos;
 			}
+
+			add_cell_obstacles(tile_x_pos,tile_y_pos);
+			
 		}
 	}
 	
@@ -174,6 +191,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			return cell;
 		}
 	}
+		
 	////@function set_path
 	////@description Tries to find a path to target provided.
 	////@param {ref} path asset
@@ -201,6 +219,24 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	
 	static draw_grid = function(){
 	
+	}
+		
+	static fetch_collision_array = function(){
+		var return_array = array_create(0)
+		var obstacle_layer_counter = array_length(obstacle_tiles_to_check);
+		var structure_layer_counter = array_length(structure_tiles_to_check);
+		var instance_counter = array_length(instances_to_check);
+		for(var i = 0; i < obstacle_layer_counter; i++){
+			array_insert(return_array,i,layer_tilemap_get_id(obstacle_tiles_to_check[i]))
+		}
+		for(var j = 0; j < structure_layer_counter; j++){
+			array_insert(return_array,i,layer_tilemap_get_id(structure_tiles_to_check[j]))
+		}
+		for(var k = 0; k < instance_counter; k++){
+			array_insert(return_array,i,instances_to_check[k])			
+		}
+		
+		return return_array;
 	}
 		
 	init_grid_data();

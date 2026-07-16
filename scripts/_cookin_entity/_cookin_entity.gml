@@ -130,9 +130,9 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 		}
 		return false
 	}
-	static assemble = function(x1,y1,x2,y2){
+	static assemble = function(x1,y1){
 		if(not_null(state_machine.GetState("assemble"))){
-			grid.remove_multiple_obstacles(x1,y1,x2,y2,self)
+			grid.remove_multiple_obstacles(x1,y1,self)
 			state_machine.ChangeState("assemble");
 		}
 	}
@@ -179,13 +179,22 @@ function Item_Entity(new_name,new_type,new_health = 1,new_invincible = false,new
 			}
 		}	
 	};
+	static throw_item = function(){
+		if(held){
+			held = false;
+		}else{
+			if(global.debug){
+				show_debug_message("Item not held, something must have gone wrong.")
+			}
+		}	
+	};
 	static set_item_sprite = function(new_sprite){
 		item_sprite = new_sprite;
 	}
 	static set_item_icon = function(new_icon){
 		item_icon = new_icon;
 	}
-	
+
 }
 
 function Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_move_speed = 1,new_size = npc_size.medium)

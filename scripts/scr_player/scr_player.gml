@@ -209,6 +209,17 @@ function player_drop_item(){
 		
 }
 
+function player_throw_item(){
+	var strength = throw_strength
+	var dir = direction
+	with(held_item){
+		motion_add(dir,strength);
+	}
+	held_item.struct.throw_item();
+	held_item = "";
+	if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
+}
+
 function player_read_structure_collision(){
 	//Attempt to assemble/deploy a structure
 	//check if the target position is occupied
@@ -287,14 +298,17 @@ function player_assemble_structure(target_structure){
 		y_pos /= struct.grid.cell_height
 		x_pos = floor(x_pos)
 		y_pos = floor(y_pos)
-		var x1 = floor((x_pos - struct.grid.cell_width / 2) + x)
-		var y1 = floor((y_pos - struct.grid.cell_height / 2) + y)
-		var x2 = floor((x_pos + struct.grid.cell_width / 2) + x)
-		var y2 = floor((y_pos + struct.grid.cell_height / 2) + y)
-		target_structure.struct.assemble(x1,y1,x2,y2)
+		var x1 = floor(x_pos * struct.grid.cell_width)
+		var y1 = floor(y_pos * struct.grid.cell_height)
+		target_structure.struct.assemble(x1,y1)
 		held_structure = target_structure;
 		if(not_null(target_structure)){struct.state_machine.ChangeState("hold")}
 	}
+}
+
+function player_handle_movement(){
+	direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
+	move_and_collide(x_speed,y_speed,collision_targets,3);
 }
 
 function player_handle_holding(){
@@ -304,11 +318,18 @@ function player_handle_holding(){
 	}
 	if(not_null(held_structure)){
 		var coords = get_interact_shape(direction);
-		var x_pos = x + (coords[0] + coords[2])/2 
+		var x_pos = x + (coords[0] + coords[2])/2
 		var y_pos = y + (coords[1] + coords[3])/2
 		held_structure.x = x_pos;
 		held_structure.y = y_pos;
 	}
 }
 
-
+function player_reset_input(){
+	up_input = 0;
+	down_input = 0;
+	left_input = 0;
+	right_input = 0;
+	x_speed = 0;
+	y_speed = 0;
+}

@@ -1,7 +1,20 @@
 event_inherited()
 
+//INPUT
+up_input = 0;
+down_input = 0;
+left_input = 0;
+right_input = 0;
+
+//HOLDING
 held_item = "";
 held_structure = "";
+throw_charge = 60;
+throw_strength = 10;
+
+//COLLISION
+collision_targets  = struct.grid.fetch_collision_array();
+
 
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
@@ -16,11 +29,12 @@ function init_state_machine(){
 		.AddUpdate(function(){
 			with(owner){
 				interpret_player_controls();
-				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
-				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
-				if(not_null(held_item) or not_null(held_structure)){struct.state_machine.ChangeState("hold")}
+				handle_movement();
+				move_wrap(true,true,100);
+				//if(not_null(held_item) or not_null(held_structure)){struct.state_machine.ChangeState("hold")}
 				determine_sprite(); 
 				handle_holding();
+				reset_input();
 				image_speed = 0;
 				if(speed > 0){
 					struct.state_machine.ChangeState("move")
@@ -34,16 +48,15 @@ function init_state_machine(){
 		.AddUpdate(function(){
 			with(owner){
 				interpret_player_controls();
-				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
-				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
+				handle_movement();
 				move_wrap(true,true,100);
 				if(speed > 0 && speed < 1){image_speed = 2}else{image_speed = 0;}
 				if(speed == 0){
 					struct.state_machine.ChangeState("idle")
 				}
-
 				determine_sprite();
 				handle_holding();
+				reset_input();
 			}
 
 	});
@@ -54,12 +67,12 @@ function init_state_machine(){
 		.AddUpdate(function(){
 			with(owner){
 				interpret_player_controls();
-				direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
-				motion_set(direction,InputDistance(INPUT_CLUSTER.NAVIGATION,0));
+				handle_movement();
 				move_wrap(true,true,100);
 				if(speed > 0 && speed < 1){image_speed = 2}else{image_speed = 0;}
 				determine_sprite();
 				handle_holding();
+				reset_input();
 			}
 
 	});

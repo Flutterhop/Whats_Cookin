@@ -11,9 +11,9 @@ function prototype(){
 	grid.insert_item_at(counter_01.grid_x,counter_01.grid_y,counter_01)
 	
 
-	var npc1 = new NPC_Enemy("Bee",Character_Type.CH_ENEMY_NPC,5,false,obj_npc_bee,grid,0.5,npc_size.medium,enemy_type.generic,[enemy_trait.Standard]);
+	//var npc1 = new NPC_Enemy("Bee",Character_Type.CH_ENEMY_NPC,5,false,obj_npc_bee,grid,0.5,npc_size.medium,enemy_type.generic,[enemy_trait.Standard]);
 
-	npc1.spawn_entity(get_screen_center_x() / 2, get_screen_center_y() / 2,"Instances");
+	//npc1.spawn_entity(get_screen_center_x() / 2, get_screen_center_y() / 2,"Instances");
 	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
 	turret1.spawn_entity(400,120,"Instances")
 	var player_entity = new Player_Character("Player 0",entity_type.EN_Character,5,false,obj_player,grid,2,0);
@@ -38,6 +38,12 @@ function prototype(){
 								2
 								)
 	apple_01.spawn_entity(get_screen_center_x() - 20,get_screen_center_y(),"Instances")
+	
+	var storage = retrieve_entity("storage",global.structure_entities)
+	storage.grid_x = 5
+	storage.grid_y = 5
+	storage.spawn_entity(5,5,"Instances")
+	
 	grid.init_mp_grid_data();
 
 	

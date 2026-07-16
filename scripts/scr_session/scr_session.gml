@@ -66,7 +66,7 @@ function initialize_character_entities(){
 function initialize_structure_entities(){
 	ds_map_clear(global.structure_entities);
 	var entity
-	///INGREDIENTS
+	///Structures
 	entity = new Kitchen_Structure("Counter",
 									entity_type.EN_Structure,
 									25,
@@ -77,6 +77,18 @@ function initialize_structure_entities(){
 									0,
 									[],
 									1
+											);
+	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
+	entity = new Kitchen_Structure("Storage",
+									entity_type.EN_Structure,
+									25,
+									false,
+									obj_str_ingredient_storage,
+									grid,
+									0,
+									0,
+									[],
+									20
 											);
 	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
 	entity = new Defense_Structure("Turret",

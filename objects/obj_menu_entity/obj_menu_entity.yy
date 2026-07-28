@@ -7,7 +7,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Cookin",
-    "path":"folders/Objects/_Core/Entity/Cookin.yy",
+    "path":"folders/Objects/Entity/Cookin.yy",
   },
   "parentObjectId":null,
   "persistent":false,

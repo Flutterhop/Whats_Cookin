@@ -15,7 +15,7 @@ function initialize_item_entities(){
 	ds_map_clear(global.item_entities);
 	var entity
 	///INGREDIENTS
-	entity = new Food_Ingredient("Apple",
+	entity = new Food_Ingredient("apple",
 									entity_type.EN_Item,
 									5,
 									false,
@@ -36,7 +36,7 @@ function initialize_item_entities(){
 									[Flavor.Salty],
 									item_entity_type.Food,
 									grid,
-									"Chicken",
+									"chicken",
 									entity_type.EN_Item,
 									""
 											);
@@ -48,13 +48,13 @@ function initialize_character_entities(){
 	ds_map_clear(global.character_entities);
 	var entity
 	///INGREDIENTS
-	entity = new NPC_Enemy("Bee",
+	entity = new NPC_Enemy("bee",
 							entity_type.EN_Character,
 							1,
 							false,
 							obj_npc_bee,
 							grid,
-							5,
+							1,
 							npc_size.medium,
 							Character_Type.CH_ENEMY_NPC,
 							[enemy_trait.Standard]
@@ -67,7 +67,7 @@ function initialize_structure_entities(){
 	ds_map_clear(global.structure_entities);
 	var entity
 	///Structures
-	entity = new Kitchen_Structure("Counter",
+	entity = new Kitchen_Structure("counter",
 									entity_type.EN_Structure,
 									25,
 									false,
@@ -79,7 +79,7 @@ function initialize_structure_entities(){
 									1
 											);
 	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
-	entity = new Kitchen_Structure("Storage",
+	entity = new Kitchen_Structure("storage",
 									entity_type.EN_Structure,
 									25,
 									false,
@@ -91,7 +91,7 @@ function initialize_structure_entities(){
 									20
 											);
 	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
-	entity = new Defense_Structure("Turret",
+	entity = new Defense_Structure("turret",
 									entity_type.EN_Structure,
 									10,
 									false,
@@ -107,8 +107,10 @@ function initialize_structure_entities(){
 }
 
 function retrieve_entity(entity_key,target_map){
-	var result = ds_map_find_value(target_map,entity_key);
+	var key = string_lower(entity_key)
+	var result = ds_map_find_value(target_map,key);
 	if(is_struct(result)){
-		return result;
+		var return_struct = variable_clone(result);
+		return return_struct;
 	}
 }

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Sprites/Characters/Enemies/Cookin.yy",
+    "name":"rat",
+    "path":"folders/Sprites/Characters/Enemies/Cookin/rat.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

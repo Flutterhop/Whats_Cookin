@@ -20,10 +20,18 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 	target_objects = [];
 	grid = new_grid;
 	
-	static spawn_entity = function(x_pos,y_pos,new_layer){
+	static spawn_entity = function(x_coord,y_coord,new_layer){
+		if(x_coord == 0 and y_coord == 0){
+			x_coord = grid_x
+			y_coord = grid_y
+		}
 		var new_struct = self
+		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
+		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
+		x_coord = floor(x_coord)
+		y_coord = floor(y_coord)
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
-		call_later(30,time_source_units_frames,call_state_machine)
+		call_later(30,time_source_units_frames,call_state_machine)		
 	}
 	
 	static take_damage = function(source,amount){
@@ -77,30 +85,32 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 		instance.struct = self;
 	}
 	
-	static spawn_entity = function(x_pos,y_pos,new_layer){
+	static spawn_entity = function(x_coord = 0,y_coord = 0,new_layer){
+		if(x_coord == 0 and y_coord == 0){
+			x_coord = grid_x
+			y_coord = grid_y
+		}
 		var new_struct = self
-		var x_coord = x_pos / grid.cell_width
-		var y_coord = y_pos / grid.cell_height
+		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
+		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
 		x_coord = floor(x_coord)
 		y_coord = floor(y_coord)
-		grid_x = x_coord;
-		grid_y = y_coord;
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		call_later(30,time_source_units_frames,call_state_machine)
 	}
 	
 	static can_put_item = function(){
-		if(array_length(inventory) >= limit){
-			return false;
-		}else{
+		if(array_length(inventory) < limit){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	static can_take_item = function(){
-		if(array_length(inventory) <= 0){
-			return false;
-		}else{
+		if(array_length(inventory) <= limit){
 			return true;
+		}else{
+			return false;
 		}
 	}
 	static insert_item = function(target_item){
@@ -213,9 +223,17 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 	grid = new_grid;
 	npc_path = ""; 
 	
-	static spawn_entity = function(x_pos,y_pos,layer_to_spawn){
+	static spawn_entity = function(x_coord,y_coord,layer_to_spawn){
 		//Find NPC in global map
 		//var entity = ds_map_find_value(global.character_entities,name)
+		if(x_coord == 0 and y_coord == 0){
+			x_coord = grid_x
+			y_coord = grid_y
+		}
+		var new_struct = self
+		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
+		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
+		
 		var new_struct = self
 		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct});
 		call_later(30,time_source_units_frames,call_state_machine)
@@ -232,11 +250,13 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 	}
 }
 
-function Player_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_move_speed = 1,new_player_number = 0)
+function Player_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_move_speed = 1,new_character_name = "char",new_player_number = 0)
 : Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed) constructor{
 	
+	character_name = new_character_name;
 	player_number = new_player_number;
 	input_allowed = true
+	equipment = "unarmed"
 	
 	///INPUT CONTROL
 	input_allowed = true;
@@ -244,11 +264,20 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	input_delay = 10;
 	input_timer = 0;
 	
-	static spawn_entity = function(x_pos,y_pos,new_layer){
+	static spawn_entity = function(x_coord,y_coord,new_layer){
+		if(x_coord == 0 and y_coord == 0){
+			x_coord = grid_x
+			y_coord = grid_y
+		}
 		var new_struct = self
+		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
+		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
+		x_coord = floor(x_coord)
+		y_coord = floor(y_coord)
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
-		input_add_player(self);
+		input_add_player(self)
 		call_later(30,time_source_units_frames,call_state_machine)
+		
 	}
 }
 
@@ -302,7 +331,7 @@ function Item_Tool(new_name,new_type,new_health = 1,new_invincible = false,new_o
 	flavors = new_flavors;
 }
 
-function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit = 1)
+function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit)
 : Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
 	target_objects = [obj_enemy_npc];
 	
@@ -310,8 +339,8 @@ function Defense_Structure(new_name,new_type,new_health,new_invincible,new_objec
 	
 }
 
-function Kitchen_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit = 1)
-: Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_grid_x,new_grid_y) constructor{
+function Kitchen_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit)
+: Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
 	
 	
 }

@@ -4,3 +4,7 @@ enum npc_size{
 	large,
 	biiiiiiiiig
 }
+
+function npc_determine_sprite(action = ""){
+	
+}

@@ -199,16 +199,12 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	////@param {real} start_y starting y position
 	////@param {real} target_x target x position
 	////@param {real} target_y target y position
-	static set_path = function(_path,start_x,start_y,target_x,target_y){
+	static set_path = function(_path,start_x,start_y,target_x,target_y,_speed){
 		try{
-			var result = mp_grid_path(mp_grid_data,_path,start_x,start_y,target_x,target_y,allow_diagonal);		
-			if(result == 1){
-				show_debug_message("Path found, updating data...");
-				return true
-			}else{
-				show_debug_message("Path cannot be found...");
-				return false
+			with(other){
+				var result_1 = mp_potential_path_object(_path,target_x,target_y,_speed,4,obj_character_entity)
 			}
+			return true
 		}catch(_exception){
 			show_debug_message(_exception.message);
 		    show_debug_message(_exception.longMessage);

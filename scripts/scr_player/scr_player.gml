@@ -12,20 +12,38 @@ function get_direction(face_num){
 	return direction_text
 }
 
-function player_determine_sprite(){
+function player_determine_sprite(equipment = "",action = ""){
 	var return_sprite
+	var state_to_use
 	var sprite_var_name
 	var direction_affix = "left"
 	determine_direction();
 	sprite_var_name = string_concat(direction_facing,"_sprite");
-	var skin_prefix = string_concat("spr_","char");
+	var skin_prefix = string_concat("spr_",struct.character_name);
+
 	if(direction_facing == "right"){
 		direction_affix = "left"
 	}else{
 		direction_affix = direction_facing
 	}
-	return_sprite = asset_get_index(string_concat(skin_prefix,"_",struct.state_machine.state.name,"_",direction_affix));
-	sprite_index = return_sprite
+	if(not_null(equipment)){
+		direction_affix = string_concat(equipment,"_",direction_affix);
+	}
+	if(not_null(action)){
+		direction_affix = string_concat(action,"_",direction_affix);
+	}
+	if(struct.state_machine.state.name == "move"){
+		state_to_use = "idle";
+	}else{
+		state_to_use = struct.state_machine.state.name
+	}
+	var asset_name = string_concat(skin_prefix,"_",state_to_use,"_",direction_affix);
+	return_sprite = asset_get_index(asset_name);
+	if(not_null(return_sprite)){
+		sprite_index = return_sprite
+	}else{
+		sprite_index = spr_item_placeholder
+	}
 }
 
 function player_determine_direction(){
@@ -220,6 +238,10 @@ function player_throw_item(){
 	if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
 }
 
+function player_end_interact(){
+	struct.state_machine.ChangeState("idle");
+}
+
 function player_read_structure_collision(){
 	//Attempt to assemble/deploy a structure
 	//check if the target position is occupied
@@ -308,7 +330,11 @@ function player_assemble_structure(target_structure){
 
 function player_handle_movement(){
 	direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
-	move_and_collide(x_speed,y_speed,collision_targets,3);
+	if(!movement_locked){
+		move_and_collide(x_speed,y_speed,collision_targets,3);
+	}else{
+		move_and_collide(0,0,collision_targets,3);
+	}
 }
 
 function player_handle_holding(){
@@ -330,6 +356,9 @@ function player_reset_input(){
 	down_input = 0;
 	left_input = 0;
 	right_input = 0;
+}
+	
+function player_reset_speed(){
 	x_speed = 0;
 	y_speed = 0;
 }

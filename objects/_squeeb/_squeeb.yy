@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "path":"folders/Objects/Entity.yy",
   },
   "parentObjectId":{
     "name":"button_gui_click_parent",

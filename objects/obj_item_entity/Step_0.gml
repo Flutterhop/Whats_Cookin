@@ -3,3 +3,5 @@ if (abs(speed) > 0){
 }else{
 	friction = 0;
 }
+
+move_and_collide(hspeed,vspeed,collisions,3)

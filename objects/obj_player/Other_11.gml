@@ -20,8 +20,10 @@ read_structure_collision	= method(id,player_read_structure_collision);
 deploy_structure			= method(id,player_deploy_structure);
 assemble_structure			= method(id,player_assemble_structure);
 handle_movement				= method(id,player_handle_movement);
+reset_speed					= method(id,player_reset_speed);
 reset_input					= method(id,player_reset_input);
 throw_item					= method(id,player_throw_item);
+end_interact				= method(id,player_end_interact);
 
 
 input_up					= method(id,player_input_up);
@@ -34,3 +36,4 @@ input_action_1_released		= method(id,player_input_action_1_released);
 input_action_2				= method(id,player_input_action_2);
 input_action_3				= method(id,player_input_action_3);
 input_action_3_pressed		= method(id,player_input_action_3_pressed);
+input_action_3_released		= method(id,player_input_action_3_released);

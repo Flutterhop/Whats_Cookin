@@ -14,7 +14,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Buggin",
-    "path":"folders/Objects/_Core/Entity/Buggin.yy",
+    "path":"folders/Objects/Entity/Buggin.yy",
   },
   "parentObjectId":null,
   "persistent":false,

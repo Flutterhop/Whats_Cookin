@@ -6,7 +6,7 @@
   "name":"_cookin_entity",
   "parent":{
     "name":"Entity",
-    "path":"folders/Objects/_Core/Entity.yy",
+    "path":"folders/Objects/Entity.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

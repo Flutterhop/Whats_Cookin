@@ -6,7 +6,7 @@
   "name":"_entity_core",
   "parent":{
     "name":"Buggin",
-    "path":"folders/Objects/_Core/Entity/Buggin.yy",
+    "path":"folders/Objects/Entity/Buggin.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

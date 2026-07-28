@@ -10,39 +10,45 @@ function prototype(){
 	var counter_01 = new Kitchen_Structure("counter_01",entity_type.EN_Structure,1,true,obj_str_counter,grid,3,3,"");
 	grid.insert_item_at(counter_01.grid_x,counter_01.grid_y,counter_01)
 	
-
-	//var npc1 = new NPC_Enemy("Bee",Character_Type.CH_ENEMY_NPC,5,false,obj_npc_bee,grid,0.5,npc_size.medium,enemy_type.generic,[enemy_trait.Standard]);
-
-	//npc1.spawn_entity(get_screen_center_x() / 2, get_screen_center_y() / 2,"Instances");
+	var npc1 = retrieve_entity("bee",global.character_entities)
+	npc1.spawn_entity(10,10,"Instances");
+	var npc2 = retrieve_entity("bee",global.character_entities)
+	npc2.spawn_entity(12,12,"Instances");
+	var npc3 = retrieve_entity("bee",global.character_entities)
+	npc3.spawn_entity(13,13,"Instances");
+	var npc4 = retrieve_entity("bee",global.character_entities)
+	npc4.spawn_entity(14,14,"Instances");
+	var npc5 = retrieve_entity("bee",global.character_entities)
+	npc5.spawn_entity(15,15,"Instances");
+	var npc6 = retrieve_entity("bee",global.character_entities)
+	npc6.spawn_entity(15,5,"Instances");
+	var npc7 = retrieve_entity("bee",global.character_entities)
+	npc7.spawn_entity(4,2,"Instances");
+	var npc8 = retrieve_entity("bee",global.character_entities)
+	npc8.spawn_entity(30,25,"Instances");
+	var npc9 = retrieve_entity("bee",global.character_entities)
+	npc9.spawn_entity(10,9,"Instances");
+	
 	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
-	turret1.spawn_entity(400,120,"Instances")
-	var player_entity = new Player_Character("Player 0",entity_type.EN_Character,5,false,obj_player,grid,2,0);
-	player_entity.spawn_entity(get_screen_center_x(), get_screen_center_y(),"Instances")
+	turret1.spawn_entity(10,5,"Instances")
+	
+	var player_entity = new Player_Character("Player 0",entity_type.EN_Character,5,false,obj_player,grid,2,"dev",0);
+	player_entity.spawn_entity(8,7,"Instances")
 	var user = new User(0,"Player 0",false,player_entity,"")
 	cam_follow(player_entity.instance);
 	
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 
-	var apple_01 = new Food_Ingredient("Apple",
-								entity_type.EN_Item,
-								3,
-								false,
-								obj_apple,
-								grid,
-								item_entity_type.Food,
-								spr_item_apple,
-								spr_item_apple,
-								10,
-								["Sweet"],
-								false,
-								2
-								)
-	apple_01.spawn_entity(get_screen_center_x() - 20,get_screen_center_y(),"Instances")
+	var apple_01 = retrieve_entity("apple",global.item_entities)	
+	apple_01.spawn_entity(7,7,"Instances")
 	
+	var apple_02 = retrieve_entity("apple",global.item_entities)
+	apple_02.spawn_entity(6,6,"Instances")
+
 	var storage = retrieve_entity("storage",global.structure_entities)
 	storage.grid_x = 5
 	storage.grid_y = 5
-	storage.spawn_entity(5,5,"Instances")
+	storage.spawn_entity(0,0,"Instances")
 	
 	grid.init_mp_grid_data();
 

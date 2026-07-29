@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"obj_neutral_npc",
+  "%Name":"obj_npc_inspector",
   "eventList":[],
   "managed":true,
-  "name":"obj_neutral_npc",
+  "name":"obj_npc_inspector",
   "overriddenProperties":[],
   "parent":{
     "name":"Neutral",

@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"rat",
-    "path":"folders/Sprites/Characters/Enemies/Cookin/rat.yy",
+    "path":"folders/Sprites/Characters/Enemies/rat.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

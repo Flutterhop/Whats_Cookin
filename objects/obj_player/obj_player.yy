@@ -12,8 +12,8 @@
   "name":"obj_player",
   "overriddenProperties":[],
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Objects/Characters/Player/Cookin.yy",
+    "name":"Player",
+    "path":"folders/Objects/Characters/Player.yy",
   },
   "parentObjectId":{
     "name":"obj_character_entity",

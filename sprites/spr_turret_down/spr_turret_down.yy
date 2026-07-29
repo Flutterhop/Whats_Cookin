@@ -1,10 +1,10 @@
 {
   "$GMSprite":"v2",
   "%Name":"spr_turret_down",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":22,
-  "bbox_left":10,
-  "bbox_right":21,
+  "bbox_left":11,
+  "bbox_right":20,
   "bbox_top":12,
   "collisionKind":1,
   "collisionTolerance":0,

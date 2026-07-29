@@ -84,9 +84,6 @@ function init_state_machine(){
 
 	});
 	var hold_state = new StatementState(struct.state_machine,"hold")
-		.AddEnter(function(){
-			
-		})
 		.AddUpdate(function(){
 			with(owner){
 				interpret_player_controls();
@@ -100,6 +97,7 @@ function init_state_machine(){
 				determine_sprite();
 				handle_holding();
 				reset_input();
+				reset_speed();
 			}
 		})
 		.AddDraw(function(){

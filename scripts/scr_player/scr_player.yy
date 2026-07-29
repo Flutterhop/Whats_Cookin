@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_player",
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Objects/Characters/Player/Cookin.yy",
+    "name":"Player",
+    "path":"folders/Objects/Characters/Player.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

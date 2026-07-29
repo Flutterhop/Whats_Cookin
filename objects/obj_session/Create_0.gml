@@ -10,24 +10,9 @@ function prototype(){
 	var counter_01 = new Kitchen_Structure("counter_01",entity_type.EN_Structure,1,true,obj_str_counter,grid,3,3,"");
 	grid.insert_item_at(counter_01.grid_x,counter_01.grid_y,counter_01)
 	
-	var npc1 = retrieve_entity("bee",global.character_entities)
-	npc1.spawn_entity(10,10,"Instances");
-	var npc2 = retrieve_entity("bee",global.character_entities)
-	npc2.spawn_entity(12,12,"Instances");
-	var npc3 = retrieve_entity("bee",global.character_entities)
-	npc3.spawn_entity(13,13,"Instances");
-	var npc4 = retrieve_entity("bee",global.character_entities)
-	npc4.spawn_entity(14,14,"Instances");
-	var npc5 = retrieve_entity("bee",global.character_entities)
-	npc5.spawn_entity(15,15,"Instances");
-	var npc6 = retrieve_entity("bee",global.character_entities)
-	npc6.spawn_entity(15,5,"Instances");
-	var npc7 = retrieve_entity("bee",global.character_entities)
-	npc7.spawn_entity(4,2,"Instances");
-	var npc8 = retrieve_entity("bee",global.character_entities)
-	npc8.spawn_entity(30,25,"Instances");
-	var npc9 = retrieve_entity("bee",global.character_entities)
-	npc9.spawn_entity(10,9,"Instances");
+	//var npc1 = retrieve_entity("bee",global.character_entities)
+	//npc1.spawn_entity(10,10,"Instances");
+
 	
 	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
 	turret1.spawn_entity(10,5,"Instances")
@@ -44,7 +29,11 @@ function prototype(){
 	
 	var apple_02 = retrieve_entity("apple",global.item_entities)
 	apple_02.spawn_entity(6,6,"Instances")
-
+	
+	var counter = retrieve_entity("counter",global.structure_entities)
+	counter.grid_x = 10
+	counter.grid_y = 5
+	counter.spawn_entity(0,0,"Instances")
 	var storage = retrieve_entity("storage",global.structure_entities)
 	storage.grid_x = 5
 	storage.grid_y = 5

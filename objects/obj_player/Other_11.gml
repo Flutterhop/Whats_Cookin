@@ -8,8 +8,6 @@ scan_inputs					= method(id,input_scan_inputs);
 
 ///PLAYER FUNCTION///
 
-determine_sprite			= method(id,player_determine_sprite)
-determine_direction			= method(id,player_determine_direction);
 update_sprites				= method(id,player_update_sprites);
 read_interaction_collision	= method(id,player_read_interaction_collision);
 pick_up_item				= method(id,player_pick_up_item);

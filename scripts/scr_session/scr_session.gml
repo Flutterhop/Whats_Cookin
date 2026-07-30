@@ -56,10 +56,23 @@ function initialize_character_entities(){
 							grid,
 							1,
 							npc_size.medium,
+							[obj_player],
 							Character_Type.CH_ENEMY_NPC,
 							[enemy_trait.Standard]
 							);
 	ds_map_add(global.character_entities,entity.name,entity);
+	entity = new NPC_Neutral("inspector",
+							entity_type.EN_Character,
+							25,
+							false,
+							obj_npc_inspector,
+							grid,
+							1,
+							npc_size.medium,
+							[]
+							);
+	ds_map_add(global.character_entities,entity.name,entity);
+
 
 }
 
@@ -100,7 +113,8 @@ function initialize_structure_entities(){
 									0,
 									0,
 									[],
-									0
+									0,
+									[obj_enemy_npc]
 											);
 	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
 

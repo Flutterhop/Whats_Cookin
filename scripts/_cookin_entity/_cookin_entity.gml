@@ -7,6 +7,17 @@ enum entity_type{
 	EN_Structure = 60//60s
 }
 
+enum dir_face{
+	north = 90,
+	north_east = 45,
+	east = 0,
+	south_east = 315,
+	south = 270,
+	south_west = 225,
+	west = 180,
+	north_west = 135
+}
+
 function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_grid = "") constructor{
 	name		= new_name;
 	entity_id	= 0;
@@ -155,9 +166,6 @@ function Structure_Entity(new_name,new_type,new_health,new_invincible,new_object
 			}
 		}
 	}
-	
-
-
 }
 
 function Item_Entity(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder)
@@ -211,12 +219,11 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 : Cookin_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid) constructor{
 	
 	move_speed = new_move_speed
-
 	////INSTANCE CONTEXT VARS
 	stun_amount = 0;
 	knockback_amount = 0;
-	
 	size = new_size;
+	
 	
 	////npc_path represents the variable which holds the path asset created in code when finding a path.
 	////This should only contain a path object when the npc is instanced in a room.
@@ -281,24 +288,22 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	}
 }
 
-function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium)
+function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects)
 : Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium) constructor{
-
+	target_objects = new_target_objects
 	
 }
 
-function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed) constructor{
+function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects) constructor{
 	en_type = new_enemy_type
 	enemy_traits = new_enemy_traits
-	target_objects = [obj_player];
+	target_objects = new_target_objects;
 }
 
-function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed) constructor{
-	en_type = new_enemy_type
-	enemy_traits = new_enemy_traits
-	target_objects = [obj_player];
+function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects)
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects) constructor{
+	target_objects = new_target_objects;
 }
 
 function Item_Food(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_food_item,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])
@@ -331,12 +336,9 @@ function Item_Tool(new_name,new_type,new_health = 1,new_invincible = false,new_o
 	flavors = new_flavors;
 }
 
-function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit)
+function Defense_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit,new_target_objects)
 : Structure_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
-	target_objects = [obj_enemy_npc];
-	
-	
-	
+	target_objects = new_target_objects;
 }
 
 function Kitchen_Structure(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid = "",new_grid_x,new_grid_y,new_inventory = [],new_limit)

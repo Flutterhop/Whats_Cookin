@@ -28,8 +28,8 @@ function init_state_machine(){
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
 			with(owner){
-				determine_sprite(struct.equipment); 
 				image_index = 0
+				determine_sprite(struct.equipment);
 			}
 		})
 		.AddUpdate(function(){
@@ -38,7 +38,6 @@ function init_state_machine(){
 				handle_movement();
 				move_wrap(true,true,100);
 				//if(not_null(held_item) or not_null(held_structure)){struct.state_machine.ChangeState("hold")}
-				determine_sprite(struct.equipment); 
 				handle_holding();
 				
 				image_speed = 0;
@@ -52,7 +51,8 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(string_concat(x-xprevious,"",y-yprevious)).draw(x - 50,y - 50)
+				scribble(direction).draw(x - 50,y - 50);
+				scribble(direction_facing).draw(x + 50,y - 50);
 			}
 	});	
 	var move_state = new StatementState(struct.state_machine,"move")
@@ -70,7 +70,6 @@ function init_state_machine(){
 					image_speed = 0;
 					struct.state_machine.ChangeState("idle")
 				}
-				determine_sprite(struct.equipment);
 				handle_holding();
 				reset_input();
 				reset_speed();
@@ -78,7 +77,9 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(string_concat(x-xprevious,"",y-yprevious)).draw(x - 50,y - 50)
+				//scribble(string_concat(x-xprevious,"",y-yprevious)).draw(x - 50,y - 50)
+				scribble(direction).draw(x - 50,y - 50)
+				scribble(direction_facing).draw(x + 50,y - 50);
 			}
 
 
@@ -94,7 +95,6 @@ function init_state_machine(){
 				}else{
 					image_speed = 0;
 				}
-				determine_sprite();
 				handle_holding();
 				reset_input();
 				reset_speed();
@@ -102,7 +102,8 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(string_concat(x-xprevious,"",y-yprevious)).draw(x - 50,y - 50)
+				scribble(direction).draw(x - 50,y - 50)
+				scribble(direction_facing).draw(x + 50,y - 50);
 			}
 
 	});
@@ -118,7 +119,6 @@ function init_state_machine(){
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);
-				determine_sprite();
 				handle_holding();
 				reset_input();
 			}

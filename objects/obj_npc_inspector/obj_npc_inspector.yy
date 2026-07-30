@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"obj_npc_inspector",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"obj_npc_inspector",
   "overriddenProperties":[],
@@ -10,8 +12,8 @@
     "path":"folders/Objects/Characters/NPC/Neutral.yy",
   },
   "parentObjectId":{
-    "name":"obj_npc",
-    "path":"objects/obj_npc/obj_npc.yy",
+    "name":"obj_neutral_npc",
+    "path":"objects/obj_neutral_npc/obj_neutral_npc.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

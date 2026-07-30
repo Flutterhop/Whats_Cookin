@@ -1,3 +1,0 @@
-if(iframes){
-	iframes = false;
-}

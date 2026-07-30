@@ -3,24 +3,28 @@ function player_input_right(player){
 
 	right_input = clamp(InputX(INPUT_CLUSTER.NAVIGATION,struct.player_number),0,1);
 	x_speed = clamp(x_speed + right_input,0,1);
+	determine_sprite(struct.equipment);
 }
 
 function player_input_left(player){
 
 	left_input = clamp(InputX(INPUT_CLUSTER.NAVIGATION,struct.player_number),0,-1);
 	x_speed = clamp(x_speed + left_input,0,-1);
+	determine_sprite(struct.equipment);
 }
 	
 function player_input_up(player){
 
 	up_input = clamp(InputY(INPUT_CLUSTER.NAVIGATION,struct.player_number),0,-1);
 	if(not_null(up_input)){y_speed = clamp(y_speed + up_input,0,-1)}
+	determine_sprite(struct.equipment);
 }
 
 function player_input_down(player){
 
 	down_input = clamp(InputY(INPUT_CLUSTER.NAVIGATION,struct.player_number),0,1);
 	if(not_null(down_input)){y_speed = clamp(y_speed + down_input,0,1)}
+	determine_sprite(struct.equipment);
 
 }
 	

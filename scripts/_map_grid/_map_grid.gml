@@ -203,6 +203,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		try{
 			with(other){
 				var result_1 = mp_potential_path_object(_path,target_x,target_y,_speed,4,obj_character_entity)
+
 			}
 			return true
 		}catch(_exception){

@@ -1,1 +1,0 @@
-grappled_state = method(id,entity_grappled_state);

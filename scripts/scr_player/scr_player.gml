@@ -12,52 +12,6 @@ function get_direction(face_num){
 	return direction_text
 }
 
-function player_determine_sprite(equipment = "",action = ""){
-	var return_sprite
-	var state_to_use
-	var sprite_var_name
-	var direction_affix = "left"
-	determine_direction();
-	sprite_var_name = string_concat(direction_facing,"_sprite");
-	var skin_prefix = string_concat("spr_",struct.character_name);
-
-	if(direction_facing == "right"){
-		direction_affix = "left"
-	}else{
-		direction_affix = direction_facing
-	}
-	if(not_null(equipment)){
-		direction_affix = string_concat(equipment,"_",direction_affix);
-	}
-	if(not_null(action)){
-		direction_affix = string_concat(action,"_",direction_affix);
-	}
-	if(struct.state_machine.state.name == "move"){
-		state_to_use = "idle";
-	}else{
-		state_to_use = struct.state_machine.state.name
-	}
-	var asset_name = string_concat(skin_prefix,"_",state_to_use,"_",direction_affix);
-	return_sprite = asset_get_index(asset_name);
-	if(not_null(return_sprite)){
-		sprite_index = return_sprite
-	}else{
-		sprite_index = spr_item_placeholder
-	}
-}
-
-function player_determine_direction(){
-	switch(direction){
-		case dir_face.east:direction_facing = "right";break;
-		case dir_face.north_east:direction_facing = "right";break;
-		case dir_face.north: direction_facing = "up";break;
-		case dir_face.north_west:direction_facing = "left";break;
-		case dir_face.west:direction_facing = "left";break;
-		case dir_face.south_west:direction_facing = "left"break;
-		case dir_face.south:direction_facing = "down"break;
-		case dir_face.south_east:direction_facing = "right"break;
-	}
-}
 	
 function player_update_sprites(state){
 	var skin_prefix = string_concat("spr_","char");
@@ -169,8 +123,8 @@ function player_read_interaction_collision(){
 		can_put = structure_target.struct.can_put_item();
 		if(can_put and not_null(held_item)){
 			structure_target.struct.insert_item(held_item);
-			struct.state_machine.ChangeState("idle");
 			held_item.struct.drop(structure_target.x,structure_target.y);
+			struct.state_machine.ChangeState("idle");
 			held_item = "";
 			return;
 		}
@@ -179,6 +133,7 @@ function player_read_interaction_collision(){
 			var taken_item = structure_target.struct.remove_item();
 			if(not_null(taken_item)){
 				pick_up_item(taken_item)
+				return;
 			}			
 		}
 	}
@@ -329,9 +284,11 @@ function player_assemble_structure(target_structure){
 }
 
 function player_handle_movement(){
-	direction = InputDirection(direction,INPUT_CLUSTER.NAVIGATION,struct.player_number);
-	if(!movement_locked){
-		move_and_collide(x_speed,y_speed,collision_targets,3);
+	if(x_speed != 0 or y_speed != 0){
+		direction = InputDirection(0,INPUT_CLUSTER.NAVIGATION,struct.player_number);
+		if(!movement_locked){
+			move_and_collide(x_speed,y_speed,collision_targets,3);
+		}
 	}else{
 		move_and_collide(0,0,collision_targets,3);
 	}

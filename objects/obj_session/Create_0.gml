@@ -8,14 +8,14 @@ function prototype(){
 	initialize_character_entities();
 	initialize_item_entities();
 	var counter_01 = new Kitchen_Structure("counter_01",entity_type.EN_Structure,1,true,obj_str_counter,grid,3,3,"");
-	grid.insert_item_at(counter_01.grid_x,counter_01.grid_y,counter_01)
+	counter_01.spawn_entity(3,3,"Instances")
 	
 	//var npc1 = retrieve_entity("bee",global.character_entities)
 	//npc1.spawn_entity(10,10,"Instances");
 
 	
 	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
-	turret1.spawn_entity(10,5,"Instances")
+	turret1.spawn_entity(10,7,"Instances")
 	
 	var player_entity = new Player_Character("Player 0",entity_type.EN_Character,5,false,obj_player,grid,2,"dev",0);
 	player_entity.spawn_entity(8,7,"Instances")
@@ -29,6 +29,9 @@ function prototype(){
 	
 	var apple_02 = retrieve_entity("apple",global.item_entities)
 	apple_02.spawn_entity(6,6,"Instances")
+	
+	var inspector_01 = retrieve_entity("inspector",global.character_entities)
+	inspector_01.spawn_entity(15,10,"Instances")
 	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10

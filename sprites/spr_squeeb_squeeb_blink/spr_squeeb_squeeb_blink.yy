@@ -12,18 +12,18 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"v1","%Name":"4694759b-2a5c-4844-95db-dc66fe5defad","name":"4694759b-2a5c-4844-95db-dc66fe5defad","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"5543bbf1-1a27-4eec-8f9b-ef05c605b488","name":"5543bbf1-1a27-4eec-8f9b-ef05c605b488","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":32,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9e7b5f7b-9259-4668-8b6c-174485c5c278","blendMode":0,"displayName":"default","isLocked":false,"name":"9e7b5f7b-9259-4668-8b6c-174485c5c278","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"a8f1c31b-7aec-4378-8330-f3896eaad70c","blendMode":0,"displayName":"default","isLocked":false,"name":"a8f1c31b-7aec-4378-8330-f3896eaad70c","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_squeeb_squeeb_blink",
   "nineSlice":null,
-  "origin":4,
+  "origin":9,
   "parent":{
     "name":"Squeeb",
     "path":"folders/Sprites/Characters/Squeeb.yy",
@@ -68,13 +68,13 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"4694759b-2a5c-4844-95db-dc66fe5defad","path":"sprites/spr_squeeb_squeeb_blink/spr_squeeb_squeeb_blink.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"1512e4e5-5da0-422b-8cc2-72e4ea64dc5b","IsCreationKey":false,"Key":0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"5543bbf1-1a27-4eec-8f9b-ef05c605b488","path":"sprites/spr_squeeb_squeeb_blink/spr_squeeb_squeeb_blink.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"5c27933b-92b5-4aa1-b367-3359acc80d67","IsCreationKey":false,"Key":0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":16,
-    "yorigin":16,
+    "xorigin":0,
+    "yorigin":0,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

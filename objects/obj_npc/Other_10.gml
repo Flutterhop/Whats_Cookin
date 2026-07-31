@@ -21,7 +21,7 @@ function init_state_machine(){
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
 			with(owner){
-				sprite_index = determine_sprite("","unarmed"); 
+				determine_sprite(struct.equipment); 
 				image_index = 0;
 				image_speed = 0;
 
@@ -39,12 +39,14 @@ function init_state_machine(){
 	var move_state = new StatementState(struct.state_machine,"move")
 		.AddEnter(function(){
 				with(owner){
+					determine_sprite(struct.equipment); 
+					image_index = 0;
 					image_speed = 1;
 				}
 			})
 		.AddUpdate(function(){
 			with(owner){
-				sprite_index = determine_sprite("","unarmed");
+				determine_sprite(struct.equipment);
 				handle_pathfinding();
 				manage_movement();
 			}
@@ -52,12 +54,14 @@ function init_state_machine(){
 	var wander_state = new StatementState(struct.state_machine,"wander")
 		.AddEnter(function(){
 			with(owner){
+				determine_sprite(struct.equipment); 
+				image_index = 0;
 				image_speed = 1;
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
-				sprite_index = determine_sprite("","unarmed"); 
+				determine_sprite(struct.equipment); 
 				handle_pathfinding();
 				manage_movement();
 			}

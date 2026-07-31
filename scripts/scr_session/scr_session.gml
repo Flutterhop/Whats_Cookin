@@ -48,17 +48,18 @@ function initialize_character_entities(){
 	ds_map_clear(global.character_entities);
 	var entity
 	///INGREDIENTS
-	entity = new NPC_Enemy("bee",
+	entity = new NPC_Enemy("hunter",
 							entity_type.EN_Character,
-							1,
+							10,
 							false,
-							obj_npc_bee,
+							obj_npc_hunter,
 							grid,
-							1,
+							3,
 							npc_size.medium,
 							[obj_player],
+							15,
 							Character_Type.CH_ENEMY_NPC,
-							[enemy_trait.Standard]
+							[enemy_trait.Standard,enemy_trait.Hunter]
 							);
 	ds_map_add(global.character_entities,entity.name,entity);
 	entity = new NPC_Neutral("inspector",
@@ -69,7 +70,20 @@ function initialize_character_entities(){
 							grid,
 							1,
 							npc_size.medium,
-							[]
+							[],
+							20
+							);
+	ds_map_add(global.character_entities,entity.name,entity);
+	entity = new NPC_Neutral("squeebie",
+							entity_type.EN_Character,
+							1,
+							true,
+							obj_npc_squeebie,
+							grid,
+							1,
+							npc_size.small,
+							[],
+							100
 							);
 	ds_map_add(global.character_entities,entity.name,entity);
 

@@ -8,8 +8,8 @@
   "name":"_squeeb",
   "overriddenProperties":[],
   "parent":{
-    "name":"Entity",
-    "path":"folders/Objects/Entity.yy",
+    "name":"sq",
+    "path":"folders/Objects/Entity/sq.yy",
   },
   "parentObjectId":{
     "name":"button_gui_click_parent",

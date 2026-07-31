@@ -223,6 +223,8 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 	stun_amount = 0;
 	knockback_amount = 0;
 	size = new_size;
+	single_direction = false;
+	equipment = "unarmed"
 	
 	
 	////npc_path represents the variable which holds the path asset created in code when finding a path.
@@ -264,6 +266,7 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	player_number = new_player_number;
 	input_allowed = true
 	equipment = "unarmed"
+	single_direction = false;
 	
 	///INPUT CONTROL
 	input_allowed = true;
@@ -288,22 +291,28 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	}
 }
 
-function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects)
+function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects = [],new_attack_range = 10)
 : Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium) constructor{
 	target_objects = new_target_objects
-	
+	attack_range = new_attack_range
+	equipment = ""
+	single_direction = false;
 }
 
-function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects) constructor{
+function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range = 10,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range) constructor{
 	en_type = new_enemy_type
 	enemy_traits = new_enemy_traits
 	target_objects = new_target_objects;
+	equipment = ""
+	single_direction = false;
 }
 
-function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects)
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects) constructor{
+function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range = 10)
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range) constructor{
 	target_objects = new_target_objects;
+	equipment = ""
+	single_direction = false;
 }
 
 function Item_Food(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_food_item,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])

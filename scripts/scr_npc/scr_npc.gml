@@ -5,36 +5,6 @@ enum npc_size{
 	biiiiiiiiig
 }
 
-function npc_determine_sprite(action = "",equipment = ""){
-	var return_sprite
-	var state_to_use
-	var sprite_var_name
-	var direction_affix = "left"
-	var is_moving = struct.state_machine.state.name == "move" or struct.state_machine.state.name == "wander"
-	direction_facing = determine_direction(direction);
-	sprite_var_name = string_concat(direction_facing,"_sprite");
-	var skin_prefix = string_concat("spr_",struct.name);
-
-	if(not_null(equipment)){
-		direction_affix = string_concat(equipment,"_",direction_affix);
-	}
-	if(not_null(action)){
-		direction_affix = string_concat(action,"_",direction_affix);
-	}
-	if(is_moving){
-		state_to_use = "idle";
-	}else{
-		state_to_use = struct.state_machine.state.name
-	}
-	var asset_name = string_concat(skin_prefix,"_",state_to_use,"_",direction_affix);
-	return_sprite = asset_get_index(asset_name);
-	if(not_null(return_sprite)){
-		sprite_index = return_sprite
-	}else{
-		sprite_index = spr_item_placeholder
-	}
-}
-
 function npc_handle_pathfinding(){
 	//1. Does the npc have a target?
 	//1a. If so then we need to check whether a path to that objective exists
@@ -45,7 +15,8 @@ function npc_handle_pathfinding(){
 		var target_x = 0;
 		var target_y = 0;
 		//select the closest target to navigate to
-		var target = find_priority_target();
+		
+		var _target = find_priority_target();
 
 		//If no path exists then we should create one.
 		if(path_index == -1){
@@ -72,17 +43,19 @@ function npc_handle_pathfinding(){
 			}
 
 		}else{
-			// Path exists so we need to check if the path needs to be 
-			// recalculated based on the distance to the target.
-			var target_x = path_get_point_x(path_index,path_get_number(path_index) - 1);
-			var target_y = path_get_point_y(path_index,path_get_number(path_index) - 1);
-			var target_distance = point_distance(target_x,target_y,target.x,target.y)
-			///If too far away then recalculate the path.
-			if(target_distance > 150){
-				show_debug_message("target too far from end of path. Recalculating...")
-				if(struct.grid.set_path(path,x,y,target.x,target.y,struct.move_speed)){
-					path_start(path,struct.move_speed,path_action_stop,true);
-					//var path_pos = path.path_position;
+			if(not_null(target)){
+				// Path exists so we need to check if the path needs to be 
+				// recalculated based on the distance to the target.
+				var target_x = path_get_point_x(path_index,path_get_number(path_index) - 1);
+				var target_y = path_get_point_y(path_index,path_get_number(path_index) - 1);
+				var target_distance = point_distance(target_x,target_y,target.x,target.y)
+				///If too far away then recalculate the path.
+				if(target_distance > 150){
+					show_debug_message("target too far from end of path. Recalculating...")
+					if(struct.grid.set_path(path,x,y,target.x,target.y,struct.move_speed)){
+						path_start(path,struct.move_speed,path_action_stop,true);
+						//var path_pos = path.path_position;
+					}
 				}
 			}
 		}
@@ -103,9 +76,12 @@ function npc_find_priority_target(){
 		for(var i = 0; i < target_num;i++){
 			// If the number of targets is greater than one then we need to do some
 			// prioritizing. For simplicity we will work with distance.
-			var current_target = instance_nearest(x,y,target_num[i]);
+			var current_target = instance_nearest(x,y,struct.target_objects[i]);
 			current_distance = point_distance(current_target.x,current_target.y,x,y);
 			if(current_distance < previous_distance){
+				prime_target = current_target;
+			}
+			if(is_null(prime_target)){
 				prime_target = current_target;
 			}
 			previous_distance = current_distance;		
@@ -126,4 +102,63 @@ function npc_manage_movement(){
 	if(has_moved){
 		direction = point_direction(xprevious,yprevious,x,y);
 	}
+}
+	
+function npc_read_attack_collision(){
+	var rect_coords = get_interact_shape(direction);
+	var collisions = ds_list_create();
+	var targets = struct.target_objects;
+	collision_rectangle_list(x+rect_coords[0],
+							y+rect_coords[1],
+							x+rect_coords[2],
+							y+rect_coords[3],
+							targets,
+							true,
+							true,
+							collisions,
+							true
+							)
+	var total_collisions = ds_list_size(collisions)
+	if(total_collisions > 0){
+		var target = ds_list_find_value(collisions,0);
+		return target;
+	}
+}
+
+function npc_get_interact_shape(query_direction){
+	var top_left_x = 0
+	var top_left_y = 0
+	var bottom_right_x = 0
+	var bottom_right_y = 0
+	var x_increment = struct.attack_range
+	var y_increment = struct.attack_range
+	switch(query_direction){
+		case "right"://0
+			top_left_x += x_increment;
+			top_left_y -= y_increment;
+			bottom_right_x += x_increment * 2;
+			bottom_right_y += y_increment;
+		break;
+
+		case "up":
+			top_left_x -= x_increment;
+			top_left_y -= y_increment * 2;
+			bottom_right_x += x_increment;
+			bottom_right_y -= y_increment;
+		break;
+		case "left":
+			top_left_x -= x_increment * 2;
+			top_left_y -= y_increment;
+			bottom_right_x -= x_increment;
+			bottom_right_y += y_increment;
+		break;
+		case "down"://6
+			top_left_x -= x_increment;
+			top_left_y += y_increment;
+			bottom_right_x += x_increment;
+			bottom_right_y += y_increment * 2;
+		break;
+	}
+	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
+	return return_coords
 }

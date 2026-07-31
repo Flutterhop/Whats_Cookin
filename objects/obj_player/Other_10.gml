@@ -29,11 +29,12 @@ function init_state_machine(){
 		.AddEnter(function(){
 			with(owner){
 				image_index = 0
-				determine_sprite(struct.equipment);
+				
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				determine_sprite(struct.equipment,"");
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);
@@ -61,6 +62,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
+				determine_sprite(struct.equipment);
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);
@@ -87,6 +89,7 @@ function init_state_machine(){
 	var hold_state = new StatementState(struct.state_machine,"hold")
 		.AddUpdate(function(){
 			with(owner){
+				determine_sprite(struct.equipment,"hold")
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);
@@ -116,6 +119,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
+				determine_sprite("","hold")
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);

@@ -33,6 +33,13 @@ function prototype(){
 	var inspector_01 = retrieve_entity("inspector",global.character_entities)
 	inspector_01.spawn_entity(15,10,"Instances")
 	
+	var _sq = retrieve_entity("squeebie",global.character_entities)
+	_sq.single_direction = true;
+	_sq.spawn_entity(5,20,"Instances");
+	
+	var hunter_01 = retrieve_entity("hunter",global.character_entities)
+	hunter_01.spawn_entity(5,7,"Instances");
+	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10
 	counter.grid_y = 5

@@ -44,7 +44,7 @@ function player_detect_interactions(target_entities){
 
 }
 
-function get_interact_shape(query_direction){
+function player_get_interact_shape(query_direction){
 	var top_left_x = 0
 	var top_left_y = 0
 	var bottom_right_x = 0

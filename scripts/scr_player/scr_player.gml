@@ -12,7 +12,6 @@ function get_direction(face_num){
 	return direction_text
 }
 
-	
 function player_update_sprites(state){
 	var skin_prefix = string_concat("spr_","char");
 	if(not_null(state)){
@@ -23,9 +22,9 @@ function player_update_sprites(state){
 }
 	
 function player_detect_interactions(target_entities){
-	var rect_coords = get_interact_shape(direction)
+	var rect_coords = get_interact_shape(direction,interaction_range)
 	var collisions = ds_list_create()
-	var targets = target_entities
+	var targets = struct.target_objects
 	collision_rectangle_list(x+rect_coords[0],
 							y+rect_coords[1],
 							x+rect_coords[2],
@@ -44,13 +43,13 @@ function player_detect_interactions(target_entities){
 
 }
 
-function player_get_interact_shape(query_direction){
+function player_get_interact_shape(query_direction,range_mod){
 	var top_left_x = 0
 	var top_left_y = 0
 	var bottom_right_x = 0
 	var bottom_right_y = 0
-	var x_increment = 15
-	var y_increment = 15
+	var x_increment = range_mod
+	var y_increment = range_mod
 	switch(query_direction){
 		case dir_face.east://0
 			top_left_x += x_increment;
@@ -156,7 +155,7 @@ function player_pick_up_item(target_item){
 function player_drop_item(){
 	if(not_null(held_item)){
 		var collisions = ds_list_create()
-		var coords = get_interact_shape(direction);
+		var coords = get_interact_shape(direction,interaction_range);
 		var targets = [obj_item_entity]
 		collision_rectangle_list(x+coords[0],
 								y+coords[1],
@@ -233,7 +232,7 @@ function player_read_structure_collision(){
 function player_deploy_structure(){
 	if(not_null(held_structure)){
 		var collisions = ds_list_create()
-		var coords = get_interact_shape(direction);
+		var coords = get_interact_shape(direction,interaction_range);
 		var targets = [obj_item_entity,obj_structure_entity]
 		with(held_structure){
 
@@ -267,7 +266,7 @@ function player_deploy_structure(){
 }
 
 function player_assemble_structure(target_structure){
-	var coords = get_interact_shape(direction);
+	var coords = get_interact_shape(direction,interaction_range);
 	if(is_struct(target_structure.struct)){
 		var x_pos = ((coords[0] + x) + (coords[2] + x))/2 
 		var y_pos = ((coords[1] + y) + (coords[3] + y))/2
@@ -292,6 +291,22 @@ function player_handle_movement(){
 	}else{
 		move_and_collide(0,0,collision_targets,3);
 	}
+	//handle_jumping()
+}
+
+function player_apply_knockback(){
+	var x_change = lengthdir_x(struct.knockback_amount,struct.knockback_direction);
+	var y_change = lengthdir_y(struct.knockback_amount,struct.knockback_direction);
+    if(not_null(struct.knockback_amount)){
+		move_and_collide(x_change,y_change,collision_targets);		
+	}
+	if(struct.knockback_amount > 1){
+		struct.knockback_amount *= friction_amount
+	}
+}
+
+function player_jump(){
+	jumping = true;
 }
 
 function player_handle_holding(){
@@ -300,12 +315,71 @@ function player_handle_holding(){
 		held_item.y = y;
 	}
 	if(not_null(held_structure)){
-		var coords = get_interact_shape(direction);
+		var coords = get_interact_shape(direction,interaction_range);
 		var x_pos = x + (coords[0] + coords[2])/2
 		var y_pos = y + (coords[1] + coords[3])/2
 		held_structure.x = x_pos;
 		held_structure.y = y_pos;
 	}
+}
+
+function player_handle_jumping(){
+	if(jumping){
+		if(z_position <= max_height){
+			var collisions = move_and_collide(x_speed,y_speed - jump_speed,collision_targets,3)
+			if(array_length(collisions) <= 0){
+				z_position -= jump_speed;
+				move_and_collide(x_speed,y_speed - jump_speed,collision_targets,3)
+			}
+		}
+		if(z_position >= max_height){
+			jumping = false;
+			falling = true;
+			z_position = max_height
+		}
+	}
+	if(falling){
+		if(z_position >= 0){
+
+			var collisions = move_and_collide(x_speed,y_speed + fall_speed,collision_targets,3)
+			if(array_length(collisions) <= 0){
+				z_position += fall_speed;
+				move_and_collide(x_speed,y_speed + fall_speed,collision_targets,3)
+			}
+		}
+		if(z_position <= 0){
+			falling = false;
+			z_position = 0
+		}
+	}
+}
+
+function player_attack(){
+    struct.state_machine.ChangeState("attack")
+    
+}
+
+function player_attack_collision(){
+	var rect_coords = get_interact_shape(direction,attack_range)
+	var collisions = ds_list_create()
+	var targets = struct.target_objects
+	collision_rectangle_list(x+rect_coords[0],
+							y+rect_coords[1],
+							x+rect_coords[2],
+							y+rect_coords[3],
+							targets,
+							true,
+							true,
+							collisions,
+							true
+							)
+	var total_collisions = ds_list_size(collisions)
+	if(total_collisions > 0){
+		var target = ds_list_find_value(collisions,0);
+		return target;
+	}else{
+        return 0;
+    }
 }
 
 function player_reset_input(){
@@ -318,4 +392,16 @@ function player_reset_input(){
 function player_reset_speed(){
 	x_speed = 0;
 	y_speed = 0;
+}
+
+function player_attack_complete(){
+	struct.state_machine.ChangeState("idle")
+}
+
+function player_knockback_complete(){
+	struct.state_machine.ChangeState("idle");
+}
+
+function player_stun_complete(){
+	struct.state_machine.ChangeState("idle");
 }

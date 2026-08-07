@@ -26,19 +26,23 @@ function initialize_item_entities(){
 									spr_item_apple,
 									5,
 									[Flavor.Sweet],
-									false,
+									true,
 									2
 											);
 	ds_map_add(global.item_entities,entity.name,entity);
-	entity = new Food_Ingredient(true,
-									30,
-									100,
-									[Flavor.Salty],
-									item_entity_type.Food,
-									grid,
-									"chicken",
+	entity = new Food_Ingredient("chicken",
 									entity_type.EN_Item,
-									""
+									5,
+									false,
+									obj_chicken,
+									grid,
+									item_entity_type.Food,
+									spr_item_rawchicken,
+									spr_item_rawchicken,
+									50,
+									[Flavor.Salty],
+									true,
+									20
 											);
 	ds_map_add(global.item_entities,entity.name,entity);
 
@@ -54,10 +58,12 @@ function initialize_character_entities(){
 							false,
 							obj_npc_hunter,
 							grid,
-							3,
+							2,
 							npc_size.medium,
 							[obj_player],
 							15,
+							1,
+							"chicken",
 							Character_Type.CH_ENEMY_NPC,
 							[enemy_trait.Standard,enemy_trait.Hunter]
 							);
@@ -99,6 +105,18 @@ function initialize_structure_entities(){
 									25,
 									false,
 									obj_str_counter,
+									grid,
+									0,
+									0,
+									[],
+									1
+											);
+	ds_map_add(global.structure_entities,string_lower(entity.name),entity);
+	entity = new Kitchen_Structure("cuttingboard",
+									entity_type.EN_Structure,
+									25,
+									false,
+									obj_str_cuttingboard,
 									grid,
 									0,
 									0,

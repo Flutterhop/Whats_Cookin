@@ -16,11 +16,11 @@ function npc_handle_pathfinding(){
 		var target_y = 0;
 		//select the closest target to navigate to
 		
-		var _target = find_priority_target();
+		target = find_priority_target();
 
 		//If no path exists then we should create one.
 		if(path_index == -1){
-			if(path_position >= .99 || path_position == 0){
+			if((path_position >= .99 || path_position < 1)){
 				if(is_wandering or is_null(target)){
 					// target should be a random location nearby depending on how far 
 					// the NPC is allowed to travel during a movement interval.
@@ -77,6 +77,7 @@ function npc_find_priority_target(){
 			// If the number of targets is greater than one then we need to do some
 			// prioritizing. For simplicity we will work with distance.
 			var current_target = instance_nearest(x,y,struct.target_objects[i]);
+			if(current_target.struct.state_machine.IsInState("dead")){break;}
 			current_distance = point_distance(current_target.x,current_target.y,x,y);
 			if(current_distance < previous_distance){
 				prime_target = current_target;
@@ -84,28 +85,30 @@ function npc_find_priority_target(){
 			if(is_null(prime_target)){
 				prime_target = current_target;
 			}
-			previous_distance = current_distance;		
+			previous_distance = current_distance;
 		}
 	}
 	
 	return prime_target;
 }
 
-function npc_idle_complete(){
-	if(not_null(active_state)){
-		struct.state_machine.ChangeState(active_state);
-	}
-}
-
 function npc_manage_movement(){
-	var has_moved = (xprevious != x) or(yprevious != y);
-	if(has_moved){
-		direction = point_direction(xprevious,yprevious,x,y);
+	//var has_moved = (xprevious != x) or(yprevious != y);
+	var x_pos = 0
+	var y_pos = 0
+	if(not_null(target)){
+		x_pos = target.x;
+		y_pos = target.y
+		direction = point_direction(x_pos,y_pos,x,y);
 	}
+	
+	//if(has_moved){
+		//direction = point_direction(xprevious,yprevious,x,y);
+	//}
 }
 	
 function npc_read_attack_collision(){
-	var rect_coords = get_interact_shape(direction);
+	var rect_coords = get_interact_shape(direction_facing);
 	var collisions = ds_list_create();
 	var targets = struct.target_objects;
 	collision_rectangle_list(x+rect_coords[0],
@@ -161,4 +164,66 @@ function npc_get_interact_shape(query_direction){
 	}
 	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
 	return return_coords
+}
+	
+function npc_is_near_target(){
+	if(not_null(target)){
+		var target_distance = point_distance(target.x,target.y,x,y);
+		if(target_distance < target_range){
+			//Within range so we return true
+			return true
+		}else{
+			return false
+		}
+	}else{
+		//No target so return false
+		return false
+	}
+}
+
+function npc_apply_knockback(){
+	var x_change = lengthdir_x(struct.knockback_amount,struct.knockback_direction);
+	var y_change = lengthdir_y(struct.knockback_amount,struct.knockback_direction);
+    if(not_null(struct.knockback_amount)){
+		move_and_collide(x_change,y_change,collision_targets);		
+	}
+	if(struct.knockback_amount > 1){
+		struct.knockback_amount *= friction_amount
+	}
+}
+	
+/////////////////////////////////////////////TIMER METHODS////////////////////////////////////////////////
+		
+function npc_get_active_timers(){
+	var num_of_active_timers = 0;
+	if(time_source_get_state(idle_timer) == time_source_state_active){
+		num_of_active_timers++;
+	}
+	if(time_source_get_state(attack_windup_timer) == time_source_state_active){
+		num_of_active_timers++;
+	}
+	if(time_source_get_state(attack_timer) == time_source_state_active){
+		num_of_active_timers++;
+	}
+	return num_of_active_timers;
+}		
+
+function npc_idle_complete(){
+	struct.state_machine.EnsureState(active_state);
+}
+
+function npc_attack_windup_complete(){
+	struct.state_machine.EnsureState("attack");
+}
+
+function npc_attack_complete(){
+	struct.state_machine.EnsureState(default_state);
+}
+	
+function npc_knockback_complete(){
+	struct.state_machine.EnsureState(default_state);
+}
+
+function npc_stun_complete(){
+	struct.state_machine.EnsureState(default_state);
 }

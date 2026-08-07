@@ -28,6 +28,7 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 	instance	= "";
 	state_machine = "";
 	iframes = false;
+	iframe_time = 0;
 	target_objects = [];
 	grid = new_grid;
 	
@@ -45,7 +46,7 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 		call_later(30,time_source_units_frames,call_state_machine)		
 	}
 	
-	static take_damage = function(source,amount){
+	static take_damage = function(source,amount,iframe_amount = 10){
 		if(!iframes and !invincible){
 			hp -= amount;
 			var event_message = string_concat(name," took ",amount," damage from ",source.struct.name, "!");
@@ -53,6 +54,8 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 			if(hp <= 0){
 				die(source);
 			}
+			iframes = true;
+			iframe_time = iframe_amount
 		}
 	}
 		
@@ -68,13 +71,16 @@ function Cookin_Entity(new_name,new_type,new_health = 1,new_invincible = false,n
 		if(not_null(instance)){
 			var death_message = string_concat(name," was killed by ",source.struct.name, "!");
 			global.event_handler.create_event(ev_type.combat,death_message,ev_priority.high);
-			instance_destroy(instance,true);
+            state_machine.ChangeState("dead")
 		}
 	}
 		
 	call_state_machine = function(){
-		if(is_method(instance.init_state_machine())){
+		if(variable_instance_exists(instance,"init_state_machine")){
 			instance.init_state_machine()
+		}
+		if(variable_instance_exists(instance,"set_custom_states")){
+			instance.set_custom_states()
 		}
 	}
 }
@@ -222,6 +228,9 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 	////INSTANCE CONTEXT VARS
 	stun_amount = 0;
 	knockback_amount = 0;
+    knockback_time = 0;
+	knockback_direction = 0;
+    friction_amount = .7;
 	size = new_size;
 	single_direction = false;
 	equipment = "unarmed"
@@ -249,6 +258,27 @@ function Character_Entity(new_name,new_type,new_health,new_invincible,new_object
 		instance.path = path_add();
 		instance.struct = self;
 	}
+	static take_damage = function(source,amount,iframe_amount = 10,_direction = 0,_knockback_amount = 0,_stun_amount = 0){
+		var is_dead = state_machine.IsInState("dead");
+		
+		if(!iframes and !invincible and !is_dead){
+			hp -= amount;
+			var event_message = string_concat(name," took ",amount," damage from ",source.struct.name, "!");
+			global.event_handler.create_event(ev_type.combat,event_message,ev_priority.standard);
+			if(hp <= 0){
+				die(source);
+			}
+			iframes = true;
+			iframe_time = iframe_amount
+			knockback_amount = _knockback_amount;
+			knockback_time = knockback_amount;
+			knockback_direction = _direction;
+			stun_amount = _stun_amount;
+			if(knockback_amount > 0 or stun_amount > 0){
+				state_machine.ChangeState("stunned")
+			}
+		}
+	}
 	
 	static detect_target = function(_target){
 		
@@ -267,6 +297,7 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	input_allowed = true
 	equipment = "unarmed"
 	single_direction = false;
+    target_objects = [obj_enemy_npc]
 	
 	///INPUT CONTROL
 	input_allowed = true;
@@ -291,25 +322,28 @@ function Player_Character(new_name,new_type,new_health,new_invincible,new_object
 	}
 }
 
-function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects = [],new_attack_range = 10)
+function NPC_Character(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_neutral_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects = [],new_attack_range = 10,new_damage_amount = 1,new_loot_key)
 : Character_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium) constructor{
 	target_objects = new_target_objects
 	attack_range = new_attack_range
+	damage_amount = new_damage_amount;
+	loot_key = new_loot_key;
 	equipment = ""
 	single_direction = false;
 }
 
-function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range = 10,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range) constructor{
+function NPC_Enemy(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects = [],new_attack_range = 10,new_damage_amount = 1,new_loot_key,new_enemy_type,new_enemy_traits = [enemy_trait.Standard])
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range,new_damage_amount,new_loot_key) constructor{
 	en_type = new_enemy_type
 	enemy_traits = new_enemy_traits
 	target_objects = new_target_objects;
+    damage_amount = new_damage_amount;
 	equipment = ""
 	single_direction = false;
 }
 
-function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range = 10)
-: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range) constructor{
+function NPC_Neutral(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_enemy_npc,new_grid = "",new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range = 10,new_damage_amount = 1,new_loot_key)
+: NPC_Character(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_move_speed,new_size = npc_size.medium,new_target_objects,new_attack_range,new_damage_amount,new_loot_key) constructor{
 	target_objects = new_target_objects;
 	equipment = ""
 	single_direction = false;
@@ -329,14 +363,12 @@ function Food_Ingredient(new_name,new_type,new_health = 1,new_invincible = false
 
 function Food_Meal(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = obj_meal_food,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"],is_raw = false,new_cost = 1)
 : Item_Food(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_item_type,new_item_sprite,new_item_icon,new_value,new_flavors) constructor {
-	raw = is_raw
 	cost = new_cost
 }
 
 function Item_Equipment(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_equipment_item,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])
 : Item_Entity(new_name,new_type,new_health,new_invincible,new_object_reference,new_grid,new_item_type,new_item_sprite,new_item_icon) constructor {
 	value = new_value;
-	flavors = new_flavors;
 }
 
 function Item_Tool(new_name,new_type,new_health = 1,new_invincible = false,new_object_reference = _obj_cookin_entity,new_grid = "",new_item_type = item_entity_type.Food,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_value = 1,new_flavors = ["plain"])

@@ -40,6 +40,8 @@ scribble_font_bake_outline_and_shadow("fnt_Retro_small","main_sm",1,1,SCRIBBLE_O
 
 scribble_font_bake_outline_and_shadow("fnt_bodoni","secondary_sm",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
 
+scribble_font_bake_outline_and_shadow("fnt_pixel_operator","pixel_op",1,1,SCRIBBLE_OUTLINE.NO_OUTLINE,1,false);
+
 
 window_set_size(ideal_width,ideal_height);
 display_set_gui_size(ideal_width,ideal_height);

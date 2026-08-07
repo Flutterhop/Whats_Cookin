@@ -14,8 +14,8 @@ function prototype(){
 	//npc1.spawn_entity(10,10,"Instances");
 
 	
-	var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
-	turret1.spawn_entity(10,7,"Instances")
+	//var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
+	//turret1.spawn_entity(10,7,"Instances")
 	
 	var player_entity = new Player_Character("Player 0",entity_type.EN_Character,5,false,obj_player,grid,2,"dev",0);
 	player_entity.spawn_entity(8,7,"Instances")
@@ -30,18 +30,22 @@ function prototype(){
 	var apple_02 = retrieve_entity("apple",global.item_entities)
 	apple_02.spawn_entity(6,6,"Instances")
 	
-	var inspector_01 = retrieve_entity("inspector",global.character_entities)
-	inspector_01.spawn_entity(15,10,"Instances")
+	//var inspector_01 = retrieve_entity("inspector",global.character_entities)
+	//inspector_01.spawn_entity(15,10,"Instances")
 	
-	var _sq = retrieve_entity("squeebie",global.character_entities)
-	_sq.single_direction = true;
-	_sq.spawn_entity(5,20,"Instances");
+	//var _sq = retrieve_entity("squeebie",global.character_entities)
+	//_sq.single_direction = true;
+	//_sq.spawn_entity(5,20,"Instances");
 	
 	var hunter_01 = retrieve_entity("hunter",global.character_entities)
 	hunter_01.spawn_entity(5,7,"Instances");
 	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10
+	counter.grid_y = 5
+	counter.spawn_entity(0,0,"Instances")
+	var counter = retrieve_entity("cuttingboard",global.structure_entities)
+	counter.grid_x = 11
 	counter.grid_y = 5
 	counter.spawn_entity(0,0,"Instances")
 	var storage = retrieve_entity("storage",global.structure_entities)

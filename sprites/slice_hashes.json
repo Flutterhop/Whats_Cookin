@@ -1,11 +1,9 @@
 {
-  "spr_inspector_{idle_unarmed_up}{idle_unarmed_down}{idle_unarmed_left}":"462ef048c1aae0cd7094d93b88fc4b17ae1d8bd63ed72cedba47537033dd6462",
-  "spr_hunter_{hunter_idle_left}{hunter_move_left}":"669f76132794f5d483b799c7e4eb3f660b1f2e32236e0641cb0bf6d46baedf26",
-  "spr_dev_{walk_unarmed_up}{walk_unarmed_down}{walk_unarmed_left}{walk_twohand_down}{walk_twohand_left}{walk_twohand_up}{interact_down}{interact_up}{interact_left}{hold_down}{hold_up}{hold_left}{attack_twohand_down}":"13e0495d8ddcdc32052be152bc94e19f7a72f1c26db974b88c1ad3482836292f",
-  "spr_squeeb_{squeeb_idle}{squeeb_blink}{squeeb_move}":"b50d516efc63d3e77ff56f169041f431be2057dc65a2d8f6ae9f838d13899fa7",
-  "spr_Char_{walk_up}{walk_down}{walk_left}{walk_down_angle}{walk_up_angle}":"8e15308ed361073f9d6dc0f25ae5bf6f0433a7c53942928f55d57b8d00d4a9d1",
-  "spr_hunter_{hunter_attack}{hunter_idle_left}{hunter_move_left}":"8da1bef8fd818c25df1d88ed0e4785888dc6edf6f3ed960389b8b29e00728e3e",
-  "spr_char_{walk_unarmed_up}{walk_unarmed_down}{walk_unarmed_left}{walk_twohand_down}{walk_twohand_left}{walk_twohand_up}{interact_down}{interact_up}{interact_left}{hold_down}{hold_up}{hold_left}{attack_twohand_down}":"5adf2a0cc930594246bb27225912adabd9dd9926bd40c9ec988a99c17a6e192c",
-  "spr_squeeb":"7b97d5e93cec48774e8c517e5cca3a06ff0d1e732d24a88203a8019338deb132",
-  "spr_dev_{idle_unarmed_up}{idle_unarmed_down}{idle_unarmed_left}{idle_twohand_down}{idle_twohand_left}{idle_twohand_up}{interact_down}{interact_up}{interact_left}{hold_down}{hold_up}{hold_left}":"395410db2c27f3b2639631d2f8eb219f30b168fddb83248548326d13aa7904c5"
+  "spr_dev_{attack_slash_up}{attack_slash_left}{attack_slash_down}":"b7c3f7f0a956fd6085af1741bc2e866c13657b6da8f3f9572df4254ea3fbb720",
+  "spr_hunter_{dead_1}{dead_2}":"91b2bdef60ab8c20a79dd91c1c675ddbd42fe3471e682e5e8daaedc565dc597f",
+  "spr_dev_{idle_unarmed_up}{idle_unarmed_down}{idle_unarmed_left}{idle_twohand_down}{idle_twohand_left}{idle_twohand_up}{interact_down}{interact_up}{interact_left}{hold_down}{hold_up}{hold_left}{attack_twohand_down}{attack_slash_down}{attack_slash_left}{attack_slash_up}":"fa3fd222a7af1e62dc237a4e4e28bf494efb9dce86b6313920a0e6ce1f759b3c",
+  "spr_effect_{stun}":"9e2406bd625a07824b4958601e138cc6443119920fe537aa2b9f364b09dcb46d",
+  "spr_dev_{dead_1}{dead_2}":"2107bc158fb008ed18f53b2ba31aad6cb1b894acd90b9a7b54932278e3ec1f8f",
+  "spr_hunter_{move_left}{attack}{windup_attack}{hurt}{idle_left}":"3233a81fc5c24ae4d4c250d2ee141aeff4cca7461274fc9ab4b68cf79a9d7265",
+  "spr_effect_stun":"32865d57b6943f25787dc2a991e2beb73375859efd9991bb1ba7a78eb8fa69f8"
 }

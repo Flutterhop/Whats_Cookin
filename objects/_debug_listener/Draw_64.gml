@@ -1,3 +1,5 @@
+
+
 if(global.debug){
 	draw_set_font(fnt_Retro_small);
 	draw_set_valign(fa_top);

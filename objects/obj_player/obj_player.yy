@@ -10,7 +10,9 @@
   ],
   "managed":true,
   "name":"obj_player",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_character_entity","path":"objects/obj_character_entity/obj_character_entity.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_character_entity/obj_character_entity.yy",},"resource":{"name":"spr_dev_shadow","path":"sprites/spr_dev_shadow/spr_dev_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_dev_shadow",},
+  ],
   "parent":{
     "name":"Player",
     "path":"folders/Objects/Characters/Player.yy",
@@ -32,13 +34,7 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"left_sprite","filters":[],"listItems":[],"multiselect":false,"name":"left_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_dev_walk_left","path":"sprites/spr_dev_walk_left/spr_dev_walk_left.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_dev_walk_left","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"up_sprite","filters":[],"listItems":[],"multiselect":false,"name":"up_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_dev_walk_up","path":"sprites/spr_dev_walk_up/spr_dev_walk_up.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_dev_walk_up","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"down_sprite","filters":[],"listItems":[],"multiselect":false,"name":"down_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_dev_walk_down","path":"sprites/spr_dev_walk_down/spr_dev_walk_down.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_dev_walk_down","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"down_angle_sprite","filters":[],"listItems":[],"multiselect":false,"name":"down_angle_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_dev_walk_down_angle","path":"sprites/spr_dev_walk_down_angle/spr_dev_walk_down_angle.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_dev_walk_down_angle","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"up_angle_sprite","filters":[],"listItems":[],"multiselect":false,"name":"up_angle_sprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_dev_walk_up_angle","path":"sprites/spr_dev_walk_up_angle/spr_dev_walk_up_angle.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_dev_walk_up_angle","varType":5,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

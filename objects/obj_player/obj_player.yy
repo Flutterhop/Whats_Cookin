@@ -11,15 +11,15 @@
   "managed":true,
   "name":"obj_player",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_character_entity","path":"objects/obj_character_entity/obj_character_entity.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_character_entity/obj_character_entity.yy",},"resource":{"name":"spr_dev_shadow","path":"sprites/spr_dev_shadow/spr_dev_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_dev_shadow",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_character_game","path":"objects/obj_character_game/obj_character_game.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_character_game/obj_character_game.yy",},"resource":{"name":"spr_dev_shadow","path":"sprites/spr_dev_shadow/spr_dev_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_dev_shadow",},
   ],
   "parent":{
     "name":"Player",
     "path":"folders/Objects/Characters/Player.yy",
   },
   "parentObjectId":{
-    "name":"obj_character_entity",
-    "path":"objects/obj_character_entity/obj_character_entity.yy",
+    "name":"obj_character_game",
+    "path":"objects/obj_character_game/obj_character_game.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

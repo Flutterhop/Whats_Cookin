@@ -14,6 +14,7 @@ function npc_handle_pathfinding(){
 		var is_wandering = struct.state_machine.IsInState("wander") ? true : false
 		var target_x = 0;
 		var target_y = 0;
+		var _move_speed = struct.get_stat("move_speed")
 		//select the closest target to navigate to
 		
 		target = find_priority_target();
@@ -26,8 +27,8 @@ function npc_handle_pathfinding(){
 					// the NPC is allowed to travel during a movement interval.
 					target_x = irandom_range(-wander_distance,wander_distance);
 					target_y = irandom_range(-wander_distance,wander_distance);
-					if(struct.grid.set_path(path,x,y,x + target_x,y + target_y,struct.move_speed)){
-						path_start(path,struct.move_speed,path_action_stop,true);
+					if(struct.grid.set_path(path,x,y,x + target_x,y + target_y,_move_speed)){
+						path_start(path,_move_speed,path_action_stop,true);
 					}
 					return;
 				}
@@ -36,8 +37,8 @@ function npc_handle_pathfinding(){
 				target_x = target.x;
 				target_y = target.y;
 				if(point_distance(target_x,target_y,x,y) > 30){
-					if(struct.grid.set_path(path,x,y,target_x,target_y,struct.move_speed)){
-						path_start(path,struct.move_speed,path_action_stop,true);
+					if(struct.grid.set_path(path,x,y,target_x,target_y,_move_speed)){
+						path_start(path,_move_speed,path_action_stop,true);
 					}
 				}
 			}
@@ -52,8 +53,8 @@ function npc_handle_pathfinding(){
 				///If too far away then recalculate the path.
 				if(target_distance > 150){
 					show_debug_message("target too far from end of path. Recalculating...")
-					if(struct.grid.set_path(path,x,y,target.x,target.y,struct.move_speed)){
-						path_start(path,struct.move_speed,path_action_stop,true);
+					if(struct.grid.set_path(path,x,y,target.x,target.y,_move_speed)){
+						path_start(path,_move_speed,path_action_stop,true);
 						//var path_pos = path.path_position;
 					}
 				}
@@ -98,7 +99,7 @@ function npc_manage_movement(){
 	var y_pos = 0
 	if(not_null(target)){
 		x_pos = target.x;
-		y_pos = target.y
+		y_pos = target.y;
 		direction = point_direction(x_pos,y_pos,x,y);
 	}
 	
@@ -128,44 +129,6 @@ function npc_read_attack_collision(){
 	}
 }
 
-function npc_get_interact_shape(query_direction){
-	var top_left_x = 0
-	var top_left_y = 0
-	var bottom_right_x = 0
-	var bottom_right_y = 0
-	var x_increment = struct.attack_range
-	var y_increment = struct.attack_range
-	switch(query_direction){
-		case "right"://0
-			top_left_x += x_increment;
-			top_left_y -= y_increment;
-			bottom_right_x += x_increment * 2;
-			bottom_right_y += y_increment;
-		break;
-
-		case "up":
-			top_left_x -= x_increment;
-			top_left_y -= y_increment * 2;
-			bottom_right_x += x_increment;
-			bottom_right_y -= y_increment;
-		break;
-		case "left":
-			top_left_x -= x_increment * 2;
-			top_left_y -= y_increment;
-			bottom_right_x -= x_increment;
-			bottom_right_y += y_increment;
-		break;
-		case "down"://6
-			top_left_x -= x_increment;
-			top_left_y += y_increment;
-			bottom_right_x += x_increment;
-			bottom_right_y += y_increment * 2;
-		break;
-	}
-	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
-	return return_coords
-}
-	
 function npc_is_near_target(){
 	if(not_null(target)){
 		var target_distance = point_distance(target.x,target.y,x,y);
@@ -189,6 +152,9 @@ function npc_apply_knockback(){
 	}
 	if(struct.knockback_amount > 1){
 		struct.knockback_amount *= friction_amount
+		show_debug_message(struct.knockback_amount)
+	}else{
+		struct.knockback_amount = 0;
 	}
 }
 	

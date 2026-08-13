@@ -14,7 +14,7 @@ active_state = "move";
 idle_time = 3; // default one second of idle when entering the state.
 stun_index = 0;
 movement_locked = false;
-friction_amount = .7;
+friction_amount = .2;
 direction_facing = "left";
 
 
@@ -23,10 +23,10 @@ target_range = 100;
 target_x = 0;
 target_y = 0;
 attack_speed = 5;
-attack_time = 3; // default time to complete an attack that should be replaced by the length of an attack animation.
+attack_time = 2; // default time to complete an attack that should be replaced by the length of an attack animation.
 attack_windup_time = 1;
 collision_targets  = struct.grid.fetch_collision_array();
-array_push(collision_targets,obj_character_entity)
+array_push(collision_targets,obj_character_game)
 
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
@@ -199,12 +199,13 @@ function init_state_machine(){
 				}
 				image_index = 0;
 				image_speed = 1;
-				handle_iframes()
+
 			}
 		})
 		.AddUpdate(function(){
+
 			with(owner){
-				
+				handle_iframes()
 			}
 		})
 		.AddExit(function(){
@@ -220,7 +221,7 @@ function init_state_machine(){
     var stunned_state = new StatementState(struct.state_machine,"stunned")
 		.AddEnter(function(){
 			with(owner){
-				//path_end()
+				path_end()
                 movement_locked = true;
 				if(struct.knockback_time > 0){
 					if(time_source_get_state(knockback_timer) != time_source_state_active){

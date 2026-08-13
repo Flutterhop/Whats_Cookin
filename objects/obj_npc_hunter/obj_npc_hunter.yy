@@ -3,14 +3,14 @@
   "%Name":"obj_npc_hunter",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"obj_item_entity","path":"objects/obj_item_entity/obj_item_entity.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"obj_item_game","path":"objects/obj_item_game/obj_item_game.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"obj_turret_bullet","path":"objects/obj_turret_bullet/obj_turret_bullet.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_npc_hunter",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_character_entity","path":"objects/obj_character_entity/obj_character_entity.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_character_entity/obj_character_entity.yy",},"resource":{"name":"spr_hunter_shadow","path":"sprites/spr_hunter_shadow/spr_hunter_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_hunter_shadow",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_character_game","path":"objects/obj_character_game/obj_character_game.yy",},"propertyId":{"name":"shadow_sprite","path":"objects/obj_character_game/obj_character_game.yy",},"resource":{"name":"spr_hunter_shadow","path":"sprites/spr_hunter_shadow/spr_hunter_shadow.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"spr_hunter_shadow",},
   ],
   "parent":{
     "name":"hunter",
@@ -37,7 +37,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_hunter_idle_left",
+    "path":"sprites/spr_hunter_idle_left/spr_hunter_idle_left.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

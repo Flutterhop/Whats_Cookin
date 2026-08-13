@@ -22,7 +22,7 @@ function player_update_sprites(state){
 }
 	
 function player_detect_interactions(target_entities){
-	var rect_coords = get_interact_shape(direction,interaction_range)
+	var rect_coords = get_interact_shape(direction)
 	var collisions = ds_list_create()
 	var targets = struct.target_objects
 	collision_rectangle_list(x+rect_coords[0],
@@ -43,7 +43,8 @@ function player_detect_interactions(target_entities){
 
 }
 
-function player_get_interact_shape(query_direction,range_mod){
+function get_interact_shape(query_direction){
+	var range_mod = struct.get_stat("interaction_range");
 	var top_left_x = 0
 	var top_left_y = 0
 	var bottom_right_x = 0
@@ -111,13 +112,13 @@ function player_read_interaction_collision(){
 	var can_pick = !struct.state_machine.IsInState("hold") ? true : false;
 	
 	//1. check for environment
-	var environment_target = detect_interactions(obj_environment_entity);
+	var environment_target = detect_interactions(obj_environment_game);
 	if(not_null(environment_target)){
 		//Environment entity is blocking interaction
 		return;
 	}
 	// 2. check for structure
-	var structure_target = detect_interactions(obj_structure_entity);
+	var structure_target = detect_interactions(obj_structure_game);
 	if(not_null(structure_target)){
 		can_put = structure_target.struct.can_put_item();
 		if(can_put and not_null(held_item)){
@@ -136,7 +137,7 @@ function player_read_interaction_collision(){
 			}			
 		}
 	}
-	var item_target = detect_interactions(obj_item_entity);
+	var item_target = detect_interactions(obj_item_game);
 	if(not_null(item_target) and can_pick){
 		pick_up_item(item_target)
 	}else if(not_null(held_item) and can_put){
@@ -155,8 +156,8 @@ function player_pick_up_item(target_item){
 function player_drop_item(){
 	if(not_null(held_item)){
 		var collisions = ds_list_create()
-		var coords = get_interact_shape(direction,interaction_range);
-		var targets = [obj_item_entity]
+		var coords = get_interact_shape(direction);
+		var targets = [obj_item_game]
 		collision_rectangle_list(x+coords[0],
 								y+coords[1],
 								x+coords[2],
@@ -182,7 +183,7 @@ function player_drop_item(){
 }
 
 function player_throw_item(){
-	var strength = throw_strength
+	var strength = struct.stats.throw_strength
 	var dir = direction
 	with(held_item){
 		motion_add(dir,strength);
@@ -203,13 +204,13 @@ function player_read_structure_collision(){
 	var can_deploy = struct.state_machine.IsInState("hold") ? true : false
 	
 	//1. check for environment
-	var environment_target = detect_interactions(obj_environment_entity);
+	var environment_target = detect_interactions(obj_environment_game);
 	if(not_null(environment_target)){
 		//Environment entity is blocking interaction
 		return;
 	}
 	// 2. check for structure
-	var structure_target = detect_interactions(obj_structure_entity);
+	var structure_target = detect_interactions(obj_structure_game);
 	// 2a. if found then try to assemble/pick up
 	if(not_null(structure_target)){
 		can_assemble = structure_target.struct.can_assemble();
@@ -220,7 +221,7 @@ function player_read_structure_collision(){
 	}
 	// 3. check for item
 	// 3a. if true then structure cannot be deployed
-	var item_target = detect_interactions(obj_item_entity);
+	var item_target = detect_interactions(obj_item_game);
 	if(is_null(item_target) and can_deploy){
 		if(deploy_structure()){
 			struct.state_machine.ChangeState("idle");
@@ -232,8 +233,8 @@ function player_read_structure_collision(){
 function player_deploy_structure(){
 	if(not_null(held_structure)){
 		var collisions = ds_list_create()
-		var coords = get_interact_shape(direction,interaction_range);
-		var targets = [obj_item_entity,obj_structure_entity]
+		var coords = get_interact_shape(direction);
+		var targets = [obj_item_game,obj_structure_game]
 		with(held_structure){
 
 			collision_rectangle_list(x+coords[0],
@@ -266,7 +267,7 @@ function player_deploy_structure(){
 }
 
 function player_assemble_structure(target_structure){
-	var coords = get_interact_shape(direction,interaction_range);
+	var coords = get_interact_shape(direction);
 	if(is_struct(target_structure.struct)){
 		var x_pos = ((coords[0] + x) + (coords[2] + x))/2 
 		var y_pos = ((coords[1] + y) + (coords[3] + y))/2
@@ -298,10 +299,13 @@ function player_apply_knockback(){
 	var x_change = lengthdir_x(struct.knockback_amount,struct.knockback_direction);
 	var y_change = lengthdir_y(struct.knockback_amount,struct.knockback_direction);
     if(not_null(struct.knockback_amount)){
-		move_and_collide(x_change,y_change,collision_targets);		
+		move_and_collide(x_change,y_change,collision_targets);
+		show_debug_message(struct.knockback_amount)
 	}
-	if(struct.knockback_amount > 1){
+	if(struct.knockback_amount > .5){
 		struct.knockback_amount *= friction_amount
+	}else{
+		struct.knockback_amount = 0;
 	}
 }
 
@@ -315,7 +319,7 @@ function player_handle_holding(){
 		held_item.y = y;
 	}
 	if(not_null(held_structure)){
-		var coords = get_interact_shape(direction,interaction_range);
+		var coords = get_interact_shape(direction);
 		var x_pos = x + (coords[0] + coords[2])/2
 		var y_pos = y + (coords[1] + coords[3])/2
 		held_structure.x = x_pos;
@@ -360,7 +364,7 @@ function player_attack(){
 }
 
 function player_attack_collision(){
-	var rect_coords = get_interact_shape(direction,attack_range)
+	var rect_coords = get_interact_shape(direction)
 	var collisions = ds_list_create()
 	var targets = struct.target_objects
 	collision_rectangle_list(x+rect_coords[0],

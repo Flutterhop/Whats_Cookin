@@ -13,8 +13,8 @@
     "path":"folders/Objects/Structures.yy",
   },
   "parentObjectId":{
-    "name":"obj_structure_entity",
-    "path":"objects/obj_structure_entity/obj_structure_entity.yy",
+    "name":"obj_structure_game",
+    "path":"objects/obj_structure_game/obj_structure_game.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

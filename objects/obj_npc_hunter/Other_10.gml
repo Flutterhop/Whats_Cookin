@@ -25,7 +25,7 @@ function set_custom_states(){
 				launch_attack();
 				var attack_target = read_attack_collision()
 				if(not_null(attack_target)){
-					if(is_instanceof(attack_target.struct,Character_Entity)){
+					if(is_instanceof(attack_target.struct,Character_Game)){
 						attack_target.struct.take_damage(self,struct.damage_amount,20,direction,20,30)
 					}
 				}

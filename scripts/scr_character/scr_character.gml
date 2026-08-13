@@ -4,7 +4,37 @@ enum Character_Type{
 	CH_PLAYER = 22
 }
 
+function Character_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_move_speed = 1,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_attack_range = 5,new_interaction_range = 5)	:	Game_Stats() constructor{
+	name = new_name;
+	max_hp = new_max_hp
+	current_hp = new_current_hp
+	if(current_hp > max_hp){
+		current_hp = max_hp;
+	}
+	move_speed = new_move_speed
+	knockback_strength = new_knockback_strength
+	damage_amount = new_damage_amount
+	attack_speed = new_attack_speed
+	attack_range = new_attack_range
+	interaction_range = new_interaction_range;
+	
+}
 
+function Player_Stats(new_name,new_max_hp = 10,new_current_hp = 10,new_move_speed = 1,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_attack_range = 5,new_interaction_range) : Character_Stats(new_name,new_max_hp,new_current_hp,new_move_speed,new_knockback_strength,new_damage_amount,new_attack_speed,new_attack_range,new_interaction_range)constructor{
+	attack_time = .5
+	//Throwing
+	throw_charge = 60;
+	throw_strength = 10;
+}
+
+function NPC_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_move_speed = 1,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_attack_range = 5,new_interaction_range = 5,new_armor = 1,new_size = npc_size.medium,new_loot_key = "default")	:	Character_Stats(new_name,new_max_hp,new_current_hp,new_move_speed,new_knockback_strength,new_damage_amount,new_attack_speed,new_attack_range,new_interaction_range) constructor {
+	armor = new_armor
+	size = new_size
+	loot_key = new_loot_key
+}
+function Enemy_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_move_speed = 1,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_attack_range = 5,new_interaction_range = 5,new_armor = 1,new_size = npc_size.medium,new_loot_key = "default")	:	NPC_Stats(new_name,new_max_hp,new_current_hp,new_move_speed,new_knockback_strength,new_damage_amount,new_attack_speed,new_attack_range,new_interaction_range,new_armor,new_size,new_loot_key) constructor {
+	
+}
 function determine_direction_facing(_direction){
 	var direction_to_return = "left"
 	var is_right = ((_direction >= 315) and (_direction <= 360)) or ((_direction <= 45) and (_direction >= 0))

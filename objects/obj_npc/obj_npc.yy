@@ -17,8 +17,8 @@
     "path":"folders/Objects/Characters/NPC.yy",
   },
   "parentObjectId":{
-    "name":"obj_character_entity",
-    "path":"objects/obj_character_entity/obj_character_entity.yy",
+    "name":"obj_character_game",
+    "path":"objects/obj_character_game/obj_character_game.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

@@ -11,8 +11,8 @@
   "name":"_obj_cookin_entity",
   "overriddenProperties":[],
   "parent":{
-    "name":"Cookin",
-    "path":"folders/Objects/Entity/Cookin.yy",
+    "name":"Entity",
+    "path":"folders/Objects/Entity.yy",
   },
   "parentObjectId":null,
   "persistent":false,

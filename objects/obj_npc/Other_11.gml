@@ -8,7 +8,7 @@ manage_movement			= method(id,npc_manage_movement);
 apply_knockback			= method(id,npc_apply_knockback);
 
 //COLLISION
-get_interact_shape		= method(id,npc_get_interact_shape);
+
 
 //TIMERS
 get_active_timers		= method(id,npc_get_active_timers);

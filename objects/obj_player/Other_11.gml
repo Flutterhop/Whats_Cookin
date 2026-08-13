@@ -17,7 +17,6 @@ drop_item					= method(id,player_drop_item);
 handle_holding				= method(id,player_handle_holding);
 detect_interactions			= method(id,player_detect_interactions);
 read_structure_collision	= method(id,player_read_structure_collision);
-get_interact_shape			= method(id,player_get_interact_shape);
 deploy_structure			= method(id,player_deploy_structure);
 assemble_structure			= method(id,player_assemble_structure);
 end_interact				= method(id,player_end_interact);

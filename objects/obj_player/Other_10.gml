@@ -10,9 +10,6 @@ right_input = 0;
 held_item = "";
 held_structure = "";
 
-//Throwing
-throw_charge = 60;
-throw_strength = 10;
 movement_locked = false
 
 //Jumping
@@ -24,10 +21,7 @@ falling = false;
 
 //COLLISION
 collision_targets  = struct.grid.fetch_collision_array();
-attack_range = 15;
-interaction_range = 15;
-attack_time = .5
-damage_amount = 5;
+
 struct.equipment = "pan"
 equipment_sprite = "";
 friction_amount = .7;
@@ -196,9 +190,9 @@ function init_state_machine(){
 			with(owner){
                 var attack_target = attack_collision()
 				if(not_null(attack_target)){
-                    if(is_instanceof(attack_target.struct,Character_Entity)){
+                    if(is_instanceof(attack_target.struct,Character_Game)){
 						if(!attack_target.struct.state_machine.IsInState("dead")){
-							attack_target.struct.take_damage(self,damage_amount,20,direction,20,10)
+							attack_target.struct.take_damage(self,struct.get_damage(),20,direction,20,10)
 						}
 					}
                     
@@ -210,7 +204,7 @@ function init_state_machine(){
 			with(owner){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
 				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
-				var interact_coord = get_interact_shape(direction,attack_range);
+				var interact_coord = get_interact_shape(direction);
 				var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
 				var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
 				draw_rectangle_colour(x + interact_coord[0],y + interact_coord[1],x + interact_coord[2],y + interact_coord[3],c_red,c_red,c_red,c_red,true)

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_spawn",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_spawn",
+  "parent":{
+    "name":"Spawn",
+    "path":"folders/Objects/Spawn.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

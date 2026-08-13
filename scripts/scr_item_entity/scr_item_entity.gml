@@ -1,4 +1,4 @@
-enum item_entity_type{
+enum Item_Game_type{
 	Equipment	= 41,
 	Food		= 42,
 	Tool		= 43

@@ -18,7 +18,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	is_precise = false;
 	obstacle_tiles_to_check = ["rocks"];
 	structure_tiles_to_check = ["kitchen_structures"];
-	instances_to_check = [obj_structure_entity];
+	instances_to_check = [obj_structure_game];
 	
 	
 	//This may need to default to width = 15, height = 9
@@ -202,8 +202,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	static set_path = function(_path,start_x,start_y,target_x,target_y,_speed){
 		try{
 			with(other){
-				var result_1 = mp_potential_path_object(_path,target_x,target_y,_speed,4,obj_character_entity)
-
+				var result_1 = mp_potential_path_object(_path,target_x,target_y,_speed,4,obj_character_game)
 			}
 			return true
 		}catch(_exception){
@@ -230,7 +229,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			array_insert(return_array,i,layer_tilemap_get_id(structure_tiles_to_check[j]))
 		}
 		for(var k = 0; k < instance_counter; k++){
-			array_insert(return_array,i,instances_to_check[k])			
+			array_insert(return_array,i,instances_to_check[k])
 		}
 		
 		return return_array;

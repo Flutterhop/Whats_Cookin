@@ -55,7 +55,7 @@ function initialize_character_stats(){
 							1,
 							2,
 							1,
-							1.5,
+							30,
 							10,
 							15
 							);
@@ -66,12 +66,14 @@ function initialize_character_stats(){
 							2,
 							1,
 							2,
-							1,
+							6,
 							10,
 							15,
+							120,
 							0,
 							npc_size.medium,
-							"hunter"
+							"hunter",
+							60
 							);
 	ds_map_add(global.character_stats,stats.name,stats);
 	stats = new Enemy_Stats("rat",
@@ -83,9 +85,11 @@ function initialize_character_stats(){
 							3,
 							5,
 							10,
+							60,
 							0,
 							npc_size.small,
-							"rat"
+							"rat",
+							60
 							);
 	ds_map_add(global.character_stats,stats.name,stats);
 	stats = new NPC_Stats("inspector",
@@ -99,7 +103,9 @@ function initialize_character_stats(){
 							15,
 							0,
 							npc_size.medium,
-							"inspector"
+							"inspector",
+							60,
+							60
 							);
 	ds_map_add(global.character_stats,stats.name,stats);
 	stats = new NPC_Stats("squeebie",
@@ -111,9 +117,11 @@ function initialize_character_stats(){
 							1,
 							5,
 							15,
+							60,
 							10000,
 							npc_size.small,
-							"squeebie"
+							"squeebie",
+							60
 							);
 	ds_map_add(global.character_stats,stats.name,stats);
 	

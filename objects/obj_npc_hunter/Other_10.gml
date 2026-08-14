@@ -11,22 +11,22 @@ function set_custom_states(){
 		.AddEnter(function(){
 			with(owner){
 				determine_sprite();
-				var attack_cooldown = (time_source_get_state(attack_timer) == time_source_state_initial) or (time_source_get_state(attack_timer) == time_source_state_stopped) or (time_source_get_state(attack_timer) == time_source_state_paused)
-				if(attack_cooldown){
-					time_source_start(attack_timer);
-					set_target();
-				}
+				set_target();
 				image_index = 0;
 				image_speed = 1;
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				var state_time = struct.state_machine.GetStateTime();
+				if(state_time > struct.stats.attack_time){
+					struct.state_machine.ChangeState(default_state);
+				}
 				launch_attack();
 				var attack_target = read_attack_collision()
 				if(not_null(attack_target)){
 					if(is_instanceof(attack_target.struct,Character_Game)){
-						attack_target.struct.take_damage(self,struct.damage_amount,20,direction,20,30)
+						attack_target.struct.take_damage(self,struct.stats.damage_amount,20,direction,20,30)
 					}
 				}
 			}

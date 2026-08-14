@@ -109,7 +109,7 @@ function npc_manage_movement(){
 }
 	
 function npc_read_attack_collision(){
-	var rect_coords = get_interact_shape(direction_facing);
+	var rect_coords = get_interact_shape(direction,struct.stats.attack_range);
 	var collisions = ds_list_create();
 	var targets = struct.target_objects;
 	collision_rectangle_list(x+rect_coords[0],

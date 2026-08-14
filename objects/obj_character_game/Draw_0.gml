@@ -1,4 +1,8 @@
+if(struct.stun_amount > 0){
+	draw_sprite_ext(spr_effect_stun,image_index,x,y,1,1,0,c_white,1);
+}
 event_inherited()
+
 if(not_null(direction_facing)){
 	switch(direction_facing){
 		case "up":

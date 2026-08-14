@@ -1,4 +1,25 @@
 ///METHODS WITHOUT PLAYER PREFIX ARE USED BY THE PLAYER ENTITY STRUCT
+
+function player_change_state(next_state){
+	var state = struct.state_machine.GetStateName(next_state);
+	if(not_null(state)){
+		struct.state_machine.ChangeState(next_state);
+	}else{
+		EchoDebug(string_concat("State: ",next_state," not found, returning to idle."));
+	}
+	
+}
+
+function player_queue_state(next_state){
+	var state = struct.state_machine.GetStateName(next_state);
+	if(not_null(state)){
+		struct.state_machine.QueueState(next_state);
+	}else{
+		EchoDebug(string_concat("State: ",next_state," not found, returning to idle."));
+	}
+	
+}
+
 function get_direction(face_num){
 	var direction_text = ""
 	if(face_num == 0 or face_num == 1 or face_num == 7){
@@ -20,31 +41,81 @@ function player_update_sprites(state){
 		down_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_down"));
 	}
 }
-	
-function player_detect_interactions(target_entities){
-	var rect_coords = get_interact_shape(direction)
-	var collisions = ds_list_create()
-	var targets = struct.target_objects
-	collision_rectangle_list(x+rect_coords[0],
-							y+rect_coords[1],
-							x+rect_coords[2],
-							y+rect_coords[3],
+
+function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){
+	var collisions = ds_list_create();
+	if(is_null(targets)){
+		targets = struct.target_objects;
+	}
+	if(x_pos == 0){
+		x_pos = x
+	}
+	if(y_pos == 0){
+		y_pos = y
+	}
+	collision_rectangle_list(x_pos+rect_coords[0],
+							y_pos+rect_coords[1],
+							x_pos+rect_coords[2],
+							y_pos+rect_coords[3],
 							targets,
 							true,
 							true,
 							collisions,
 							true
 							)
-	var total_collisions = ds_list_size(collisions)
+	var total_collisions = ds_list_size(collisions);
 	if(total_collisions > 0){
 		var target = ds_list_find_value(collisions,0);
 		return target;
 	}
-
+	
 }
 
-function get_interact_shape(query_direction){
-	var range_mod = struct.get_stat("interaction_range");
+function player_return_multiple_collisions(rect_coords,targets = "",x_pos = 0,y_pos = 0){
+	var collisions = ds_list_create();
+	if(is_null(targets)){
+		targets = struct.target_objects;
+	}
+	if(x_pos == 0){
+		x_pos = x
+	}
+	if(y_pos == 0){
+		y_pos = y
+	}
+	collision_rectangle_list(x_pos+rect_coords[0],
+							y_pos+rect_coords[1],
+							x_pos+rect_coords[2],
+							y_pos+rect_coords[3],
+							targets,
+							true,
+							true,
+							collisions,
+							true
+							)
+	var total_collisions = ds_list_size(collisions);
+	if(total_collisions > 0){
+		var collision_array = []
+		for(var i = 0;i < total_collisions;i++){
+			var list_item = ds_list_find_value(collisions,i);
+			if(not_null(list_item)){
+				array_push(collision_array,list_item);
+			}
+		}
+		return collision_array;
+	}else{
+		EchoDebug("no collisions found. returning blank string.");
+		return "";
+	}
+	
+}
+
+function get_interact_shape(query_direction,range = 0){
+	var range_mod
+	if(is_null(range)){
+		range_mod = struct.get_stat("interaction_range")
+	}else{
+		range_mod = range;
+	}
 	var top_left_x = 0
 	var top_left_y = 0
 	var bottom_right_x = 0
@@ -105,6 +176,17 @@ function get_interact_shape(query_direction){
 	return return_coords
 }
 
+function player_detect_interactions(target_entities){
+	var return_target
+	var rect_coords = get_interact_shape(direction)
+	if(is_null(target_entities)){
+		return_target = return_collision(rect_coords)
+	}else{
+		return_target = return_collision(rect_coords,target_entities)
+	}
+	return return_target;
+}
+
 function player_read_interaction_collision(){
 	//Determine the type of interaction based on player state.
 	//check if the target position is occupied
@@ -155,31 +237,17 @@ function player_pick_up_item(target_item){
 
 function player_drop_item(){
 	if(not_null(held_item)){
-		var collisions = ds_list_create()
-		var coords = get_interact_shape(direction);
-		var targets = [obj_item_game]
-		collision_rectangle_list(x+coords[0],
-								y+coords[1],
-								x+coords[2],
-								y+coords[3],
-								targets,
-								true,
-								true,
-								collisions,
-								true
-								)
-		var total_collisions = ds_list_size(collisions)
-		if(total_collisions > 0){
+		var item_target = detect_interactions(obj_item_game);
+		var coords = get_interact_shape(direction)
+		if(not_null(item_target)){
 			//If collisions exist then we cant place an item
 			return
 		}
-		var x_pos = (coords[0] + coords[2])/2 
-		var y_pos = (coords[1] + coords[3])/2 
+		var x_pos = (coords[0] + coords[2])/2
+		var y_pos = (coords[1] + coords[3])/2
 		held_item.struct.drop(x + x_pos,y + y_pos);
 		held_item = "";
-		if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
 	}
-		
 }
 
 function player_throw_item(){
@@ -191,10 +259,6 @@ function player_throw_item(){
 	held_item.struct.throw_item();
 	held_item = "";
 	if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
-}
-
-function player_end_interact(){
-	struct.state_machine.ChangeState("idle");
 }
 
 function player_read_structure_collision(){
@@ -325,6 +389,7 @@ function player_handle_holding(){
 		held_structure.x = x_pos;
 		held_structure.y = y_pos;
 	}
+	if(is_null(held_item) and is_null(held_structure)){change_state("idle")}
 }
 
 function player_handle_jumping(){
@@ -358,32 +423,12 @@ function player_handle_jumping(){
 	}
 }
 
-function player_attack(){
-    struct.state_machine.ChangeState("attack")
-    
-}
-
 function player_attack_collision(){
-	var rect_coords = get_interact_shape(direction)
-	var collisions = ds_list_create()
-	var targets = struct.target_objects
-	collision_rectangle_list(x+rect_coords[0],
-							y+rect_coords[1],
-							x+rect_coords[2],
-							y+rect_coords[3],
-							targets,
-							true,
-							true,
-							collisions,
-							true
-							)
-	var total_collisions = ds_list_size(collisions)
-	if(total_collisions > 0){
-		var target = ds_list_find_value(collisions,0);
-		return target;
-	}else{
-        return 0;
-    }
+	var coords = get_interact_shape(direction,struct.stats.attack_range)
+	var collisions = return_multiple_collisions(coords);
+	if(not_null(collisions)){
+		return collisions
+	}
 }
 
 function player_reset_input(){
@@ -396,16 +441,4 @@ function player_reset_input(){
 function player_reset_speed(){
 	x_speed = 0;
 	y_speed = 0;
-}
-
-function player_attack_complete(){
-	struct.state_machine.ChangeState("idle")
-}
-
-function player_knockback_complete(){
-	struct.state_machine.ChangeState("idle");
-}
-
-function player_stun_complete(){
-	struct.state_machine.ChangeState("idle");
 }

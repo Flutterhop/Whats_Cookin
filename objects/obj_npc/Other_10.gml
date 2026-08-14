@@ -11,8 +11,7 @@ target = "";
 wander_distance = 50;
 default_state = "idle";
 active_state = "move";
-idle_time = 3; // default one second of idle when entering the state.
-stun_index = 0;
+idle_time = 120; // default one second of idle when entering the state.
 movement_locked = false;
 friction_amount = .2;
 direction_facing = "left";
@@ -22,9 +21,6 @@ direction_facing = "left";
 target_range = 100;
 target_x = 0;
 target_y = 0;
-attack_speed = 5;
-attack_time = 2; // default time to complete an attack that should be replaced by the length of an attack animation.
-attack_windup_time = 1;
 collision_targets  = struct.grid.fetch_collision_array();
 array_push(collision_targets,obj_character_game)
 
@@ -42,14 +38,15 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
+				var state_time = struct.state_machine.GetStateTime()
+				if(state_time > idle_time){
+					struct.state_machine.ChangeState(active_state)
+				}
 				if(not_null(target)){
 					direction = determine_direction(target)
 				}
+				
 				handle_iframes()
-				var inactive_timer = (time_source_get_state(idle_timer) == time_source_state_initial) or (time_source_get_state(idle_timer) == time_source_state_stopped) or (time_source_get_state(idle_timer) == time_source_state_paused)
-				if(inactive_timer){
-					time_source_start(idle_timer)
-				}
 			}
 		})
 		.AddExit(function(){
@@ -62,7 +59,6 @@ function init_state_machine(){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
 				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 			}
-
 		});	
 	var move_state = new StatementState(struct.state_machine,"move")
 		.AddEnter(function(){
@@ -163,15 +159,15 @@ function init_state_machine(){
 				determine_sprite();
 				image_index = 0;
 				image_speed = 1;
-				var attack_windup_cooldown = (time_source_get_state(attack_windup_timer) == time_source_state_initial) or (time_source_get_state(attack_windup_timer) == time_source_state_stopped) or (time_source_get_state(attack_windup_timer) == time_source_state_paused)
-				if(attack_windup_cooldown){
-					time_source_start(attack_windup_timer)
-				}
 				path_end();
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				var state_time = struct.state_machine.GetStateTime();
+				if(state_time > struct.stats.attack_windup){
+					struct.state_machine.ChangeState("attack")
+				}
 				if(not_null(target)){
 					direction = determine_direction(target)
 				}
@@ -193,17 +189,11 @@ function init_state_machine(){
 		.AddEnter(function(){
 			with(owner){
 				determine_sprite();
-				var attack_cooldown = (time_source_get_state(attack_timer) == time_source_state_initial) or (time_source_get_state(attack_timer) == time_source_state_stopped) or (time_source_get_state(attack_timer) == time_source_state_paused)
-				if(attack_cooldown){
-					time_source_start(attack_timer)
-				}
 				image_index = 0;
 				image_speed = 1;
-
 			}
 		})
 		.AddUpdate(function(){
-
 			with(owner){
 				handle_iframes()
 			}
@@ -218,45 +208,37 @@ function init_state_machine(){
 				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 			}
 	});	
-    var stunned_state = new StatementState(struct.state_machine,"stunned")
+	var stunned_state = new StatementState(struct.state_machine,"stunned")
 		.AddEnter(function(){
 			with(owner){
-				path_end()
                 movement_locked = true;
-				if(struct.knockback_time > 0){
-					if(time_source_get_state(knockback_timer) != time_source_state_active){
-						time_source_reconfigure(knockback_timer,struct.knockback_time,time_source_units_seconds,knockback_complete)
-						time_source_start(knockback_timer);
-					}
-				}
-				if(struct.stun_amount > 0){
-					if(time_source_get_state(stun_timer) != time_source_state_active){
-						time_source_reconfigure(stun_timer,struct.stun_amount,time_source_units_seconds,stun_complete)
-						time_source_start(stun_timer);
-					}
-				}
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				var knockback_done = false
+				var stun_done = false
+				var state_time = struct.state_machine.GetStateTime();
 				if(struct.knockback_amount > 0){
 					apply_knockback();
+				}else{
+					knockback_done = true;
 				}
 				if(struct.stun_amount > 0){
 					struct.stun_amount--;
-					stun_index++;
-					if(stun_index > sprite_get_number(spr_effect_stun)){
-						stun_index = 0;
-					}
+				}else{
+					stun_done = true;
 				}
-				handle_iframes()
+				handle_iframes();
+				if(knockback_done and stun_done){
+					struct.state_machine.ChangeState("idle");
+				}
 			}
 		})
-
 		.AddExit(function(){
 			with(owner){
-				stun_index = 0;
-                movement_locked = false;
+				movement_locked = false;
+
 			}
 		})
 		.AddDraw(function(){
@@ -264,10 +246,8 @@ function init_state_machine(){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
 				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 				if(struct.stun_amount > 0){
-					draw_sprite_ext(spr_effect_stun,stun_index,x,y,1,1,0,c_white,1);
+					draw_sprite_ext(spr_effect_stun,image_index,x,y,1,1,0,c_white,1);
 				}
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 			}
 		});
     var dead_state = new StatementState(struct.state_machine,"dead")

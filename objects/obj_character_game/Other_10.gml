@@ -8,3 +8,4 @@ x_speed = 0
 y_speed = 0
 z_position = 0; // Position in the air.
 direction_facing = "right";
+

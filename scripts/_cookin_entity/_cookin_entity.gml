@@ -44,8 +44,8 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		var new_struct = self
 		var spawn_x_pos = (x_pos * grid.cell_width) + grid.cell_width / 2
 		var spawn_y_pos = (y_pos * grid.cell_height) + grid.cell_height / 2
-		x_coord = floor(x_coord)
-		y_coord = floor(y_coord)
+		x_pos = floor(x_pos)
+		y_pos = floor(y_pos)
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
@@ -73,6 +73,11 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		}
 	}
 	
+	static destroy_entity = function(){
+		instance_destroy(instance);
+		instance = "";
+	}
+	
 	call_state_machine = function(){
 		if(variable_instance_exists(instance,"init_state_machine")){
 			instance.init_state_machine()
@@ -88,10 +93,16 @@ function System_Entity(new_name,new_object_reference,new_grid,has_sm) : Cookin_E
 	
 }
 
+function Minigame_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	
+	
+}
+
 function Customer_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
 	
 	
 }
+
 ////@description Contains the ds_grid for the game map. Creating a new Map_Grid will create a ds_grid automatically with the dimensions provided.
 ////@function Map_Grid
 ////@param {string} Name Grid Name
@@ -107,6 +118,7 @@ function Game_Entity(new_name,new_object_reference = _obj_cookin_entity,new_grid
 	knockback_direction = 0;
 	stun_amount		= 0;
 	
+
 	
 	static take_damage = function(source,amount,iframe_amount = 10,_direction = 0,_knockback_amount = 0,_stun_amount = 0){
 		var death_state = state_machine.GetStateName("dead");
@@ -175,7 +187,7 @@ function Game_Entity(new_name,new_object_reference = _obj_cookin_entity,new_grid
 	}
 }
 
-function Structure_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats)
+function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats)
 : Game_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible) constructor{
 	grid_x = new_grid_x;
 	grid_y = new_grid_y;
@@ -233,6 +245,15 @@ function Structure_Entity(new_name,new_object_reference,new_grid,has_sm,new_invi
 		call_later(30,time_source_units_frames,call_state_machine)
 	}
 	
+
+	
+    static can_interact = function(){
+        if(not_null(stats)){
+            if(not_null(stats.has_interaction)){
+                return stats.has_interaction
+            }
+        }
+	}
 	static can_put_item = function(){
 		if(array_length(inventory) < limit){
 			return true;
@@ -289,15 +310,41 @@ function Structure_Entity(new_name,new_object_reference,new_grid,has_sm,new_invi
 			}
 		}
 	}
+	interact = function(){
+		EchoDebug("Base Interact Function.")
+		if(not_null(instance)){
+			if(variable_instance_exists(instance,"interaction")){
+				instance.interaction();
+			}
+		}
+	}
+	static spawn_minigame = function(){
+		//Spawn Mini Game and prompt for input.
+		if(not_null(stats.minigame_reference)){
+			stats.minigame_reference.spawn_entity(instance.x,instance.y,"minigames")
+			var new_game = stats.minigame_reference.instance;
+			return new_game
+		}
+		EchoDebug("No Minigame assigned returning null.")
+		return "";
+	}
+	static end_minigame = function(){
+		//Spawn Mini Game and prompt for input.
+		if(not_null(stats.minigame_reference.instance)){
+			stats.minigame_reference.destroy_entity()
+		}
+		EchoDebug("No Minigame assigned returning null.")
+		return "";
+	}
 }
 
-function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_target_objects)
-: Structure_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
+function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats,new_target_objects)
+: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats) constructor{
 	target_objects = new_target_objects;
 }
 
-function Kitchen_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit)
-: Structure_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
+function Kitchen_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats)
+: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_grid_x,new_grid_y,new_inventory,new_limit,new_stats) constructor{
 	
 	
 }
@@ -414,6 +461,8 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 	equipment = "unarmed"
 	single_direction = false;
 	target_objects = [obj_enemy_npc]
+    held_entity = "";
+	interaction_target = "";
 	
 	///INPUT CONTROL
 	input_allowed = true;
@@ -449,6 +498,14 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 		EchoDebug("No damage value found. Returning 0.");
 		return 0;
 	}
+    static has_item = function(){
+        if(not_null(held_entity)){
+            if(is_instanceof(held_entity.struct,Item_Game)) or is_instanceof(held_entity.struct,Structure_Game) {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 function NPC_Character(new_name,new_object_reference = obj_neutral_npc,new_grid = "",has_sm = true,new_invincible,new_stats,new_target_objects = [])
@@ -471,12 +528,12 @@ function NPC_Neutral(new_name,new_object_reference = obj_neutral_npc,new_grid = 
 	single_direction = false;
 }
 
-function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost = 1)
+function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "")
 : Game_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible) constructor {
 	item_sprite	= new_item_sprite;
 	item_icon	= new_item_icon;
-	cost		= new_cost;
 	held		= false;
+	stats 		= new_stats;
 	
 	static pick_up = function(){
 		if(!held){
@@ -518,31 +575,56 @@ function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 
 }
 
-function Item_Food(new_name,new_object_reference = _obj_food_item,new_grid = "",has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost,new_value = 1,new_flavors = ["plain"])
-: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_cost) constructor {
-	value = new_value;
-	flavors = new_flavors;
+function Item_Food(new_name,new_object_reference = _obj_food_item,new_grid = "",has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "")
+: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_stats) constructor {
+
+	stats = new_stats;
 }
 
-function Food_Ingredient(new_name,new_object_reference = obj_ingredient_food,new_grid,has_sm = true = 1,new_invincible = false,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost = 1,new_value = 1,new_flavors = ["plain"],is_raw = false)
-: Item_Food(new_name,new_object_reference,new_grid,has_sm = 1,new_invincible = false,new_item_sprite,new_item_icon,new_cost,new_value,new_flavors) constructor {
+function Food_Ingredient(new_name,new_object_reference = obj_ingredient_food,new_grid,has_sm = true = 1,new_invincible = false,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "",is_raw = false)
+: Item_Food(new_name,new_object_reference,new_grid,has_sm = 1,new_invincible = false,new_item_sprite,new_item_icon,new_stats) constructor {
 	raw = is_raw
-	cost = new_cost
+	
+		
+	static can_process = function(process_target){
+		if(not_null(process_target.struct)){
+			if(is_instanceof(process_target.struct,Structure_Game)){
+				if(variable_instance_exists(process_target.struct.stats,"str_process_type")){
+					
+					var item_processes = stats.item_process_types;
+					var item_processes_to_check = array_length(item_processes);
+					
+					var processes = process_target.struct.stats.str_process_type
+					var process_to_check = array_length(processes)
+					
+					for(var i = 0;i < process_to_check;i++){
+						var current_process = processes[i];
+						for(var j = 0; j < item_processes_to_check;j++){ 
+							var current_item_process = item_processes[j];
+							if(current_process == current_item_process){
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
-function Food_Meal(new_name,new_object_reference = obj_meal_food,new_grid,has_sm = true = 1,new_invincible = false,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost = 1,new_value = 1,new_flavors = ["plain"],is_raw = false)
-: Item_Food(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_cost,new_value,new_flavors) constructor {
-	cost = new_cost
+function Food_Meal(new_name,new_object_reference = obj_meal_food,new_grid,has_sm = true = 1,new_invincible = false,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "",is_raw = false)
+: Item_Food(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_stats) constructor {
+
 }
 
-function Item_Equipment(new_name,new_object_reference = _obj_equipment_item,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost = 1,new_value = 1,new_flavors = ["plain"])
-: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_cost) constructor {
-	value = new_value;
+function Item_Equipment(new_name,new_object_reference = _obj_equipment_item,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "")
+: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_stats) constructor {
+
 }
 
-function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_cost,new_value = 1)
-: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_cost) constructor {
-	value = new_value;
+function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "")
+: Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_stats) constructor {
+
 }
 
 function Game_Stats() constructor {}

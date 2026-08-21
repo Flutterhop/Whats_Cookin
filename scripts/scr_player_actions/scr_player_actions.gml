@@ -50,7 +50,7 @@ function player_input_action_1(player){
 }
 
 function player_input_action_1_pressed(player){
-	read_interaction_collision();
+	read_interaction_1_collision();
 }	
 
 function player_input_action_1_released(player){
@@ -71,7 +71,7 @@ function player_input_action_3(player){
 }
 
 function player_input_action_3_pressed(player){
-	if(struct.state_machine.IsInState("hold") and not_null(held_item)){
+	if(struct.state_machine.IsInState("hold") and not_null(struct.held_entity)){
 		struct.state_machine.ChangeState("throw");
 	}else{
 		read_structure_collision();
@@ -85,4 +85,15 @@ function player_input_action_3_released(player){
 			struct.state_machine.ChangeState("hold");
 		}
 	}
+}
+
+function player_input_action_4(player){
+	
+}
+
+function player_input_action_4_pressed(player){
+	read_interaction_2_collision();
+}
+function player_input_action_4_released(player){
+
 }

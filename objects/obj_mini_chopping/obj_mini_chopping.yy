@@ -1,19 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"_obj_food_item",
+  "%Name":"obj_mini_chopping",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"_obj_food_item",
+  "name":"obj_mini_chopping",
   "overriddenProperties":[],
   "parent":{
-    "name":"Food",
-    "path":"folders/Objects/Items/Food.yy",
+    "name":"Chopping",
+    "path":"folders/Objects/Mini Game/Chopping.yy",
   },
   "parentObjectId":{
-    "name":"obj_item_game",
-    "path":"objects/obj_item_game/obj_item_game.yy",
+    "name":"obj_mini_game",
+    "path":"objects/obj_mini_game/obj_mini_game.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -32,7 +32,13 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_game_chopping",
+    "path":"sprites/spr_game_chopping/spr_game_chopping.yy",
+  },
   "spriteMaskId":null,
+  "tags":[
+    "alert_object",
+  ],
   "visible":true,
 }

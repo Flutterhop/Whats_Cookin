@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_process_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_process_actions",
+  "parent":{
+    "name":"Kitchen",
+    "path":"folders/Objects/Structures/Kitchen.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

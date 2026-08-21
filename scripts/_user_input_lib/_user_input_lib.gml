@@ -127,8 +127,8 @@ function input_determine_priority(){
 		var sort = function(prio_01,prio_02){
 			var obj_01 = prio_01.object_index;
 			var obj_02 = prio_02.object_index;
-			var is_priority_01 = object_get_parent(obj_01) == _obj_alert_message_parent;
-			var is_priority_02 = object_get_parent(obj_02) == _obj_alert_message_parent;
+			var is_priority_01 = object_get_parent(obj_01) == _obj_alert_message_parent or object_get_parent(obj_01) == obj_menu_system;
+			var is_priority_02 = object_get_parent(obj_02) == _obj_alert_message_parent or object_get_parent(obj_02) == obj_menu_system;
 			if(is_priority_01 && is_priority_02){
 				return 0
 			}else if(is_priority_01 && !is_priority_02){
@@ -420,19 +420,21 @@ function input_scan_inputs(temp_player){
 		if(InputPressed(INPUT_VERB.RIGHT,temp_player.player_number)){if(variable_instance_exists(self,"input_right_pressed")){input_right_pressed(temp_player);}}
 		if(InputReleased(INPUT_VERB.RIGHT,temp_player.player_number)){if(variable_instance_exists(self,"input_right_released")){input_right_released(temp_player);}}
 		//Action 1 //Reading Released first to manage hold direction logic.
-		if(InputReleased(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_released")){input_action_1_released(temp_player);}}
-		if(InputCheck(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1")){input_action_1(temp_player);}}
-		if(InputPressed(INPUT_VERB.ACCEPT,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_pressed")){input_action_1_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.ACTION_1,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_released")){input_action_1_released(temp_player);}}
+		if(InputCheck(INPUT_VERB.ACTION_1,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1")){input_action_1(temp_player);}}
+		if(InputPressed(INPUT_VERB.ACTION_1,temp_player.player_number)){if(variable_instance_exists(self,"input_action_1_pressed")){input_action_1_pressed(temp_player);}}
 		//Action 2
-		if(InputCheck(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2")){input_action_2(temp_player);}}
-		if(InputPressed(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_pressed")){input_action_2_pressed(temp_player);}}
-		if(InputReleased(INPUT_VERB.CANCEL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_released")){input_action_2_released(temp_player);}}
+		if(InputCheck(INPUT_VERB.ACTION_2,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2")){input_action_2(temp_player);}}
+		if(InputPressed(INPUT_VERB.ACTION_2,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_pressed")){input_action_2_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.ACTION_2,temp_player.player_number)){if(variable_instance_exists(self,"input_action_2_released")){input_action_2_released(temp_player);}}
 		//Action 3
-		if(InputCheck(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3")){input_action_3(temp_player);}}
-		if(InputPressed(INPUT_VERB.SPECIAL,temp_player.player_number)){
-			if(variable_instance_exists(self,"input_action_3_pressed")){
-				input_action_3_pressed(temp_player);}}
-		if(InputReleased(INPUT_VERB.SPECIAL,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_released")){input_action_3_released(temp_player);}}
+		if(InputCheck(INPUT_VERB.ACTION_3,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3")){input_action_3(temp_player);}}
+		if(InputPressed(INPUT_VERB.ACTION_3,temp_player.player_number)){ if(variable_instance_exists(self,"input_action_3_pressed")){ input_action_3_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.ACTION_3,temp_player.player_number)){if(variable_instance_exists(self,"input_action_3_released")){input_action_3_released(temp_player);}}
+		//Action 4
+		if(InputCheck(INPUT_VERB.ACTION_4,temp_player.player_number)){if(variable_instance_exists(self,"input_action_4")){input_action_4(temp_player);}}
+		if(InputPressed(INPUT_VERB.ACTION_4,temp_player.player_number)){ if(variable_instance_exists(self,"input_action_4_pressed")){ input_action_4_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.ACTION_4,temp_player.player_number)){if(variable_instance_exists(self,"input_action_4_released")){input_action_4_released(temp_player);}}
 		//PAUSE
 		if(InputCheck(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause")){input_pause(temp_player);}}
 		if(InputPressed(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause_pressed")){input_pause_pressed(temp_player);}}

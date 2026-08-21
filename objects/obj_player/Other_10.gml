@@ -6,10 +6,6 @@ down_input = 0;
 left_input = 0;
 right_input = 0;
 
-//HOLDING
-held_item = "";
-held_structure = "";
-
 movement_locked = false
 
 //Jumping
@@ -34,6 +30,7 @@ stun_index = 0;//used to animate stun effect
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
 	struct.state_machine.DebugSetErrorBehavior(eStatementErrorBehavior.RETHROW);
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
 			with(owner){
@@ -68,6 +65,7 @@ function init_state_machine(){
 				scribble(string_concat("x_speed: ",x_speed," y_speed: ",y_speed)).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 			}
 	});	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var move_state = new StatementState(struct.state_machine,"move")
 		.AddEnter(function(){
 			with(owner){
@@ -101,10 +99,11 @@ function init_state_machine(){
 			}
 
 	});
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var hold_state = new StatementState(struct.state_machine,"hold")
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite("","hold")
+				determine_sprite("","")
 				interpret_player_controls();
 				handle_movement();
 				move_wrap(true,true,100);
@@ -126,11 +125,13 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
+
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
 				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
 			}
 
 	});
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var throw_state = new StatementState(struct.state_machine,"throw")
 		.AddEnter(function(){
 			with(owner){
@@ -140,7 +141,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite("","hold")
+				determine_sprite("","")
 				interpret_player_controls();
 				handle_holding();
 				reset_input();
@@ -160,13 +161,27 @@ function init_state_machine(){
 		
 
 	});
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var interact_state = new StatementState(struct.state_machine,"interact")
 		.AddEnter(function(){
 			with(owner){
-				determine_sprite("","interact");
+				determine_sprite("","");
 				image_index = 0
+				movement_locked = true;
 			}
-		});	
+		})
+		.AddUpdate(function(){
+			with(owner){
+				handle_interaction();
+			}
+
+		})
+		.AddExit(function(){
+			with(owner){
+				movement_locked = false;
+			}
+		});
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var attack_state = new StatementState(struct.state_machine,"attack")
 		.AddEnter(function(){
 			with(owner){
@@ -214,6 +229,7 @@ function init_state_machine(){
 
             }
         });
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var stunned_state = new StatementState(struct.state_machine,"stunned")
 		.AddEnter(function(){
 			with(owner){
@@ -254,6 +270,7 @@ function init_state_machine(){
 
 			}
 		});
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var dead_state = new StatementState(struct.state_machine,"dead")
 		.AddEnter(function(){
 			with(owner){

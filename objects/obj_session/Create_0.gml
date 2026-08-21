@@ -4,7 +4,10 @@ event_user(1);
 prototype();
 
 function prototype(){
+	initialize_item_stats();
+	initialize_system_entities();
 	initialize_character_stats();
+	initialize_structure_stats();
 	initialize_structure_entities();
 	initialize_character_entities();
 	initialize_item_entities();
@@ -22,7 +25,7 @@ function prototype(){
 												grid,
 												true,
 												false,
-												retrieve_stats("player"),
+												retrieve_stats("player",global.character_stats),
 												"dev",
 												0);
 	player_entity.spawn_grid_entity(8,7,"Instances")
@@ -44,8 +47,8 @@ function prototype(){
 	//_sq.single_direction = true;
 	//_sq.spawn_grid_entity(5,20,"Instances");
 	
-	var hunter_01 = retrieve_entity("hunter",global.character_entities)
-	hunter_01.spawn_grid_entity(5,7,"Instances");
+	//var hunter_01 = retrieve_entity("hunter",global.character_entities)
+	//hunter_01.spawn_grid_entity(5,7,"Instances");
 	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10

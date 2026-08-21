@@ -1,21 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"obj_system_entity",
+  "%Name":"obj_mini_game",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_system_entity",
+  "name":"obj_mini_game",
   "overriddenProperties":[],
   "parent":{
-    "name":"System",
-    "path":"folders/Objects/System.yy",
+    "name":"Mini Game",
+    "path":"folders/Objects/Mini Game.yy",
   },
   "parentObjectId":{
-    "name":"_obj_cookin_entity",
-    "path":"objects/_obj_cookin_entity/_obj_cookin_entity.yy",
+    "name":"obj_menu_system",
+    "path":"objects/obj_menu_system/obj_menu_system.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -36,5 +36,8 @@
   "solid":false,
   "spriteId":null,
   "spriteMaskId":null,
+  "tags":[
+    "alert_object",
+  ],
   "visible":true,
 }

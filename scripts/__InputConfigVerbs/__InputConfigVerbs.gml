@@ -7,10 +7,10 @@ function __InputConfigVerbs()
         DOWN,
         LEFT,
         RIGHT,
-        ACCEPT,
-        CANCEL,
-        ACTION,
-        SPECIAL,
+        ACTION_1,
+        ACTION_2,
+        ACTION_3,
+        ACTION_4,
         PAUSE,
 		DEBUG
     }
@@ -26,27 +26,27 @@ function __InputConfigVerbs()
 	
     if (not INPUT_ON_SWITCH)
     {
-        InputDefineVerb(INPUT_VERB.UP,      "up",         [vk_up],				[-gp_axislv, gp_padu]);
-        InputDefineVerb(INPUT_VERB.DOWN,    "down",       [vk_down],			[ gp_axislv, gp_padd]);
-        InputDefineVerb(INPUT_VERB.LEFT,    "left",       [vk_left],			[-gp_axislh, gp_padl]);
-        InputDefineVerb(INPUT_VERB.RIGHT,   "right",      [vk_right],			[ gp_axislh, gp_padr]);
-        InputDefineVerb(INPUT_VERB.ACCEPT,  "accept",      vk_space,            gp_face1);
-        InputDefineVerb(INPUT_VERB.CANCEL,  "cancel",     ["E"],				gp_face2);
-        InputDefineVerb(INPUT_VERB.ACTION,  "action",      vk_enter,            gp_face3);
-        InputDefineVerb(INPUT_VERB.SPECIAL, "special",     vk_shift,            gp_face4);
-        InputDefineVerb(INPUT_VERB.PAUSE,   "pause",       vk_escape,           gp_start);
+        InputDefineVerb(INPUT_VERB.UP,			"up",			[vk_up],				[-gp_axislv, gp_padu]);
+        InputDefineVerb(INPUT_VERB.DOWN,		"down",			[vk_down],			[ gp_axislv, gp_padd]);
+        InputDefineVerb(INPUT_VERB.LEFT,		"left",			[vk_left],			[-gp_axislh, gp_padl]);
+        InputDefineVerb(INPUT_VERB.RIGHT,   	"right",		[vk_right],			[ gp_axislh, gp_padr]);
+        InputDefineVerb(INPUT_VERB.ACTION_1,	"action_1",		vk_space,            gp_face1);
+        InputDefineVerb(INPUT_VERB.ACTION_2,	"action_2",     ["E"],				gp_face2);
+        InputDefineVerb(INPUT_VERB.ACTION_3,	"action_3",		vk_enter,            gp_face3);
+        InputDefineVerb(INPUT_VERB.ACTION_4,	"action_4",     vk_shift,            gp_face4);
+        InputDefineVerb(INPUT_VERB.PAUSE,		"pause",		vk_escape,           gp_start);
     }
     else //Flip A/B over on Switch
     {
-        InputDefineVerb(INPUT_VERB.UP,      "up",         [vk_up],				[-gp_axislv, gp_padu]);
-        InputDefineVerb(INPUT_VERB.DOWN,    "down",       [vk_down],			[ gp_axislv, gp_padd]);
-        InputDefineVerb(INPUT_VERB.LEFT,    "left",       [vk_left],			[-gp_axislh, gp_padl]);
-        InputDefineVerb(INPUT_VERB.RIGHT,   "right",      [vk_right],			[ gp_axislh, gp_padr]);
-        InputDefineVerb(INPUT_VERB.ACCEPT,  "accept",     ["E"],				gp_face1);
-        InputDefineVerb(INPUT_VERB.CANCEL,  "cancel",     vk_space,				gp_face2);
-        InputDefineVerb(INPUT_VERB.ACTION,  "action",     vk_enter,				gp_face3);
-        InputDefineVerb(INPUT_VERB.SPECIAL, "special",    vk_shift,				gp_face4);
-        InputDefineVerb(INPUT_VERB.PAUSE,   "pause",      vk_escape,			gp_start);
+        InputDefineVerb(INPUT_VERB.UP,			"up",         	[vk_up],				[-gp_axislv, gp_padu]);
+        InputDefineVerb(INPUT_VERB.DOWN,		"down",       	[vk_down],			[ gp_axislv, gp_padd]);
+        InputDefineVerb(INPUT_VERB.LEFT,    	"left",			[vk_left],			[-gp_axislh, gp_padl]);
+        InputDefineVerb(INPUT_VERB.RIGHT,		"right",		[vk_right],			[ gp_axislh, gp_padr]);
+        InputDefineVerb(INPUT_VERB.ACTION_1,	"action_1",     ["E"],				gp_face1);
+        InputDefineVerb(INPUT_VERB.ACTION_2,	"action_2",     vk_space,			gp_face2);
+        InputDefineVerb(INPUT_VERB.ACTION_3,	"action_3",     vk_enter,			gp_face3);
+        InputDefineVerb(INPUT_VERB.ACTION_4,	"action_4",		vk_shift,			gp_face4);
+        InputDefineVerb(INPUT_VERB.PAUSE,		"pause",		vk_escape,			gp_start);
     }
 	
 	

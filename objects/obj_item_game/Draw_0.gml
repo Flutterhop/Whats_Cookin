@@ -3,7 +3,7 @@ if(is_struct(struct)){
 		if(struct.held){
 			
 		}else{
-			draw_sprite_ext(struct.item_sprite,0,x,y,1,1,0,c_white,1);
+			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}
 	}
 }else{

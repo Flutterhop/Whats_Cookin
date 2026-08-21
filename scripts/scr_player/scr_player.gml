@@ -191,7 +191,9 @@ function player_read_interaction_collision(){
 	//Determine the type of interaction based on player state.
 	//check if the target position is occupied
 	var can_put = struct.state_machine.IsInState("hold") ? true : false
-	var can_pick = !struct.state_machine.IsInState("hold") ? true : false;
+    var has_item = struct.has_item();
+	var can_pick = (!struct.state_machine.IsInState("hold") and is_null(struct.held_entity)) ? true : false;
+
 	
 	//1. check for environment
 	var environment_target = detect_interactions(obj_environment_game);
@@ -202,16 +204,17 @@ function player_read_interaction_collision(){
 	// 2. check for structure
 	var structure_target = detect_interactions(obj_structure_game);
 	if(not_null(structure_target)){
+        var can_interact = structure_target.struct.can_interact();
 		can_put = structure_target.struct.can_put_item();
-		if(can_put and not_null(held_item)){
-			structure_target.struct.insert_item(held_item);
-			held_item.struct.drop(structure_target.x,structure_target.y);
+		if(can_put and has_item){
+			structure_target.struct.insert_item(struct.held_entity);
+			struct.held_entity.struct.drop(structure_target.x,structure_target.y);
 			struct.state_machine.ChangeState("idle");
-			held_item = "";
+			struct.held_entity = "";
 			return;
 		}
 		var can_take = structure_target.struct.can_take_item();
-		if(can_take and is_null(held_item)){
+		if(can_take and is_null(struct.held_entity)){
 			var taken_item = structure_target.struct.remove_item();
 			if(not_null(taken_item)){
 				pick_up_item(taken_item)
@@ -222,21 +225,88 @@ function player_read_interaction_collision(){
 	var item_target = detect_interactions(obj_item_game);
 	if(not_null(item_target) and can_pick){
 		pick_up_item(item_target)
-	}else if(not_null(held_item) and can_put){
-		drop_item(held_item)
+	}else if(not_null(struct.held_entity) and can_put){
+		drop_item(struct.held_entity)
+	}
+}
+
+function player_read_interaction_1_collision(){
+	//Determine the type of interaction based on player state.
+	//check if the target position is occupied
+	var can_put = struct.state_machine.IsInState("hold") ? true : false
+    var has_item = struct.has_item();
+	var can_pick = (!struct.state_machine.IsInState("hold") and is_null(struct.held_entity)) ? true : false;
+
+	
+	//1. check for environment
+	var environment_target = detect_interactions(obj_environment_game);
+	if(not_null(environment_target)){
+		//Environment entity is blocking interaction
+		return;
+	}
+	// 2. check for structure
+	var structure_target = detect_interactions(obj_structure_game);
+	if(not_null(structure_target)){
+        var can_interact = structure_target.struct.can_interact();
+		can_put = structure_target.struct.can_put_item();
+		if(can_put and has_item){
+			structure_target.struct.insert_item(struct.held_entity);
+			struct.held_entity.struct.drop(structure_target.x,structure_target.y);
+			struct.state_machine.ChangeState("idle");
+			struct.held_entity = "";
+			return;
+		}
+		var can_take = structure_target.struct.can_take_item();
+		if(can_take and is_null(struct.held_entity)){
+			var taken_item = structure_target.struct.remove_item();
+			if(not_null(taken_item)){
+				pick_up_item(taken_item)
+				return;
+			}			
+		}
+	}
+	var item_target = detect_interactions(obj_item_game);
+	if(not_null(item_target) and can_pick){
+		pick_up_item(item_target)
+	}else if(not_null(struct.held_entity) and can_put){
+		drop_item(struct.held_entity)
+	}
+}
+
+function player_read_interaction_2_collision(){
+	//Determine the type of interaction based on player state.
+	//check if the target position is occupied
+    var has_item = struct.has_item();
+
+	
+	//1. check for environment
+	var environment_target = detect_interactions(obj_environment_game);
+	if(not_null(environment_target)){
+		//Environment entity is blocking interaction
+		return;
+	}
+	// 2. check for structure
+	var structure_target = detect_interactions(obj_structure_game);
+	if(not_null(structure_target)){
+        var can_interact = structure_target.struct.can_interact();
+		if(can_interact and !has_item){
+			structure_target.struct.interact();
+			struct.state_machine.ChangeState("interact");
+			return;
+		}
 	}
 }
 
 function player_pick_up_item(target_item){
 	if(is_struct(target_item.struct)){
 		target_item.struct.pick_up()
-		held_item = target_item;
-		if(not_null(held_item)){struct.state_machine.ChangeState("hold")}
+		struct.held_entity = target_item;
+		if(not_null(struct.held_entity)){struct.state_machine.ChangeState("hold")}
 	}
 }
 
 function player_drop_item(){
-	if(not_null(held_item)){
+	if(not_null(struct.held_entity)){
 		var item_target = detect_interactions(obj_item_game);
 		var coords = get_interact_shape(direction)
 		if(not_null(item_target)){
@@ -245,20 +315,27 @@ function player_drop_item(){
 		}
 		var x_pos = (coords[0] + coords[2])/2
 		var y_pos = (coords[1] + coords[3])/2
-		held_item.struct.drop(x + x_pos,y + y_pos);
-		held_item = "";
+		struct.held_entity.struct.drop(x + x_pos,y + y_pos);
+		struct.held_entity = "";
+		struct.state_machine.ChangeState("idle")
 	}
 }
 
 function player_throw_item(){
 	var strength = struct.stats.throw_strength
 	var dir = direction
-	with(held_item){
+	with(struct.held_entity){
 		motion_add(dir,strength);
 	}
-	held_item.struct.throw_item();
-	held_item = "";
-	if(is_null(held_item)){struct.state_machine.ChangeState("idle")}
+	struct.held_entity.struct.throw_item();
+	struct.held_entity = "";
+	if(is_null(struct.held_entity)){struct.state_machine.ChangeState("idle")}
+}
+
+function player_handle_interaction(){
+	if(not_null(struct.interaction_target)){
+		struct.interaction_target.interact();
+	}
 }
 
 function player_read_structure_collision(){
@@ -278,7 +355,7 @@ function player_read_structure_collision(){
 	// 2a. if found then try to assemble/pick up
 	if(not_null(structure_target)){
 		can_assemble = structure_target.struct.can_assemble();
-		if(can_assemble and is_null(held_structure)){
+		if(can_assemble and is_null(struct.held_entity)){
 			assemble_structure(structure_target);
 			return;
 		}
@@ -295,11 +372,11 @@ function player_read_structure_collision(){
 }
 
 function player_deploy_structure(){
-	if(not_null(held_structure)){
+	if(not_null(struct.held_entity)){
 		var collisions = ds_list_create()
 		var coords = get_interact_shape(direction);
 		var targets = [obj_item_game,obj_structure_game]
-		with(held_structure){
+		with(struct.held_entity){
 
 			collision_rectangle_list(x+coords[0],
 									y+coords[1],
@@ -323,8 +400,8 @@ function player_deploy_structure(){
 		y_pos /= struct.grid.cell_height
 		x_pos = floor(x_pos)
 		y_pos = floor(y_pos)
-		held_structure.struct.deploy(x_pos,y_pos);
-		held_structure = "";
+		struct.held_entity.struct.deploy(x_pos,y_pos);
+		struct.held_entity = "";
 		return true
 	}
 		
@@ -342,7 +419,7 @@ function player_assemble_structure(target_structure){
 		var x1 = floor(x_pos * struct.grid.cell_width)
 		var y1 = floor(y_pos * struct.grid.cell_height)
 		target_structure.struct.assemble(x1,y1)
-		held_structure = target_structure;
+		struct.held_entity = target_structure;
 		if(not_null(target_structure)){struct.state_machine.ChangeState("hold")}
 	}
 }
@@ -378,18 +455,21 @@ function player_jump(){
 }
 
 function player_handle_holding(){
-	if(not_null(held_item)){
-		held_item.x = x;
-		held_item.y = y;
+	if(is_null(struct.held_entity)){return;}
+    var is_structure = is_instanceof(struct.held_entity.struct,Structure_Game)
+    var is_item = is_instanceof(struct.held_entity.struct,Item_Game)
+	if(not_null(struct.held_entity) and is_item){
+		struct.held_entity.x = x;
+		struct.held_entity.y = y;
 	}
-	if(not_null(held_structure)){
+	if(not_null(struct.held_entity) and is_structure){
 		var coords = get_interact_shape(direction);
 		var x_pos = x + (coords[0] + coords[2])/2
 		var y_pos = y + (coords[1] + coords[3])/2
-		held_structure.x = x_pos;
-		held_structure.y = y_pos;
+		struct.held_entity.x = x_pos;
+		struct.held_entity.y = y_pos;
 	}
-	if(is_null(held_item) and is_null(held_structure)){change_state("idle")}
+	if(is_null(struct.held_entity)){change_state("idle")}
 }
 
 function player_handle_jumping(){

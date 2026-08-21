@@ -5,7 +5,36 @@ enum Item_Game_type{
 }
 
 
+function Item_Stats(new_name,new_cost)	:Game_Stats() constructor {
+	name = new_name;
+	cost = new_cost;
+}
 
-function initialize_item(){
+function Food_Stats(new_name,new_cost,new_value,new_flavors)
+ : Item_Stats(new_name,new_cost)constructor {
+	flavors = new_flavors
 	
+}
+
+function Ingredient_Stats(new_name,new_cost,new_value,new_flavors,new_process_speed,new_process_types)
+ : Food_Stats(new_name,new_cost,new_value,new_flavors)constructor {
+	process_speed = new_process_speed;
+	item_process_types = new_process_types;
+
+}
+
+function Meal_Stats(new_name,new_cost,new_value,new_flavors)
+ : Food_Stats(new_name,new_cost,new_value,new_flavors)constructor {
+
+	
+}
+
+function Equipment_Stats(new_name,new_cost)
+ : Item_Stats(new_name,new_cost) constructor {
+
+}
+
+function Tool_Stats(new_name,new_cost)
+ : Item_Stats(new_name,new_cost) constructor {
+
 }

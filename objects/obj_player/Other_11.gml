@@ -16,6 +16,8 @@ detect_interactions			= method(id,player_detect_interactions);
 read_structure_collision	= method(id,player_read_structure_collision);
 attack_collision            = method(id,player_attack_collision);
 read_interaction_collision	= method(id,player_read_interaction_collision);
+read_interaction_1_collision	= method(id,player_read_interaction_1_collision);
+read_interaction_2_collision	= method(id,player_read_interaction_2_collision);
 return_collision 			= method(id,player_return_collision);
 return_multiple_collisions 	= method(id,player_return_multiple_collisions);
 
@@ -23,7 +25,8 @@ return_multiple_collisions 	= method(id,player_return_multiple_collisions);
 update_sprites				= method(id,player_update_sprites);
 pick_up_item				= method(id,player_pick_up_item);
 drop_item					= method(id,player_drop_item);
-throw_item 					= method(id,player_throw_item)
+throw_item 					= method(id,player_throw_item);
+handle_interaction 			= method(id,player_handle_interaction);
 
 /////////////////////////////////////////BUILDING METHODS////////////////////////////////////////////////////////////
 handle_holding				= method(id,player_handle_holding);
@@ -53,3 +56,6 @@ input_action_2_pressed		= method(id,player_input_action_2_pressed);
 input_action_3				= method(id,player_input_action_3);
 input_action_3_pressed		= method(id,player_input_action_3_pressed);
 input_action_3_released		= method(id,player_input_action_3_released);
+input_action_4				= method(id,player_input_action_4);
+input_action_4_pressed		= method(id,player_input_action_4_pressed);
+input_action_4_released		= method(id,player_input_action_4_released);

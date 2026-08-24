@@ -217,7 +217,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	
 	}
 		
-	static fetch_collision_array = function(){
+	static fetch_collision_array = function(extra_collisions = ""){
 		var return_array = array_create(0)
 		var obstacle_layer_counter = array_length(obstacle_tiles_to_check);
 		var structure_layer_counter = array_length(structure_tiles_to_check);
@@ -230,6 +230,9 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		}
 		for(var k = 0; k < instance_counter; k++){
 			array_insert(return_array,i,instances_to_check[k])
+		}
+		if(not_null(extra_collisions)){
+			array_concat(instances_to_check,extra_collisions);
 		}
 		
 		return return_array;

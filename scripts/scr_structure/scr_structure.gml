@@ -3,12 +3,20 @@ enum structure_type{
 	Kitchen = 62
 }
 enum process_type{
-	cut = 1,
-	knead = 2,
-	mix = 3,
-	blend = 4,
-	peel = 5
+	unprocessed = 1,
+	cut = 2,
+	knead = 3,
+	mix = 4,
+	blend = 5,
+	peel = 6
 }
+global.processes = ds_map_create()
+ds_map_add(global.processes,process_type.unprocessed,"unprocessed");
+ds_map_add(global.processes,process_type.cut,"cut");
+ds_map_add(global.processes,process_type.knead,"knead");
+ds_map_add(global.processes,process_type.mix,"mix");
+ds_map_add(global.processes,process_type.blend,"blend");
+ds_map_add(global.processes,process_type.peel,"peel");
 
 function Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "")	:Game_Stats() constructor {
 	name = new_name;
@@ -36,9 +44,7 @@ function Kitchen_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_
 	process_speed = new_process_speed;
 	str_process_type = new_process_type;
 	
-	static can_process = function(process_target){
-		
-	}
+
 }
 
 

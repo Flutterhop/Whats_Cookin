@@ -122,54 +122,64 @@ function get_interact_shape(query_direction,range = 0){
 	var bottom_right_y = 0
 	var x_increment = range_mod
 	var y_increment = range_mod
+	var modifier = 2;
 	switch(query_direction){
 		case dir_face.east://0
 			top_left_x += x_increment;
+			//Cut the x increment value closest to the player in half
+			//This makes the rectangle originate closer to the players body.
+			top_left_x -= (x_increment / 2);
 			top_left_y -= y_increment;
-			bottom_right_x += x_increment * 2;
+			bottom_right_x += x_increment * modifier;
 			bottom_right_y += y_increment;
 		break;
 		case dir_face.north_east://1
 			top_left_x += x_increment;
-			top_left_y -= y_increment * 2;
-			bottom_right_x += x_increment * 2;
-			bottom_right_y -= y_increment;
+			top_left_x -= (x_increment / 2);
+			top_left_y -= y_increment * (modifier + .5);
+			top_left_y += (y_increment / 2);
+			bottom_right_x += x_increment * modifier;
+			bottom_right_y -= (y_increment / 2);
 		break;
 		case dir_face.north://2
 			top_left_x -= x_increment;
-			top_left_y -= y_increment * 2;
+			top_left_y -= y_increment * modifier;
 			bottom_right_x += x_increment;
-			bottom_right_y -= y_increment;
+			bottom_right_y -= (y_increment / 2);
 		break;
 		case dir_face.north_west://3
-			top_left_x -= x_increment * 2;
-			top_left_y -= y_increment * 2;
+			top_left_x -= x_increment * modifier;
+			top_left_y -= y_increment * modifier;
 			bottom_right_x -= x_increment;
+			bottom_right_x += (x_increment / 2);
 			bottom_right_y -= y_increment;
+			bottom_right_y += (y_increment) / 2;
 		break;
 		case dir_face.west://4
 			top_left_x -= x_increment * 2;
 			top_left_y -= y_increment;
-			bottom_right_x -= x_increment;
+			bottom_right_x -= (x_increment / 2) ;
 			bottom_right_y += y_increment;
 		break;
 		case dir_face.south_west://5
-			top_left_x -= x_increment * 2;
+			top_left_x -= x_increment * modifier;
 			top_left_y += y_increment;
-			bottom_right_x -= x_increment;
-			bottom_right_y += y_increment * 2;
+			top_left_y -= (y_increment / 2);
+			bottom_right_x -= (x_increment / 2);
+			bottom_right_y += y_increment * modifier;
 		break;
 		case dir_face.south://6
 			top_left_x -= x_increment;
 			top_left_y += y_increment;
+			top_left_y -= (y_increment / 2);
 			bottom_right_x += x_increment;
-			bottom_right_y += y_increment * 2;
+			bottom_right_y += y_increment * modifier;
 		break;
 		case dir_face.south_east://7
-			top_left_x += x_increment;
-			top_left_y += y_increment;
-			bottom_right_x += x_increment * 2;
-			bottom_right_y += y_increment * 2;
+			top_left_x += (x_increment / 2);
+			top_left_y += (y_increment / 2);
+			bottom_right_x += x_increment * modifier;
+			bottom_right_y += y_increment * modifier;
 		break;
 	}
 	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
@@ -227,6 +237,7 @@ function player_read_interaction_collision(){
 		pick_up_item(item_target)
 	}else if(not_null(struct.held_entity) and can_put){
 		drop_item(struct.held_entity)
+		struct.state_machine.ChangeState("idle")
 	}
 }
 
@@ -268,8 +279,11 @@ function player_read_interaction_1_collision(){
 	var item_target = detect_interactions(obj_item_game);
 	if(not_null(item_target) and can_pick){
 		pick_up_item(item_target)
+		return
 	}else if(not_null(struct.held_entity) and can_put){
 		drop_item(struct.held_entity)
+		struct.state_machine.ChangeState("idle")
+		return
 	}
 }
 
@@ -290,8 +304,8 @@ function player_read_interaction_2_collision(){
 	if(not_null(structure_target)){
         var can_interact = structure_target.struct.can_interact();
 		if(can_interact and !has_item){
-			structure_target.struct.interact();
 			struct.state_machine.ChangeState("interact");
+			structure_target.struct.interact(id);
 			return;
 		}
 	}
@@ -301,7 +315,9 @@ function player_pick_up_item(target_item){
 	if(is_struct(target_item.struct)){
 		target_item.struct.pick_up()
 		struct.held_entity = target_item;
-		if(not_null(struct.held_entity)){struct.state_machine.ChangeState("hold")}
+		struct.state_machine.ChangeState("hold")
+	}else{
+		call_later(300,time_source_units_frames,player_pick_up_item(target_item))
 	}
 }
 
@@ -429,9 +445,17 @@ function player_handle_movement(){
 		direction = InputDirection(0,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 		if(!movement_locked){
 			move_and_collide(x_speed,y_speed,collision_targets,3);
+			if(struct.state_machine.IsInState("idle")){
+				struct.state_machine.ChangeState("move");
+			}
+			image_speed = visual_speed;
 		}
 	}else{
 		move_and_collide(0,0,collision_targets,3);
+		if(struct.state_machine.IsInState("move")){
+			struct.state_machine.ChangeState("idle");
+		}
+		image_speed = 0;
 	}
 	//handle_jumping()
 }
@@ -469,7 +493,6 @@ function player_handle_holding(){
 		struct.held_entity.x = x_pos;
 		struct.held_entity.y = y_pos;
 	}
-	if(is_null(struct.held_entity)){change_state("idle")}
 }
 
 function player_handle_jumping(){

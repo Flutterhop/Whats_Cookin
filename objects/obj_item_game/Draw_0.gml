@@ -1,3 +1,5 @@
+event_inherited()
+
 if(is_struct(struct)){
 	if(not_null(struct.item_sprite)){
 		if(struct.held){

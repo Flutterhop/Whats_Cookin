@@ -47,8 +47,8 @@ function npc_handle_pathfinding(){
 			if(not_null(target)){
 				// Path exists so we need to check if the path needs to be 
 				// recalculated based on the distance to the target.
-				var target_x = path_get_point_x(path_index,path_get_number(path_index) - 1);
-				var target_y = path_get_point_y(path_index,path_get_number(path_index) - 1);
+				target_x = path_get_point_x(path_index,path_get_number(path_index) - 1);
+				target_y = path_get_point_y(path_index,path_get_number(path_index) - 1);
 				var target_distance = point_distance(target_x,target_y,target.x,target.y)
 				///If too far away then recalculate the path.
 				if(target_distance > 150){
@@ -157,7 +157,23 @@ function npc_apply_knockback(){
 		struct.knockback_amount = 0;
 	}
 }
-	
+
+/////////////////////////////////////////////LOOT METHODS/////////////////////////////////////////////////
+
+function npc_spawn_loot(){
+	var loot_entity
+	if(not_null(struct.stats)){
+		loot_entity = retrieve_entity(struct.stats.loot_key,global.item_entities)
+		if(not_null(loot_entity)){
+			if(layer_exists("items")){
+				var loot = loot_entity.spawn_entity(x,y,"items");
+			}else{ 
+				var loot = loot_entity.spawn_entity(x,y,"Instances");
+				EchoDebug("items layer not found spawning on instances.")
+			}
+		}
+	}
+}
 /////////////////////////////////////////////TIMER METHODS////////////////////////////////////////////////
 		
 function npc_get_active_timers(){

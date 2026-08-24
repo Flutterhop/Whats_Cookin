@@ -12,7 +12,16 @@ function __InputConfigVerbs()
         ACTION_3,
         ACTION_4,
         PAUSE,
-		DEBUG
+		DEBUG,
+		DEBUG_F1,
+		DEBUG_F2,
+		DEBUG_F3,
+		DEBUG_F4,
+		DEBUG_F5,
+		DEBUG_F6,
+		DEBUG_F7,
+		DEBUG_F8,
+		DEBUG_F9	
     }
     
     enum INPUT_CLUSTER
@@ -21,8 +30,16 @@ function __InputConfigVerbs()
         //Clusters are used for two-dimensional checkers (InputDirection() etc.)
         NAVIGATION
     }
-    InputDefineVerb(INPUT_VERB.DEBUG,       "debug",      [vk_home,vk_pageup],undefined)
-	
+    InputDefineVerb(INPUT_VERB.DEBUG,			"debug",		[vk_home,vk_pageup],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F1,		"debug_f1",		[vk_f1],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F2,		"debug_f2",		[vk_f2],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F3,		"debug_f3",		[vk_f3],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F4,		"debug_f4",		[vk_f4],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F5,		"debug_f5",		[vk_f5],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F6,		"debug_f6",		[vk_f6],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F7,		"debug_f7",		[vk_f7],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F8,		"debug_f8",		[vk_f8],undefined)
+	InputDefineVerb(INPUT_VERB.DEBUG_F9,		"debug_f9",		[vk_f9],undefined)
 	
     if (not INPUT_ON_SWITCH)
     {

@@ -12,14 +12,15 @@ function Item_Stats(new_name,new_cost)	:Game_Stats() constructor {
 
 function Food_Stats(new_name,new_cost,new_value,new_flavors)
  : Item_Stats(new_name,new_cost)constructor {
-	flavors = new_flavors
+	flavors = new_flavors;
 	
 }
 
-function Ingredient_Stats(new_name,new_cost,new_value,new_flavors,new_process_speed,new_process_types)
+function Ingredient_Stats(new_name,new_cost,new_value,new_flavors,new_process_speed,new_process_types,new_processed_version)
  : Food_Stats(new_name,new_cost,new_value,new_flavors)constructor {
 	process_speed = new_process_speed;
 	item_process_types = new_process_types;
+	processed_version = new_processed_version;
 
 }
 

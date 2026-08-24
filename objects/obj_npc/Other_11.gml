@@ -9,6 +9,8 @@ apply_knockback			= method(id,npc_apply_knockback);
 
 //COLLISION
 
+//LOOT
+spawn_loot 				= method(id,npc_spawn_loot);
 
 //TIMERS
 get_active_timers		= method(id,npc_get_active_timers);

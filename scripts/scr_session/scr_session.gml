@@ -20,21 +20,29 @@ function initialize_item_stats(){
 	var entity
 	var target_map = global.item_stats;
 	ds_map_clear(target_map);
+	//Apple
 	entity = new Ingredient_Stats("apple",
 									2,
 									5,
 									[Flavor.Sweet],
 									1,
-									[process_type.cut]
+									[process_type.cut],
+									process_type.unprocessed
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
-	///Cutting board
+	///Chicken
 	entity = new Ingredient_Stats("chicken",
 									5,
 									8, 
 									[Flavor.Salty],
 									1,
-									[process_type.cut]
+									[process_type.cut],
+									process_type.unprocessed
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	///Plate
+	entity = new Tool_Stats("plate", 
+							5
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 }
@@ -47,7 +55,7 @@ function initialize_item_entities(){
 	ds_map_clear(target_map);
 	///INGREDIENTS
 	entity = new Food_Ingredient("apple",
-									obj_apple,
+									obj_ing_apple,
 									grid,
 									true,
 									false,
@@ -57,15 +65,26 @@ function initialize_item_entities(){
 											);
 	ds_map_add(target_map,entity.name,entity);
 	entity = new Food_Ingredient("chicken",
-									obj_chicken,
+									obj_ing_chicken,
 									grid,
 									true,
 									false,
-									spr_item_rawchicken,
-									spr_item_rawchicken,
+									spr_item_chicken,
+									spr_item_chicken,
 									retrieve_stats("chicken",target_stat_map)
 											);
 	ds_map_add(target_map,entity.name,entity);
+	entity = new Item_Tool("plate", 
+							obj_tool_plate,
+									grid,
+									true,
+									false,
+									spr_tool_plate,
+									spr_tool_plate,
+									retrieve_stats("plate",target_stat_map)
+											);
+	ds_map_add(target_map,entity.name,entity);
+	
 
 }
 
@@ -96,7 +115,7 @@ function initialize_character_stats(){
 							120,
 							0,
 							npc_size.medium,
-							"hunter",
+							"chicken",
 							60
 							);
 	ds_map_add(target_map,stats.name,stats);
@@ -207,7 +226,7 @@ function initialize_structure_stats(){
 											true,
 											retrieve_entity("choppinggame",target_stat_map),
 											1,
-											[process_type.cut]
+											process_type.cut
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	//Storage
@@ -321,4 +340,9 @@ function retrieve_stats(entity_key,target_map){
 		return return_struct;
 	}
 
+}
+
+function retrieve_ingredient(entity_key,prc_type){
+	
+	
 }

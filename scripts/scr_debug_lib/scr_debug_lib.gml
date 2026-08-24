@@ -55,7 +55,6 @@ function toggle_debug_mode(){
 				debug_menu_index = 0;
 				clear_previews();
 			}
-
 		break;
 	}
 }
@@ -75,16 +74,15 @@ function interpret_debug_inputs(){
 			temp_player = array_get(global.players,i);
 			if(not_null(temp_player)){
 				if(temp_player.input_allowed){
-					if(temp_player.f1){input_f1(temp_player);}
-					if(temp_player.f2){input_f2(temp_player);}
-					if(temp_player.f3){input_f3(temp_player);}
-					if(temp_player.f4){input_f4(temp_player);}
-					if(temp_player.f5){input_f5(temp_player);}
-					if(temp_player.f6){input_f6(temp_player);}
-					if(temp_player.f7){
-						input_f7(temp_player);}
-					if(temp_player.f8){input_f8(temp_player);}
-					if(temp_player.f9){input_f9(temp_player);}
+					if(InputPressed(INPUT_VERB.DEBUG_F1,temp_player.player_number)){if(variable_instance_exists(self,"input_f1")){input_f1(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F2,temp_player.player_number)){if(variable_instance_exists(self,"input_f2")){input_f2(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F3,temp_player.player_number)){if(variable_instance_exists(self,"input_f3")){input_f3(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F4,temp_player.player_number)){if(variable_instance_exists(self,"input_f4")){input_f4(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F5,temp_player.player_number)){if(variable_instance_exists(self,"input_f5")){input_f5(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F6,temp_player.player_number)){if(variable_instance_exists(self,"input_f6")){input_f6(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F7,temp_player.player_number)){if(variable_instance_exists(self,"input_f7")){input_f7(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F8,temp_player.player_number)){if(variable_instance_exists(self,"input_f8")){input_f8(temp_player);}}
+					if(InputPressed(INPUT_VERB.DEBUG_F9,temp_player.player_number)){if(variable_instance_exists(self,"input_f9")){input_f9(temp_player);}}
 				}
 			}	
 		}

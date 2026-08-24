@@ -103,6 +103,13 @@ function Customer_System(new_name,new_object_reference,new_grid,has_sm) : System
 	
 }
 
+function PlayerUI_System(new_name,new_object_reference,new_grid,has_sm,new_player,new_healthbar = "",new_viewer = "",new_equipment_viewer = ""){
+	player = new_player;
+	healthbar = new_healthbar;
+	viewer = new_viewer;
+	equipment_viewer = new_equipment_viewer;
+}
+
 ////@description Contains the ds_grid for the game map. Creating a new Map_Grid will create a ds_grid automatically with the dimensions provided.
 ////@function Map_Grid
 ////@param {string} Name Grid Name
@@ -310,12 +317,15 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 			}
 		}
 	}
-	interact = function(){
+	interact = function(interaction_source){
 		EchoDebug("Base Interact Function.")
 		if(not_null(instance)){
-			if(variable_instance_exists(instance,"interaction")){
-				instance.interaction();
+			if(is_instanceof(interaction_source.struct,Player_Character)){
+				if(variable_instance_exists(instance,"interaction")){
+					instance.interaction(interaction_source);
+				}
 			}
+
 		}
 	}
 	static spawn_minigame = function(){
@@ -506,6 +516,13 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
         }
         return false
     }
+	
+	static end_interaction = function(){
+		if(instance.movement_locked){
+			instance.movement_locked = false;
+		}
+		state_machine.ChangeState("idle");
+	}
 }
 
 function NPC_Character(new_name,new_object_reference = obj_neutral_npc,new_grid = "",has_sm = true,new_invincible,new_stats,new_target_objects = [])
@@ -514,7 +531,15 @@ function NPC_Character(new_name,new_object_reference = obj_neutral_npc,new_grid 
 	single_direction = false;
 	////npc_path represents the variable which holds the path asset created in code when finding a path.
 	////This should only contain a path object when the npc is instanced in a room.
-	npc_path = ""; 
+	npc_path = "";
+	
+	static die = function(source){
+		if(not_null(instance)){
+			var death_message = string_concat(name," was killed by ",source.struct.name, "!");
+			global.event_handler.create_event(ev_type.combat,death_message,ev_priority.high);
+			state_machine.ChangeState("dead");
+		}
+	}
 }
 
 function NPC_Enemy(new_name,new_object_reference = obj_enemy_npc,new_grid,has_sm,new_invincible,new_stats,new_target_objects)
@@ -536,35 +561,24 @@ function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 	stats 		= new_stats;
 	
 	static pick_up = function(){
-		if(!held){
-			held = true;
-		}else{
-			if(global.debug){
-				show_debug_message("Item already held, cannot pick up.")
-			}
-		}	
+		held = true;
+		state_machine.ChangeState("hold")
+		EchoDebug("pickup item")
 	};
 	static drop = function(x_pos = 0, y_pos = 0){
 		if(not_null(x_pos) or not_null(y_pos)){
 			instance.x = x_pos;
 			instance.y = y_pos;
 		}
-		if(held){
-			held = false;
-		}else{
-			if(global.debug){
-				show_debug_message("Item not held, something must have gone wrong.")
-			}
-		}	
+		held = false;
+		state_machine.ChangeState("idle")
+		EchoDebug("drop item")
+
 	};
 	static throw_item = function(){
-		if(held){
-			held = false;
-		}else{
-			if(global.debug){
-				show_debug_message("Item not held, something must have gone wrong.")
-			}
-		}	
+		held = false;
+		state_machine.ChangeState("idle")
+		EchoDebug("throw item")
 	};
 	static set_item_sprite = function(new_sprite){
 		item_sprite = new_sprite;
@@ -583,8 +597,8 @@ function Item_Food(new_name,new_object_reference = _obj_food_item,new_grid = "",
 
 function Food_Ingredient(new_name,new_object_reference = obj_ingredient_food,new_grid,has_sm = true = 1,new_invincible = false,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "",is_raw = false)
 : Item_Food(new_name,new_object_reference,new_grid,has_sm = 1,new_invincible = false,new_item_sprite,new_item_icon,new_stats) constructor {
-	raw = is_raw
 	
+	raw = is_raw
 		
 	static can_process = function(process_target){
 		if(not_null(process_target.struct)){
@@ -594,19 +608,34 @@ function Food_Ingredient(new_name,new_object_reference = obj_ingredient_food,new
 					var item_processes = stats.item_process_types;
 					var item_processes_to_check = array_length(item_processes);
 					
-					var processes = process_target.struct.stats.str_process_type
-					var process_to_check = array_length(processes)
-					
-					for(var i = 0;i < process_to_check;i++){
-						var current_process = processes[i];
-						for(var j = 0; j < item_processes_to_check;j++){ 
-							var current_item_process = item_processes[j];
-							if(current_process == current_item_process){
-								return true;
-							}
+					var process = process_target.struct.stats.str_process_type
+					if(stats.processed_version == process){
+						//Item is already processed to this type. return.
+						return false;
+					}
+					for(var i = 0; i < item_processes_to_check;i++){
+						var current_item_process = item_processes[i];
+						if(process == current_item_process){
+							return true;
 						}
 					}
 				}
+			}
+		}
+	}
+	static process_item = function(new_process_type){
+		if(not_null(stats)){
+			stats.processed_version = new_process_type;
+			var process_string = ds_map_find_value(global.processes,new_process_type);
+			process_string = string_concat("_",process_string);
+			var new_sprite_string = string_concat("spr_item_",name,process_string);
+			var new_sprite = asset_get_index(new_sprite_string);
+			if(not_null(new_sprite) and new_sprite != -1){
+				item_sprite = new_sprite;
+				item_icon = new_sprite;
+			}else{ 
+				item_sprite = spr_item_placeholder;
+				item_icon = spr_item_placeholder;
 			}
 		}
 	}
@@ -627,4 +656,6 @@ function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 
 }
 
-function Game_Stats() constructor {}
+function Game_Stats() constructor {
+	
+}

@@ -40,6 +40,11 @@ function prototype(){
 	var apple_02 = retrieve_entity("apple",global.item_entities)
 	apple_02.spawn_grid_entity(6,6,"Instances")
 	
+	var chicken_01 = retrieve_entity("chicken",global.item_entities)
+	chicken_01.spawn_grid_entity(5,5,"Instances")
+	
+	var plate_01 = retrieve_entity("plate",global.item_entities)
+	plate_01.spawn_grid_entity(10,12,"Instances")
 	//var inspector_01 = retrieve_entity("inspector",global.character_entities)
 	//inspector_01.spawn_grid_entity(15,10,"Instances")
 	
@@ -54,10 +59,14 @@ function prototype(){
 	counter.grid_x = 10
 	counter.grid_y = 5
 	counter.spawn_grid_entity(0,0,"Instances")
-	var counter = retrieve_entity("cuttingboard",global.structure_entities)
-	counter.grid_x = 11
-	counter.grid_y = 5
-	counter.spawn_grid_entity(0,0,"Instances")
+	var counter2 = retrieve_entity("counter",global.structure_entities)
+	counter2.grid_x = 11
+	counter2.grid_y = 6
+	counter2.spawn_grid_entity(0,0,"Instances")
+	var cuttingboard = retrieve_entity("cuttingboard",global.structure_entities)
+	cuttingboard.grid_x = 11
+	cuttingboard.grid_y = 5
+	cuttingboard.spawn_grid_entity(0,0,"Instances")
 	var storage = retrieve_entity("storage",global.structure_entities)
 	storage.grid_x = 5
 	storage.grid_y = 5

@@ -1,8 +1,8 @@
 {
   "$GMSprite":"v2",
   "%Name":"counter_tiles1",
-  "bboxMode":0,
-  "bbox_bottom":31,
+  "bboxMode":2,
+  "bbox_bottom":20,
   "bbox_left":0,
   "bbox_right":31,
   "bbox_top":0,

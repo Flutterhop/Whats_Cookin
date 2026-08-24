@@ -1,5 +1,6 @@
 event_inherited()
 
+move_wrap(true,true,100);
 //INPUT
 up_input = 0;
 down_input = 0;
@@ -16,7 +17,8 @@ jumping = false;
 falling = false;
 
 //COLLISION
-collision_targets  = struct.grid.fetch_collision_array();
+additional_collisions = [obj_character_game]
+collision_targets  = struct.grid.fetch_collision_array([additional_collisions]);
 
 struct.equipment = "pan"
 equipment_sprite = "";
@@ -25,7 +27,6 @@ friction_amount = .7;
 //DRAWING
 visual_speed = 1;//Speed the image should run at.
 stun_index = 0;//used to animate stun effect
-
 
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
@@ -42,12 +43,6 @@ function init_state_machine(){
 				determine_sprite();
 				interpret_player_controls();
 				handle_movement();
-				move_wrap(true,true,100);
-				if(x_speed != 0 or y_speed != 0){
-					struct.state_machine.ChangeState("move");
-					show_debug_message("change to move");
-					return
-				}
 				reset_input();
 				reset_speed();
 				handle_iframes();
@@ -61,8 +56,9 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(string_concat("x_speed: ",x_speed," y_speed: ",y_speed)).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
+				if(global.debug){ 
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
 			}
 	});	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,11 +73,6 @@ function init_state_machine(){
 				determine_sprite();
 				interpret_player_controls();
 				handle_movement();
-				move_wrap(true,true,100);
-				if(x_speed == 0 and y_speed == 0){
-					struct.state_machine.ChangeState("idle")
-					show_debug_message("change to idle")
-				}
 				reset_input();
 				reset_speed();
 				handle_iframes();
@@ -94,8 +85,10 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(string_concat("x_speed: ",x_speed," y_speed: ",y_speed)).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
+				if(global.debug){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
+				
 			}
 
 	});
@@ -106,12 +99,6 @@ function init_state_machine(){
 				determine_sprite("","")
 				interpret_player_controls();
 				handle_movement();
-				move_wrap(true,true,100);
-				if(x_speed != 0) or (y_speed != 0){
-					image_speed = visual_speed;
-				}else{
-					image_speed = 0;
-				}
 				handle_holding();
 				reset_input();
 				reset_speed();
@@ -125,9 +112,9 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
+				if(global.debug){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
 			}
 
 	});
@@ -150,8 +137,9 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
+				if(global.debug){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
 			}
 		})
 		.AddExit(function(){
@@ -214,8 +202,10 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
+				if(global.debug){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
+				
 				var interact_coord = get_interact_shape(direction);
 				var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
 				var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
@@ -265,9 +255,9 @@ function init_state_machine(){
 		})
 		.AddDraw(function(){
 			with(owner){
-				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				scribble(direction_facing).starting_format("pixel_op").draw(x + debug_1_x,y + debug_1_y * 3);
-
+				if(global.debug){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
+				}
 			}
 		});
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +274,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
+				
 			}
 			}) 
 		.AddExit(function(){
@@ -306,4 +297,9 @@ function init_state_machine(){
 	.AddState(dead_state)
 
 	struct.state_machine.ChangeState("idle")
+}
+
+function init_player_ui(){
+	
+	
 }

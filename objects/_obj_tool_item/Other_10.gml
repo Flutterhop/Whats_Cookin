@@ -47,10 +47,10 @@ function init_state_machine_templates(){
 		});
 	idle_template.AddDraw(draw_template);
 	
-	hold_tempalte = new StatementStateTemplate("hold")
+	hold_template = new StatementStateTemplate("hold")
 		.AddEnter(function(){
 		})
 		.AddUpdate(function(){
 		});
-	hold_tempalte.AddDraw(draw_template);
+	hold_template.AddDraw(draw_template);
 }

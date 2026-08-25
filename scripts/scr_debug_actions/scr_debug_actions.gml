@@ -11,7 +11,7 @@ function debug_input_f2(player){
 				player.player_instance.iframes = player.player_instance.debug_iframes;
 			}
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			change_debug_selection(-1);	
 		break;
 	}
@@ -26,7 +26,7 @@ function debug_input_f3(player){
 				listener.debug_sandbox = true;
 			}
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			change_debug_selection(1);
 		break;
 	}
@@ -38,7 +38,7 @@ function debug_input_f4(player){
 		case debug_type.player_debug:
 			player.player_instance.credits += 100;
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			spawn_debug_entity(ds_list_find_value(enemies,debug_menu_index));
 		break;
 	}
@@ -52,7 +52,7 @@ function debug_input_f5(player){
 				player.player_instance.hp_current += 100;
 			}
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			display_spawn_menu = !display_spawn_menu;
 		break;
 	}
@@ -68,7 +68,7 @@ function debug_input_f6(player){
 				core_set_priority_enforcement(true);
 			}
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			///spawn_debug_entity(ds_list_find_value(enemies,5));
 		break;
 	}
@@ -81,7 +81,7 @@ function debug_input_f7(player){
 			room_goto(rm_end);
 			player.f7 = false;
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 
 		break;
 	}
@@ -97,7 +97,7 @@ function debug_input_f8(player){
 			global.players[0].is_active = true
 			obj_game_manager.spawn_players()
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			///spawn_debug_entity(ds_list_find_value(enemies,6));
 		break;
 	}
@@ -109,7 +109,7 @@ function debug_input_f9(player){
 		case debug_type.player_debug:
 			
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			///spawn_debug_entity(ds_list_find_value(enemies,8));
 		break;
 	}

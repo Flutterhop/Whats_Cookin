@@ -45,6 +45,7 @@ function prototype(){
 	
 	var plate_01 = retrieve_entity("plate",global.item_entities)
 	plate_01.spawn_grid_entity(10,12,"Instances")
+	
 	//var inspector_01 = retrieve_entity("inspector",global.character_entities)
 	//inspector_01.spawn_grid_entity(15,10,"Instances")
 	
@@ -71,6 +72,10 @@ function prototype(){
 	storage.grid_x = 5
 	storage.grid_y = 5
 	storage.spawn_grid_entity(0,0,"Instances")
+	var turret_01 = retrieve_entity("turret",global.structure_entities)
+	turret_01.grid_x = 6
+	turret_01.grid_y = 4
+	turret_01.spawn_grid_entity(0,0,"Instances")
 	
 	grid.init_mp_grid_data();
 

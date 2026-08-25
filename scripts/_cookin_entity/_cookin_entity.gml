@@ -30,6 +30,8 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 	state_machine = "";
 	grid = new_grid;
 	has_state_machine = has_sm;
+	ignore_collision = false;
+	
 	
 	////@description spawns an entity at the provided x and y position on the included layer as a string.
 	////@function spawn_entity
@@ -85,6 +87,14 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		if(variable_instance_exists(instance,"set_custom_states")){
 			instance.set_custom_states()
 		}
+	}
+	
+	static enable_collision = function(){
+		ignore_collision = false
+	}
+	
+	static disable_collision = function(){
+		ignore_collision = true
 	}
 }
 
@@ -322,7 +332,10 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		if(not_null(instance)){
 			if(is_instanceof(interaction_source.struct,Player_Character)){
 				if(variable_instance_exists(instance,"interaction")){
-					instance.interaction(interaction_source);
+					var success = instance.interaction(interaction_source);
+					if(success){
+						interaction_source.struct.state_machine.ChangeState("interact");
+					}
 				}
 			}
 
@@ -651,9 +664,47 @@ function Item_Equipment(new_name,new_object_reference = _obj_equipment_item,new_
 
 }
 
-function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "")
+function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_stats = "",new_inventory = [],new_limit = 1)
 : Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_item_sprite,new_item_icon,new_stats) constructor {
-
+	inventory = new_inventory
+	limit = new_limit
+	
+	put_item = function(target_item){
+		var item_placed = false;
+		
+		if(is_instanceof(target_item.struct,Item_Food)){
+			if(array_length(inventory) < limit){
+				if(array_length(inventory) <= 0){
+					state_machine.ChangeState("idle_occupied");
+				}
+				target_item.struct.disable_collision()
+				array_push(inventory,target_item);
+				target_item.struct.state_machine.ChangeState("hold");
+				item_placed = true;
+			}else{
+				return item_placed
+			}
+		}else{
+			
+			return true
+		}
+		
+		return item_placed
+	}
+	pick_item = function(){
+		var item = "";
+		if(array_length(inventory) > 0){
+			return instance
+			item = array_pop(inventory);
+			if(array_length(inventory) <= 0){
+				state_machine.ChangeState("idle_empty");
+			}
+			item.struct.enable_collision()
+		}else{
+			return instance
+		}
+		return instance
+	}
 }
 
 function Game_Stats() constructor {

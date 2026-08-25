@@ -19,7 +19,7 @@ if(global.debug){
 
 	}
 	
-	if(global.debug_setting == debug_type.enemy_debug){
+	if(global.debug_setting == debug_type.npc_debug){
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 1,"F1 - Toggle Debug Mode",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 2,"F2 - Selection Back",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);
 		draw_text_ext_transformed_color(get_screen_center_x() * 1.8,20 * 3,"F3 - Selection Forward",20,150,.5,.5,0,c_white,c_white,c_white,c_white,1);

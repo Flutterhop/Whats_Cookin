@@ -1,6 +1,6 @@
 /// @description Insert description here
 // You can write your code in this editor
-if(global.debug_setting == debug_type.enemy_debug && _debug_listener.display_spawn_menu){
+if(global.debug_setting == debug_type.npc_debug && _debug_listener.display_spawn_menu){
 	if(pop_in){
 		draw_set_halign(fa_left)
 		draw_set_valign(fa_bottom)

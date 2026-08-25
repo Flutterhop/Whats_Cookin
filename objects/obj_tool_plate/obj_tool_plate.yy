@@ -30,7 +30,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_tool_plate",
+    "path":"sprites/spr_tool_plate/spr_tool_plate.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

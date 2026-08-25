@@ -27,6 +27,7 @@ pick_up_item				= method(id,player_pick_up_item);
 drop_item					= method(id,player_drop_item);
 throw_item 					= method(id,player_throw_item);
 handle_interaction 			= method(id,player_handle_interaction);
+draw_health 				= method(id,player_draw_health);
 
 /////////////////////////////////////////BUILDING METHODS////////////////////////////////////////////////////////////
 handle_holding				= method(id,player_handle_holding);

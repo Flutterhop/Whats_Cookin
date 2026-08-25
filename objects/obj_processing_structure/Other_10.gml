@@ -6,6 +6,7 @@ active_minigame = "";
 interaction_source = "";
 
 function interaction(source){
+	var sucessful_interaction = false;
 	//Figure out if the item on the processing structure can be processed by this station.
 	if(not_null(struct.inventory)){
 		var inventory_space = array_length(struct.inventory);
@@ -15,13 +16,20 @@ function interaction(source){
 		}
 		var process_target = struct.inventory[0];
 		if(not_null(process_target)){
-			if(process_target.struct.can_process(id)){
-				interaction_source = source;
-				struct.state_machine.ChangeState("process")
-				active_minigame = struct.spawn_minigame();
+			if(variable_instance_exists(process_target.struct,"can_process")){
+				if(process_target.struct.can_process(id)){
+					sucessful_interaction = true
+					interaction_source = source;
+					struct.state_machine.ChangeState("process")
+					active_minigame = struct.spawn_minigame();
+				}
+			}else{
+				sucessful_interaction = false;
+				EchoDebug("item cannot process.")
 			}
 		}
 	}
+	return sucessful_interaction;
 }
 
 function finish_process_item(){

@@ -65,7 +65,16 @@ function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){
 							)
 	var total_collisions = ds_list_size(collisions);
 	if(total_collisions > 0){
-		var target = ds_list_find_value(collisions,0);
+		var target = "";
+		for(var i = 0;i<total_collisions;i++){
+			target = ds_list_find_value(collisions,i);
+			if(target.struct.ignore_collision){
+				break;
+			}else{
+				return target
+			}
+			
+		}
 		return target;
 	}
 	
@@ -200,7 +209,7 @@ function player_detect_interactions(target_entities){
 function player_read_interaction_collision(){
 	//Determine the type of interaction based on player state.
 	//check if the target position is occupied
-	var can_put = struct.state_machine.IsInState("hold") ? true : false
+	var can_put = (get_substates(struct.state_machine.GetStateName(),1) == "hold") ? true : false
     var has_item = struct.has_item();
 	var can_pick = (!struct.state_machine.IsInState("hold") and is_null(struct.held_entity)) ? true : false;
 
@@ -233,6 +242,7 @@ function player_read_interaction_collision(){
 		}
 	}
 	var item_target = detect_interactions(obj_item_game);
+
 	if(not_null(item_target) and can_pick){
 		pick_up_item(item_target)
 	}else if(not_null(struct.held_entity) and can_put){
@@ -244,7 +254,7 @@ function player_read_interaction_collision(){
 function player_read_interaction_1_collision(){
 	//Determine the type of interaction based on player state.
 	//check if the target position is occupied
-	var can_put = struct.state_machine.IsInState("hold") ? true : false
+	var can_put = (get_substates(struct.state_machine.GetStateName(),1) == "hold") ? true : false
     var has_item = struct.has_item();
 	var can_pick = (!struct.state_machine.IsInState("hold") and is_null(struct.held_entity)) ? true : false;
 
@@ -278,12 +288,36 @@ function player_read_interaction_1_collision(){
 	}
 	var item_target = detect_interactions(obj_item_game);
 	if(not_null(item_target) and can_pick){
+		//	This can be configured to pick up the item within the tool or the tool itself.
+		//	I'd like to make both possible but the later seems to be the preference.
+		if(is_instanceof(item_target.struct,Item_Tool)){
+			var new_item = item_target.struct.pick_item();
+			if(not_null(new_item)){
+				struct.held_entity = new_item;
+				struct.state_machine.ChangeState("hold")
+				return;
+			}
+		}
 		pick_up_item(item_target)
 		return
-	}else if(not_null(struct.held_entity) and can_put){
-		drop_item(struct.held_entity)
-		struct.state_machine.ChangeState("idle")
-		return
+	}else if(not_null(struct.held_entity) and can_put ){
+		if(not_null(item_target)){
+			if(is_instanceof(item_target.struct,Item_Tool)){
+				if(variable_instance_exists(item_target.struct,"inventory")){
+					if(item_target.struct.put_item(struct.held_entity)){
+						struct.held_entity = "";
+						struct.state_machine.ChangeState("idle")
+						return;
+					}
+				}
+			}
+		}else{
+			if(drop_item(struct.held_entity)){
+				struct.state_machine.ChangeState("idle")
+			}
+			return
+		}
+
 	}
 }
 
@@ -304,7 +338,7 @@ function player_read_interaction_2_collision(){
 	if(not_null(structure_target)){
         var can_interact = structure_target.struct.can_interact();
 		if(can_interact and !has_item){
-			struct.state_machine.ChangeState("interact");
+
 			structure_target.struct.interact(id);
 			return;
 		}
@@ -327,13 +361,14 @@ function player_drop_item(){
 		var coords = get_interact_shape(direction)
 		if(not_null(item_target)){
 			//If collisions exist then we cant place an item
-			return
+			return false
 		}
 		var x_pos = (coords[0] + coords[2])/2
 		var y_pos = (coords[1] + coords[3])/2
 		struct.held_entity.struct.drop(x + x_pos,y + y_pos);
 		struct.held_entity = "";
 		struct.state_machine.ChangeState("idle")
+		return true;
 	}
 }
 
@@ -484,7 +519,7 @@ function player_handle_holding(){
     var is_item = is_instanceof(struct.held_entity.struct,Item_Game)
 	if(not_null(struct.held_entity) and is_item){
 		struct.held_entity.x = x;
-		struct.held_entity.y = y;
+		struct.held_entity.y = y - 10;
 	}
 	if(not_null(struct.held_entity) and is_structure){
 		var coords = get_interact_shape(direction);
@@ -544,4 +579,15 @@ function player_reset_input(){
 function player_reset_speed(){
 	x_speed = 0;
 	y_speed = 0;
+}
+
+function player_draw_health(){
+	if(variable_instance_exists(struct.stats,"current_hp")){
+		if(struct.stats.current_hp < struct.stats.max_hp){
+			var current_percent = struct.stats.current_hp / struct.stats.max_hp
+			current_percent = abs(current_percent - 1)
+			var current_frame = current_percent * (sprite_get_number(spr_purple_bar) - 1)
+			draw_sprite_ext(spr_purple_bar,current_frame,x,y - 15,.8,.8,0,c_white,1)
+		}
+	}
 }

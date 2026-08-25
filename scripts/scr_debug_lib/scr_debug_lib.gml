@@ -1,6 +1,9 @@
 enum debug_type{
 	player_debug = 0,
-	enemy_debug = 1
+	npc_debug = 1,
+	grid_debug = 2,
+	structure_debug = 3,
+	item_debug = 4
 }
 global.debug_setting = debug_type.player_debug;
 function toggle_debug(){
@@ -16,18 +19,18 @@ function toggle_debug(){
 			break;
 			case false:
 				//Turning debug off.
-				if(not_null(obj_input_manager.typer)){
-					obj_input_manager.typer.has_priority = false;
-					core_disable_priority();
-					instance_destroy(obj_input_manager.typer);
-				}
+				//if(not_null(obj_input_manager.typer)){
+					//obj_input_manager.typer.has_priority = false;
+					//core_disable_priority();
+					//instance_destroy(obj_input_manager.typer);
+				//}
 				if(not_null(debug_menu.squeeb)){
 					instance_destroy(debug_menu.squeeb);
 				}
-				global.debug_setting = debug_type.player_debug;
-				if(not_null(debug_menu.enemy_visual_selection)){
-					debug_menu.clear_previews();
-				}
+				//global.debug_setting = debug_type.player_debug;
+				//if(not_null(debug_menu.enemy_visual_selection)){
+					//debug_menu.clear_previews();
+				//}
 
 			break;
 		}
@@ -37,24 +40,24 @@ function toggle_debug(){
 function toggle_debug_mode(){
 	switch (global.debug_setting) {
 		case debug_type.player_debug:
-			global.debug_setting = debug_type.enemy_debug;
+			global.debug_setting = debug_type.npc_debug;
 			debug_menu_index = 0;
 			if(not_null(enemy_visual_selection)){
-				if(array_length(enemy_visual_selection) >= ds_list_size(global.enemy_structs)){
-					break;
-				}else{
-					init_enemy_selection();
-				}
+				//if(array_length(enemy_visual_selection) >= ds_list_size(global.enemy_structs)){
+					//break;
+				//}else{
+					//init_enemy_selection();
+				//}
 			}else{
-				init_enemy_selection();
+				//init_enemy_selection();
 			}
 		break;
-		case debug_type.enemy_debug:
+		case debug_type.npc_debug:
 			global.debug_setting = debug_type.player_debug;
-			if(not_null(enemy_visual_selection)){
+			//if(not_null(enemy_visual_selection)){
 				debug_menu_index = 0;
-				clear_previews();
-			}
+			//	clear_previews();
+			//}
 		break;
 	}
 }

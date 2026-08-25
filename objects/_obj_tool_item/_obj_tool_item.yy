@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"_obj_tool_item",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"_obj_tool_item",
   "overriddenProperties":[],

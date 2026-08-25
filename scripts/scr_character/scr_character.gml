@@ -177,3 +177,14 @@ function handle_iframes(){
 		}
 	}
 }
+
+function character_draw_health(){
+	if(variable_instance_exists(struct.stats,"current_hp")){
+		if(struct.stats.current_hp < struct.stats.max_hp){
+			var current_percent = struct.stats.current_hp / struct.stats.max_hp
+			current_percent = abs(current_percent - 1)
+			var current_frame = current_percent * (sprite_get_number(spr_purple_bar) - 1)
+			draw_sprite_ext(spr_purple_bar,current_frame,x,y - 15,.8,.8,0,c_white,1)
+		}
+	}
+}

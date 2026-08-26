@@ -4,11 +4,9 @@ event_inherited();
 
 idle_template = "";
 hold_template = "";
-default_state = "idle_empty"
+default_state = "idle"
 
 function init_state_machine(){
-	//	Testing something out, sub-states can help us with more complex behavior.
-	//	These sub-states are underscore delimited, so understanding the naming is key.
 	init_state_machine_templates()
 	struct.state_machine.DebugSetErrorBehavior(eStatementErrorBehavior.RETHROW);
 	struct.state_machine.AddStateTemplate(idle_template)
@@ -21,11 +19,7 @@ function init_state_machine_templates(){
 	struct.state_machine = new Statement(self);
 	draw_template = function(){
 		if(not_null(struct.state_machine)){
-			if(get_substates(struct.state_machine.GetStateName(),1,true) == "hold"){
-				
-			}else{
-				draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
-			}
+			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}
 		if(global.debug and global.debug_setting == debug_type.item_debug){
 			if(not_null(struct.state_machine)){

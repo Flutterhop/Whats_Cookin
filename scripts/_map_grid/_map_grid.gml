@@ -1,3 +1,5 @@
+global.grid = ""
+
 
 ////@description Contains the ds_grid for the game map. Creating a new Map_Grid will create a ds_grid automatically with the dimensions provided.
 ////@function Map_Grid
@@ -18,7 +20,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	is_precise = false;
 	obstacle_tiles_to_check = ["rocks"];
 	structure_tiles_to_check = ["kitchen_structures"];
-	instances_to_check = [obj_structure_game];
+	instances_to_check = [];
 	
 	
 	//This may need to default to width = 15, height = 9
@@ -82,17 +84,6 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 						entity.spawn_entity(tile_x_pos,tile_y_pos,"Structures");
 						tilemap_set(tiles,0,i,j);
 						mp_grid_clear_cell(mp_grid_data,i,j);
-					}
-				}
-				//Check Instances
-				var instance_x_pos = (i * mp_cell_width) + (mp_cell_width / 2);
-				var instance_y_pos = (j * mp_cell_height) + (mp_cell_height / 2);
-				var _instances = ds_list_create()
-				instance_position_list(instance_x_pos,instance_y_pos,instances_to_check,_instances,true);
-				if(ds_list_size(_instances) > 0){
-					var is_occupied = mp_grid_get_cell(mp_grid_data,instance_x_pos,instance_y_pos);
-					if(is_occupied == -1){
-						mp_grid_add_instances(mp_grid_data,ds_list_find_value(_instances,0),true);
 					}
 				}
 			}
@@ -216,6 +207,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	static draw_grid = function(){
 	
 	}
+	
 		
 	static fetch_collision_array = function(extra_collisions = ""){
 		var return_array = array_create(0)
@@ -231,11 +223,39 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		for(var k = 0; k < instance_counter; k++){
 			array_insert(return_array,i,instances_to_check[k])
 		}
-		if(not_null(extra_collisions)){
-			array_concat(instances_to_check,extra_collisions);
-		}
+
 		
 		return return_array;
+	}
+	
+	static remove_collision = function(instance_to_remove){
+		var instance_counter = array_length(instances_to_check);
+		for(var i = 0; i < instance_counter; i++){
+			var array_instance = instances_to_check[i];
+			if(not_null(array_instance)){
+				if(array_instance == instance_to_remove){
+					array_delete(instances_to_check,i,1);
+				}
+			}
+		}
+	}
+	
+	static add_collision = function(instance_to_add){
+		var instance_counter = array_length(instances_to_check);
+		for(var i = 0; i < instance_counter; i++){
+			var array_instance = instances_to_check[i];
+			if(not_null(array_instance)){
+				if(array_instance == instance_to_add){
+					EchoDebug("Instance already exists in collision array. Returning.")
+					return;
+				}
+			}
+		}
+
+		if(is_instanceof(instance_to_add.struct,Structure_Game)){
+			array_push(instances_to_check,instance_to_add);
+			add_obstacles([instance_to_add])
+		}
 	}
 		
 	init_grid_data();

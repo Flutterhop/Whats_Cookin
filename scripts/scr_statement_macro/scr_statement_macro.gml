@@ -1,5 +1,5 @@
 // Turns debugging on or off for Statement
-#macro STATEMENT_DEBUG 1
+#macro STATEMENT_DEBUG 0
 
 // Controls - Rebind as you see fit!
 #macro STATEMENT_LENS_BIND_CLOSE_INSPECTOR				new EchoChamberInputBindingKey(vk_escape)

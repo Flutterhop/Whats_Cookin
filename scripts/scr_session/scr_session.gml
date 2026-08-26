@@ -328,6 +328,7 @@ function retrieve_entity(entity_key,target_map){
 	var result = ds_map_find_value(target_map,key);
 	if(is_struct(result)){
 		var return_struct = variable_clone(result);
+		return_struct.grid = global.grid
 		return return_struct;
 	}
 }

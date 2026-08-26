@@ -69,7 +69,7 @@ function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){
 		for(var i = 0;i<total_collisions;i++){
 			target = ds_list_find_value(collisions,i);
 			if(target.struct.ignore_collision){
-				break;
+				target = "";
 			}else{
 				return target
 			}
@@ -479,14 +479,14 @@ function player_handle_movement(){
 	if(x_speed != 0 or y_speed != 0){
 		direction = InputDirection(0,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 		if(!movement_locked){
-			move_and_collide(x_speed,y_speed,collision_targets,3);
+			move_and_collide(x_speed,y_speed,struct.grid.instances_to_check,6,undefined,undefined,10,10);
 			if(struct.state_machine.IsInState("idle")){
 				struct.state_machine.ChangeState("move");
 			}
 			image_speed = visual_speed;
 		}
 	}else{
-		move_and_collide(0,0,collision_targets,3);
+		move_and_collide(0,0,struct.grid.instances_to_check,3);
 		if(struct.state_machine.IsInState("move")){
 			struct.state_machine.ChangeState("idle");
 		}
@@ -499,7 +499,7 @@ function player_apply_knockback(){
 	var x_change = lengthdir_x(struct.knockback_amount,struct.knockback_direction);
 	var y_change = lengthdir_y(struct.knockback_amount,struct.knockback_direction);
     if(not_null(struct.knockback_amount)){
-		move_and_collide(x_change,y_change,collision_targets);
+		move_and_collide(x_change,y_change,struct.grid.instances_to_check);
 		show_debug_message(struct.knockback_amount)
 	}
 	if(struct.knockback_amount > .5){

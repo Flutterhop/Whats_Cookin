@@ -42,22 +42,22 @@ function toggle_debug_mode(){
 		case debug_type.player_debug:
 			global.debug_setting = debug_type.npc_debug;
 			debug_menu_index = 0;
-			if(not_null(enemy_visual_selection)){
-				//if(array_length(enemy_visual_selection) >= ds_list_size(global.enemy_structs)){
-					//break;
-				//}else{
-					//init_enemy_selection();
-				//}
-			}else{
-				//init_enemy_selection();
-			}
 		break;
 		case debug_type.npc_debug:
+			global.debug_setting = debug_type.grid_debug;
+			debug_menu_index = 0;
+		break; 
+		case debug_type.grid_debug:
+			global.debug_setting = debug_type.structure_debug;
+			debug_menu_index = 0;
+		break; 
+		case debug_type.structure_debug:
+			global.debug_setting = debug_type.item_debug;
+			debug_menu_index = 0;
+		break; 
+		case debug_type.item_debug:
 			global.debug_setting = debug_type.player_debug;
-			//if(not_null(enemy_visual_selection)){
-				debug_menu_index = 0;
-			//	clear_previews();
-			//}
+			debug_menu_index = 0;
 		break;
 	}
 }

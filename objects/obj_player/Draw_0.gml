@@ -4,24 +4,7 @@ event_inherited()
 if(not_null(equipment_sprite)){
     draw_sprite_ext(equipment_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
 }
-if(not_null(struct.held_entity)){
-	if(get_substates(struct.state_machine.GetStateName(),1,true) == "hold"){
-		if(is_instanceof(struct.held_entity.struct,Item_Tool)){
-			if(not_null(struct.held_entity.struct.item_sprite)){
-				draw_sprite_ext(struct.held_entity.struct.item_sprite,struct.held_entity.image_index,struct.held_entity.x,struct.held_entity.y,1,1,0,c_white,1);
-			}
-			if(not_null(struct.held_entity.struct.inventory)){
-				if(not_null(struct.held_entity.struct.inventory[0])){
-					draw_sprite_ext(struct.held_entity.struct.inventory[0].struct.item_sprite,struct.held_entity.image_index,struct.held_entity.x,struct.held_entity.y,1,1,0,c_white,1);
-				}
-			}
-		}else{
-			if(not_null(struct.held_entity.struct.item_sprite)){
-				draw_sprite_ext(struct.held_entity.struct.item_sprite,struct.held_entity.image_index,struct.held_entity.x,struct.held_entity.y,1,1,0,c_white,1);
-			}
-		}
-	}
-}
+
 var interact_coord = get_interact_shape(direction);
 
 var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2

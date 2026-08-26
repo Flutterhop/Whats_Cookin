@@ -39,3 +39,5 @@ function Tool_Stats(new_name,new_cost)
  : Item_Stats(new_name,new_cost) constructor {
 
 }
+
+

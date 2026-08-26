@@ -21,7 +21,7 @@ you'll be able to find that'll help you make your games even faster!
 
 
 #macro ECHO_DEBUG_ENABLED	1
-#macro ECHO_CONSOLE_ENABLED 1
+#macro ECHO_CONSOLE_ENABLED 0
 #macro ECHO_CONSOLE_KEY		vk_f1
 // This will make the echo console popup on startup
 #macro ECHO_LAUNCH_ON_STARTUP 0

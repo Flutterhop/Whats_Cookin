@@ -24,8 +24,12 @@ function init_state_machine(){
 function init_state_machine_templates(){
 	struct.state_machine = new Statement(self);
 	draw_template = function(){
-		if(get_substates(struct.state_machine.GetStateName(),1,true) == "hold"){
-			
+		//	When without inventory, draw self
+		//	When inventory exists, draw self then item.
+		//	When being held, the item is drawn by the entity holding the tool.
+		
+		if(get_substates(struct.state_machine.GetStateName(),1,true) == "occupied"){
+			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}else{
 			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}
@@ -34,23 +38,23 @@ function init_state_machine_templates(){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2);
 			}
 		}
-		if(struct.state_machine.GetStateName() == "idle_occupied"){
-			draw_sprite_ext(struct.inventory[0].struct.item_sprite,image_index,x,y - 5,1,1,0,c_white,1);
-		}
 	}
 	
 	idle_template = new StatementStateTemplate("idle")
 		.AddEnter(function(){
+			EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
 		})
 		.AddUpdate(function(){
-
+			handle_inventory();
 		});
 	idle_template.AddDraw(draw_template);
 	
 	hold_template = new StatementStateTemplate("hold")
 		.AddEnter(function(){
+			EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
 		})
 		.AddUpdate(function(){
+			handle_inventory();
 		});
 	hold_template.AddDraw(draw_template);
 }

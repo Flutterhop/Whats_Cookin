@@ -73,6 +73,7 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
 		}
+		grid.add_collision(instance);
 	}
 	
 	static destroy_entity = function(){
@@ -241,6 +242,7 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
 		}
+		grid.add_collision(instance)
 	}
 	
 	////@description spawns an entity at the designated coordinates in the grid map, on the provided layer.
@@ -260,6 +262,7 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		y_coord = floor(y_coord)
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		call_later(30,time_source_units_frames,call_state_machine)
+		grid.add_collision(instance)
 	}
 	
 
@@ -575,6 +578,7 @@ function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 	
 	static pick_up = function(){
 		held = true;
+		disable_collision()
 		state_machine.ChangeState("hold")
 		EchoDebug("pickup item")
 	};
@@ -584,12 +588,14 @@ function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 			instance.y = y_pos;
 		}
 		held = false;
+		enable_collision()
 		state_machine.ChangeState("idle")
 		EchoDebug("drop item")
 
 	};
 	static throw_item = function(){
 		held = false;
+		enable_collision()
 		state_machine.ChangeState("idle")
 		EchoDebug("throw item")
 	};

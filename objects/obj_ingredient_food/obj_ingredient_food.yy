@@ -1,9 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"obj_ingredient_food",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"obj_ingredient_food",
   "overriddenProperties":[],

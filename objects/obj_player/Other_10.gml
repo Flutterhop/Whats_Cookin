@@ -17,7 +17,7 @@ jumping = false;
 falling = false;
 
 //COLLISION
-additional_collisions = [obj_character_game]
+additional_collisions = []
 collision_targets  = struct.grid.fetch_collision_array([additional_collisions]);
 
 struct.equipment = "pan"

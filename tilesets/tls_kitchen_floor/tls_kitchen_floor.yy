@@ -1,14 +1,16 @@
 {
   "$GMTileSet":"v1",
   "%Name":"tls_kitchen_floor",
-  "autoTileSets":[],
+  "autoTileSets":[
+    {"$GMAutoTileSet":"","%Name":"autotile_1","closed_edge":false,"name":"autotile_1","resourceType":"GMAutoTileSet","resourceVersion":"2.0","tiles":[1,2,3,4,5,6,7,8,9,10,11,15,12,13,14,0,],},
+  ],
   "macroPageTiles":{
     "SerialiseHeight":0,
     "SerialiseWidth":0,
     "TileSerialiseData":[],
   },
   "name":"tls_kitchen_floor",
-  "out_columns":1,
+  "out_columns":4,
   "out_tilehborder":0,
   "out_tilevborder":0,
   "parent":{
@@ -34,5 +36,5 @@
   "tileWidth":32,
   "tilexoff":0,
   "tileyoff":0,
-  "tile_count":2,
+  "tile_count":16,
 }

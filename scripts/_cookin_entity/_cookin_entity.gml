@@ -700,13 +700,14 @@ function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 	pick_item = function(){
 		var item = "";
 		if(array_length(inventory) > 0){
-			return instance
 			item = array_pop(inventory);
 			if(array_length(inventory) <= 0){
 				state_machine.ChangeState("idle_empty");
+				enable_collision()
 			}
-			item.struct.enable_collision()
+			
 		}else{
+			disable_collision()
 			return instance
 		}
 		return instance

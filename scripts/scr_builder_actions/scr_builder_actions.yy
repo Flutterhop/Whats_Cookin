@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_builder_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_builder_actions",
+  "parent":{
+    "name":"Character_Builder",
+    "path":"folders/Objects/System/Character_Builder.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

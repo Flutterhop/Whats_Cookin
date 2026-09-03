@@ -4,7 +4,7 @@ event_inherited();
 
 idle_template = "";
 hold_template = "";
-default_state = "idle"
+
 
 function init_state_machine(){
 	init_state_machine_templates()

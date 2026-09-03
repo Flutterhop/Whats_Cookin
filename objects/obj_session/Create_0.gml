@@ -11,6 +11,8 @@ function prototype(){
 	initialize_structure_entities();
 	initialize_character_entities();
 	initialize_item_entities();
+	
+	var character_builder = instance_create_layer(0,0,"System",obj_character_manager);
 	var counter_01 = retrieve_entity("counter",global.structure_entities)
 	counter_01.spawn_grid_entity(3,3,"Instances")
 	
@@ -19,6 +21,8 @@ function prototype(){
 
 	//var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
 	//turret1.spawn_entity(10,7,"Instances")
+	
+
 	
 	var player_entity = new Player_Character("Player 0",
 												obj_player,
@@ -32,6 +36,17 @@ function prototype(){
 	var user = new User(0,"Player 0",false,player_entity,"")
 	cam_follow(player_entity.instance);
 	
+	var left_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","left")
+	var down_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","down")
+	var up_char_sprite 		= new Character_Sprite(character_builder,player_entity,"idle","up")
+	player_entity.instance.character_sprite = left_char_sprite;
+	player_entity.instance.down_character_sprite = down_char_sprite;
+	player_entity.instance.up_character_sprite = up_char_sprite;
+	player_entity.instance.left_character_sprite = left_char_sprite;
+
+	
+	
+	/*
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 
 	var apple_01 = retrieve_entity("apple",global.item_entities)
@@ -77,6 +92,7 @@ function prototype(){
 	turret_01.grid_y = 4
 	turret_01.spawn_grid_entity(0,0,"Instances")
 	
+	 * */
 	grid.init_mp_grid_data();
 
 	

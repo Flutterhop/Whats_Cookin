@@ -132,7 +132,7 @@ function init_state_machine_templates(){
 			determine_sprite();
 			handle_iframes()
 			if(is_near_target()){
-				struct.state_machine.ChangeState("attack_windup")
+				struct.state_machine.ChangeState("attackwindup")
 				
 			}else{
 				handle_pathfinding();
@@ -141,7 +141,7 @@ function init_state_machine_templates(){
 
 		});
 	chase_template.AddDraw(draw_template);
-	attack_windup_template = new StatementStateTemplate("attack_windup")
+	attack_windup_template = new StatementStateTemplate("attackwindup")
 		.AddEnter(function(){
 			determine_sprite();
 			image_index = 0;

@@ -1,0 +1,1 @@
+activate_medkit = false;

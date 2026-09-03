@@ -20,19 +20,6 @@ function player_queue_state(next_state){
 	
 }
 
-function get_direction(face_num){
-	var direction_text = ""
-	if(face_num == 0 or face_num == 1 or face_num == 7){
-		direction_text = "right";}
-	else if(face_num == 3 or face_num == 4 or face_num == 5){
-		direction_text = "left";}
-	else if(face_num == 2){
-		direction_text = "up";}
-	else if(face_num == 6){
-		direction_text = "down";}
-	return direction_text
-}
-
 function player_update_sprites(state){
 	var skin_prefix = string_concat("spr_","char");
 	if(not_null(state)){

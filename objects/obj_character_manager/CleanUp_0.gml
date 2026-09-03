@@ -1,0 +1,9 @@
+if(not_null(character_map)){
+	ds_map_destroy(character_map)
+}
+if(not_null(character_buffer)){
+	ds_map_destroy(character_buffer)
+}
+if(not_null(compressed_buffer)){
+	ds_map_destroy(compressed_buffer)
+}

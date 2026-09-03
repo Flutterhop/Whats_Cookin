@@ -20,11 +20,16 @@ if(not_null(direction_facing)){
 	}
 }
 
-if(not_null(shadow_sprite)){
-	draw_sprite_ext(shadow_sprite,0,x,y+z_position,1,1,0,c_white,1);
+if(not_null(character_sprite)){
+	if(is_struct(character_sprite)){
+		draw_character();
+	}
 }
-if(not_null(sprite_index) and sprite_index != -1){
-	draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,0,c_white,1)
-}
+//if(not_null(shadow_sprite)){
+	//draw_sprite_ext(shadow_sprite,0,x,y+z_position,1,1,0,c_white,1);
+//}
+//if(not_null(sprite_index) and sprite_index != -1){
+//	draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,0,c_white,1)
+//}
 
 draw_health()

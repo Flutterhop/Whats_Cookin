@@ -1,19 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"obj_str_catapult",
+  "%Name":"obj_projectile_environment",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_str_catapult",
+  "name":"obj_projectile_environment",
   "overriddenProperties":[],
   "parent":{
-    "name":"Defense",
-    "path":"folders/Objects/Structures/Defense.yy",
+    "name":"Environment",
+    "path":"folders/Objects/Environment.yy",
   },
   "parentObjectId":{
-    "name":"obj_str_tower",
-    "path":"objects/obj_str_tower/obj_str_tower.yy",
+    "name":"obj_environment_game",
+    "path":"objects/obj_environment_game/obj_environment_game.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -32,10 +33,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_catapult_left_fire",
-    "path":"sprites/spr_catapult_left_fire/spr_catapult_left_fire.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

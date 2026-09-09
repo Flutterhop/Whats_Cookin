@@ -30,13 +30,19 @@ function Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_inte
 	minigame_reference = new_minigame_reference;
 }
 
-function Defense_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_move_speed = 1,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1)
- : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference)constructor {
-	move_speed = new_move_speed
+function Defense_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1)
+ : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction)constructor {
 	knockback_strength = new_knockback_strength
 	damage_amount = new_damage_amount
 	attack_speed = new_attack_speed
 	
+}
+
+function Tower_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_projectile = "")
+ : Defense_Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction)constructor {
+	detection_radius = 40;
+	firing_speed = 120;
+	projectile = new_projectile;
 }
 
 function Kitchen_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_process_speed = 1,new_process_type = process_type.cut)

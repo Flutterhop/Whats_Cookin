@@ -53,10 +53,10 @@ function draw_character_sprite(){
 			character_sprite = down_character_sprite
 			break;
 	}
-	var sprite_count = array_length(character_sprite.sprites);
+	var sprite_count = array_length(character_sprite.draw_sprites);
 	for(var i = 0; i < sprite_count;i++){
-		if(asset_get_type(character_sprite.sprites[i]) == asset_sprite ){
-			var current_sprite = character_sprite.sprites[i]
+		if(asset_get_type(character_sprite.draw_sprites[i].sprite) == asset_sprite ){
+			var current_sprite = character_sprite.draw_sprites[i].sprite
 			draw_sprite_ext(current_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
 		}
 	}

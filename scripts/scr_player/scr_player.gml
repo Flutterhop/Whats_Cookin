@@ -20,13 +20,10 @@ function player_queue_state(next_state){
 	
 }
 
-function player_update_sprites(state){
-	var skin_prefix = string_concat("spr_","char");
-	if(not_null(state)){
-		left_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_left"));
-		up_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_up"));
-		down_sprite = asset_get_index(string_concat(skin_prefix,"_",state,"_down"));
-	}
+function player_update_sprites(part,increment){
+	left_character_sprite.set_next_part(part,increment)
+	down_character_sprite.set_next_part(part,increment)
+	up_character_sprite.set_next_part(part,increment)
 }
 
 function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){

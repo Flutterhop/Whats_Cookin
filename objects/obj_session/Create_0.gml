@@ -12,7 +12,9 @@ function prototype(){
 	initialize_character_entities();
 	initialize_item_entities();
 	
-	var character_builder = instance_create_layer(0,0,"System",obj_character_manager);
+	var character_builder = new Character_Builder("Builder System",obj_character_manager,grid,true);
+	character_builder.spawn_entity(0,0,"System");
+	
 	var counter_01 = retrieve_entity("counter",global.structure_entities)
 	counter_01.spawn_grid_entity(3,3,"Instances")
 	
@@ -35,6 +37,7 @@ function prototype(){
 	player_entity.spawn_grid_entity(8,7,"Instances")
 	var user = new User(0,"Player 0",false,player_entity,"")
 	cam_follow(player_entity.instance);
+	
 	
 	var left_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","left")
 	var down_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","down")

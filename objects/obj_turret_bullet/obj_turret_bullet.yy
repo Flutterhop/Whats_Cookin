@@ -10,10 +10,13 @@
   "name":"obj_turret_bullet",
   "overriddenProperties":[],
   "parent":{
-    "name":"Defense",
-    "path":"folders/Objects/Structures/Defense.yy",
+    "name":"Projectile",
+    "path":"folders/Objects/Environment/Projectile.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_projectile_environment",
+    "path":"objects/obj_projectile_environment/obj_projectile_environment.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

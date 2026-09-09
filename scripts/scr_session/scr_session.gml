@@ -59,6 +59,7 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
+									"",
 									spr_item_apple,
 									spr_item_apple,
 									retrieve_stats("apple",target_stat_map)
@@ -69,6 +70,7 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
+									"",
 									spr_item_chicken,
 									spr_item_chicken,
 									retrieve_stats("chicken",target_stat_map)
@@ -79,6 +81,7 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
+									"",
 									spr_tool_plate,
 									spr_tool_plate,
 									retrieve_stats("plate",target_stat_map)
@@ -243,7 +246,6 @@ function initialize_structure_stats(){
 										50,
 										50,
 										false,
-										"",
 										1,
 										1,
 										1,
@@ -264,23 +266,23 @@ function initialize_structure_entities(){
 									grid,
 									true,
 									false,
+									retrieve_stats("counter",target_stat_map),
 									0,
 									0,
 									[],
-									1,
-									retrieve_stats("counter",target_stat_map)
+									1
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Kitchen_Structure("cuttingboard",
 									obj_str_cuttingboard, 
 									grid,
 									true,
-									false,
+									false, 
+									retrieve_stats("cuttingboard",target_stat_map),
 									0,
 									0,
 									[],
-									1,
-									retrieve_stats("cuttingboard",target_stat_map)
+									1
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Kitchen_Structure("storage",
@@ -288,11 +290,11 @@ function initialize_structure_entities(){
 									grid,
 									true,
 									false,
+									retrieve_stats("storage",target_stat_map),
 									0,
 									0,
 									[],
-									20, 
-									retrieve_stats("storage",target_stat_map)
+									20
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Defense_Structure("turret",
@@ -300,11 +302,11 @@ function initialize_structure_entities(){
 									grid,
 									true,
 									false,
+									retrieve_stats("turret",target_stat_map),
 									0,
 									0,
 									[],
 									0,
-									retrieve_stats("turret",target_stat_map),
 									[obj_enemy_npc]
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);

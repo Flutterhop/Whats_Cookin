@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scr_character_builder",
   "parent":{
-    "name":"Characters",
-    "path":"folders/Objects/Characters.yy",
+    "name":"Character_Builder",
+    "path":"folders/Objects/System/Character_Builder.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

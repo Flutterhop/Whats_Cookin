@@ -32,116 +32,56 @@ global.sprite_default = ["items",
 						"outline"
 ]
 
-function Character_Sprite(new_builder,new_character,new_action,_direction = "left") constructor {
-	builder = new_builder
-	character = new_character
-	direction_facing = _direction
-	action = new_action;
-	items		="";
-	sleeves		="";
-	arms		="";
-	bangs		="";
-	eyes		="";
-	face		="";
-	head		="";
-	hair		="";
-	feet		="";
-	bottom		="";
-	legs		="";
-	top			="";
-	torso		="";
-	shadow		="";
-	outline		="";
-	sprites 	= [outline,shadow,torso,top,legs,bottom,feet,hair,head,face,eyes,bangs,arms,sleeves,items];
-		
-	static assign_sprite_array = function(){
-		var is_up = direction_facing = "up";
-		if(is_up){
-			sprites = [ 
-				items,
-				outline, 
-				shadow,
-				torso, 
-				top,
-				legs,
-				bottom,
-				feet, 
-				arms,
-				sleeves,
-				hair,
-				head,
-				face,
-				eyes,
-				bangs
-			];
-		}else{
-			sprites = [
-				outline,
-				shadow,
-				torso,
-				top,
-				legs, 
-				bottom,
-				items, 
-				feet,
-				hair,
-				head,
-				face, 
-				eyes, 
-				bangs,   
-				arms, 
-				sleeves
-			];
-		}
-
-	}
+function Character_Builder(new_name,new_object_reference,new_grid,has_sm)  : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor {
 	
-	static init_character_sprite = function(){
+}
+
+function Character_Sprite(new_builder,new_character,new_action,_direction) constructor {
+	builder 			= new_builder
+	character 			= new_character
+	direction_facing 	= _direction
+	action 				= new_action;
+	items				= new Sprite_Part(self,"items",1,14);
+	sleeves				= new Sprite_Part(self,"sleeves",1,13);
+	arms				= new Sprite_Part(self,"arms",1,12);
+	bangs				= new Sprite_Part(self,"bangs",1,11);
+	eyes				= new Sprite_Part(self,"eyes",1,10);
+	face				= new Sprite_Part(self,"face",1,9);
+	head				= new Sprite_Part(self,"head",1,8);
+	hair				= new Sprite_Part(self,"hair",1,7);
+	feet				= new Sprite_Part(self,"feet",1,6);
+	bottom				= new Sprite_Part(self,"bottom",1,5);
+	legs				= new Sprite_Part(self,"legs",1,4);
+	top					= new Sprite_Part(self,"top",1,3);
+	torso				= new Sprite_Part(self,"torso",1,2);
+	shadow				= new Sprite_Part(self,"shadow",1,1);
+	outline				= new Sprite_Part(self,"outline",1,0);
+	
+	draw_sprites 		= [];
+	
+	static set_character_sprites = function(){
 		//	Setting minus one to skip item sprite.
 		var variables = variable_struct_get_names(self);
-		var is_up = direction_facing = "up";
-
 		var filtered_variables = get_sprite_variables();
 		var sprite_count = array_length(filtered_variables);
 		if(sprite_count > 0){
 			for(var i = 0;i < sprite_count;i++){
-				set_sprite(filtered_variables[i],1,action)
-				if(is_up){
-					var part_val = variable_instance_get(self,filtered_variables[i]);
-					array_set(sprites,i,part_val);
-				}else{
-					var inst_var = global.sprite_default[i]
-					var part_val = variable_instance_get(self,filtered_variables[i]);
-					array_set(sprites,i,part_val);
-				}
+				var part_val = variable_instance_get(self,filtered_variables[i]);
+				part_val.set_sprite()
+				draw_sprites[part_val.order] = part_val;
 			}
-			assign_sprite_array()
-		}
-	}
-	
-	static set_sprite = function(_part_name,target_sprite_index){
-		//	Construct the part string to find the sprite asset.
-		var direction_to_use = direction_facing
-		if(direction_facing == "right"){
-			direction_to_use = "left"
-		}
-		var asset_string = string_concat("spr_",_part_name,"_",action,"_",direction_to_use,"_",target_sprite_index)
-		var asset = asset_get_index(asset_string);
-		var part_exists = variable_struct_exists(self,_part_name);
-		//	if asset is found and the part variable exists then we set the sprite on that var.
-		if(not_null(asset) and part_exists){
-			variable_struct_set(self,_part_name,asset);
 		}
 	}
 	
 	static get_sprite_variables = function(){
 		function sprite_filter(element,index){
-			var filter_this = element == "sprites" or
-			 					element == "character" or 
-								element == "direction_facing" or 
-								element == "items" or 
-								element == "builder" or 
-								element == "sprite_filter"
+			var filter_this = element == "draw_sprites" or
+			 					element == "character" or
+								element == "direction_facing" or
+								element == "items" or
+								element == "builder" or
+								element == "sprite_filter" or
+								element == "action"
 			return !filter_this;
 		}
 		var variables = variable_struct_get_names(self);
@@ -151,29 +91,41 @@ function Character_Sprite(new_builder,new_character,new_action,_direction = "lef
 	
 	static set_next_part = function(part_to_cycle,increment){
 		var part_exists = variable_struct_exists(self,part_to_cycle);
-		var target_part = [];
 		if(!part_exists){return;}
-		var current_index = get_sprite_index(part_to_cycle);
-		if(increment > 0){
-			target_part = builder.get_next_part(part_to_cycle,current_index,action,direction_facing);
+		var target_part = variable_struct_get(self,part_to_cycle);
+		var next_index = target_part.index + increment;
+		if(next_index <= 0){
+			target_part.index = target_part.total_parts;
+		}else if(next_index >= target_part.total_parts){
+			target_part.index = 1;
+		}else{
+			target_part.index = next_index;
 		}
-		if(increment < 0){
-			target_part = builder.get_previous_part(part_to_cycle,current_index,action,direction_facing);
-		}
-		if(asset_get_type(target_part) == asset_sprite){
-			return target_part;
-		}
-	}
-	static get_sprite_index = function(part){
-		var part_string_array = string_split(part,"_",true)
-		var index_string = part_string_array[array_length(part_string_array) - 1]
-		var index = real(index_string)
-		if(typeof(index) == "number"){
-			return index;
-		}
-		return "";
+		target_part.set_sprite()
+		draw_sprites[target_part.order] = target_part;
 	}
 	
+	set_character_sprites()
+}
+
+function Sprite_Part(new_character_sprite,new_part_name,new_index,new_order) constructor {
+	character_sprite 	= new_character_sprite;
+	part_name 			= new_part_name;
+	order 				= new_order;
+	index 				= new_index;
+	sprite 				= ""
+	total_parts			= array_length(tag_get_asset_ids(string_concat("part_",part_name),asset_sprite)) / 3;
 	
-	init_character_sprite()
+	
+	static set_sprite = function(){
+		if(not_null(character_sprite) and is_instanceof(character_sprite,Character_Sprite)){
+			var asset_string = string_concat("spr_",part_name,"_",character_sprite.action,"_",character_sprite.direction_facing,"_",index);
+			var asset = asset_get_index(asset_string);
+			if(not_null(asset)){
+				sprite = asset;
+			}else{
+				EchoDebug(string_concat("Sprite_Part.set_sprite() failed. Sprite asset not found. String to call was: ",asset_string));
+			}
+		}
+	}
 }

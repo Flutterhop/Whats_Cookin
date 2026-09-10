@@ -16,7 +16,7 @@ function Character_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_move_spe
 	damage_amount = new_damage_amount
 	attack_speed = new_attack_speed
 	attack_range = new_attack_range
-	interaction_range = new_interaction_range;
+	interaction_range = new_interaction_range; 
 	attack_time = new_attack_time
 	
 }
@@ -53,14 +53,21 @@ function draw_character_sprite(){
 			character_sprite = down_character_sprite
 			break;
 	}
-	var sprite_count = array_length(character_sprite.draw_sprites);
-	for(var i = 0; i < sprite_count;i++){
-		if(asset_get_type(character_sprite.draw_sprites[i].sprite) == asset_sprite ){
-			var current_sprite = character_sprite.draw_sprites[i].sprite
-			draw_sprite_ext(current_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
+	if(is_instanceof(character_sprite,Character_Sprite)){
+		sprite_index = character_sprite.draw_sprites[0].sprite
+		var sprite_count = array_length(character_sprite.draw_sprites);
+		for(var i = 0; i < sprite_count;i++){
+			if(asset_get_type(character_sprite.draw_sprites[i].sprite) == asset_sprite ){
+				var current_sprite = character_sprite.draw_sprites[i].sprite
+				draw_sprite_ext(current_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
+			}
 		}
+		EchoDebug(string_concat("Image index = ",image_index))
+	}else{
+		sprite_index = character_sprite
+		draw_sprite_ext(character_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
 	}
-	
+
 }
 
 function character_draw_health(){

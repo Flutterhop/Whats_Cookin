@@ -20,16 +20,26 @@ enum Path_Shape{
 	Zigzag
 }
 
-function Environment_Stats(){
-	
+enum Impact_Type{
+	Default
 }
 
-function Projectile_Stats(new_projectile_damage,new_projectile_speed,new_modifiers,new_path_shape,new_collision_targets,new_collision_exceptions) : Environment_Stats() constructor {
+function Environment_Stats(new_name){
+	name = new_name;
+}
+
+function Projectile_Stats(new_name,new_projectile_sprite,new_projectile_damage,new_projectile_speed,new_modifiers = [],new_path_shape,new_impact_type,new_collision_targets,new_collision_exceptions) : Environment_Stats(new_name) constructor {
+	projectile_sprite = new_projectile_sprite
 	projectile_damage = new_projectile_damage;
 	projectile_speed = new_projectile_speed;
 	modifiers = new_modifiers;
 	path_shape = new_path_shape;
+	impact_type = new_impact_type;
 	collision_targets = new_collision_targets;
 	collision_exceptions = new_collision_exceptions;
+	if(path_shape == Path_Shape.Arc){ max_height = 20;}else{max_height = 0;}
+	
+	
+	
 }
 

@@ -19,6 +19,8 @@ function init_state_machine(){
 	struct.state_machine.AddStateTemplate(idle_template)
 	struct.state_machine.AddStateTemplate(attack_template)
 	struct.state_machine.AddStateTemplate(attack_windup_template)
+	struct.state_machine.AddStateTemplate(detect_template)
+	struct.state_machine.AddStateTemplate(assemble_template)
 	struct.state_machine.AddStateTemplate(stunned_template)
 	struct.state_machine.AddStateTemplate(dead_template)
 	struct.state_machine.QueueState(default_state)
@@ -33,6 +35,23 @@ function init_state_machine_templates(){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2);
 			}
 		}
+		if(not_null(direction_facing)){
+			switch(direction_facing){
+				case "up":
+					image_xscale = 1;
+				break;
+				case "down":
+					image_xscale = 1;
+				break;
+				case "left":
+					image_xscale = 1;
+				break;
+				case "right":
+					image_xscale = -1;
+				break;
+			}
+		}
+		draw_self()
 	}
 	idle_template = new StatementStateTemplate("idle")
 		.AddUpdate(function(){
@@ -70,7 +89,7 @@ function init_state_machine_templates(){
 			}
 		});
 	detect_template.AddDraw(draw_template)
-	assemble_template = new StatementState(struct.state_machine,"assemble")
+	assemble_template = new StatementStateTemplate("assemble")
 		.AddUpdate(function(){
 			with(owner){
 				
@@ -116,6 +135,5 @@ function init_state_machine_templates(){
 			} 
 	});
 	dead_template.AddDraw(draw_template);
-	struct.state_machine.ChangeState("idle");
 
 }

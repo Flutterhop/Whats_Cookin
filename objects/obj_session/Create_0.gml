@@ -5,12 +5,16 @@ prototype();
 
 function prototype(){
 	initialize_item_stats();
-	initialize_system_entities();
+	
 	initialize_character_stats();
+	initialize_environment_stats();
+	initialize_environment_entities();
 	initialize_structure_stats();
+	initialize_system_entities();
 	initialize_structure_entities();
 	initialize_character_entities();
 	initialize_item_entities();
+	
 	
 	var character_builder = new Character_Builder("Builder System",obj_character_manager,grid,true);
 	character_builder.spawn_entity(0,0,"System");
@@ -48,7 +52,10 @@ function prototype(){
 	player_entity.instance.left_character_sprite = left_char_sprite;
 
 	
-	
+	var catapult_01 = retrieve_entity("catapult",global.structure_entities)
+	catapult_01.spawn_grid_entity(7,7,"Instances")
+	var hunter_01 = retrieve_entity("hunter",global.character_entities)
+	hunter_01.spawn_grid_entity(5,7,"Instances");
 	/*
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 
@@ -71,8 +78,7 @@ function prototype(){
 	//_sq.single_direction = true;
 	//_sq.spawn_grid_entity(5,20,"Instances");
 	
-	//var hunter_01 = retrieve_entity("hunter",global.character_entities)
-	//hunter_01.spawn_grid_entity(5,7,"Instances");
+
 	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10

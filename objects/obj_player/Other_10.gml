@@ -31,6 +31,58 @@ stun_index = 0;//used to animate stun effect
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
 	struct.state_machine.DebugSetErrorBehavior(eStatementErrorBehavior.RETHROW);
+	
+	draw_template = function(){
+		with(owner){
+			if(not_null(equipment_sprite)){
+		    	draw_sprite_ext(equipment_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
+			}
+			
+			var interact_coord = get_interact_shape(direction);
+			
+			var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
+			var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
+			draw_rectangle_colour(x + interact_coord[0],y + interact_coord[1],x + interact_coord[2],y + interact_coord[3],c_black,c_black,c_black,c_black,true)
+			draw_circle_colour(x_pos,y_pos,2,c_red,c_red,true)
+			
+			
+			if(struct.stun_amount > 0){
+				draw_sprite_ext(spr_effect_stun,image_index,x,y,1,1,0,c_white,1);
+			}
+			
+			
+			if(not_null(direction_facing)){
+				switch(direction_facing){
+					case "up":
+						image_xscale = 1;
+					break;
+					case "down":
+						image_xscale = 1;
+					break;
+					case "left":
+						image_xscale = 1;
+					break;
+					case "right":
+						image_xscale = -1;
+					break;
+				}
+			}
+			
+			draw_character();
+			
+			//if(not_null(shadow_sprite)){
+				//draw_sprite_ext(shadow_sprite,0,x,y+z_position,1,1,0,c_white,1);
+			//}
+			//if(not_null(sprite_index) and sprite_index != -1){
+			//	draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,0,c_white,1)
+			//}
+			
+			draw_health()
+		}
+		
+		
+	}
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
@@ -40,7 +92,8 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite();
+				//determine_sprite();
+				direction_facing = determine_direction_facing(direction);
 				interpret_player_controls();
 				handle_movement();
 				reset_input();
@@ -48,19 +101,8 @@ function init_state_machine(){
 				handle_iframes();
 			}
 			
-		})
-		.AddExit(function(){
-			with(owner){
-
-			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){ 
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
-			}
-	});	
+	});
+	idle_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var move_state = new StatementState(struct.state_machine,"move")
 		.AddEnter(function(){
@@ -70,33 +112,23 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite();
+				//determine_sprite();
+				direction_facing = determine_direction_facing(direction);
 				interpret_player_controls();
 				handle_movement();
 				reset_input();
 				reset_speed();
 				handle_iframes();
 			}
-		})
-		.AddExit(function(){
-			with(owner){
-
-			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
-				
-			}
 
 	});
+	move_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var hold_state = new StatementState(struct.state_machine,"hold")
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite("","")
+				//determine_sprite("","")
+				direction_facing = determine_direction_facing(direction);
 				interpret_player_controls();
 				handle_movement();
 				handle_holding();
@@ -106,18 +138,10 @@ function init_state_machine(){
 			}
 		})
 		.AddExit(function(){
-			with(owner){
-
-			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
-			}
+			with(owner){ }
 
 	});
+	hold_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var throw_state = new StatementState(struct.state_machine,"throw")
 		.AddEnter(function(){
@@ -128,18 +152,12 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				determine_sprite("","")
+				//determine_sprite("","")
+				direction_facing = determine_direction_facing(direction);
 				interpret_player_controls();
 				handle_holding();
 				reset_input();
 				handle_iframes();
-			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
 			}
 		})
 		.AddExit(function(){
@@ -149,17 +167,19 @@ function init_state_machine(){
 		
 
 	});
+	throw_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var interact_state = new StatementState(struct.state_machine,"interact")
 		.AddEnter(function(){
 			with(owner){
-				determine_sprite("","");
+				//determine_sprite("","");
 				image_index = 0
 				movement_locked = true;
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				direction_facing = determine_direction_facing(direction);
 				handle_interaction();
 			}
 
@@ -169,18 +189,20 @@ function init_state_machine(){
 				movement_locked = false;
 			}
 		});
+	interact_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var attack_state = new StatementState(struct.state_machine,"attack")
 		.AddEnter(function(){
 			with(owner){
 				movement_locked = true;
-                determine_sprite("pan","slash")
+               // determine_sprite("pan","slash")
                 image_index = 0;
 				image_speed = 1;
 			}
 		})
 		.AddUpdate(function(){
 			with(owner){
+				direction_facing = determine_direction_facing(direction);
                 var attack_targets = attack_collision();
 				if(is_array(attack_targets)){
 					var num_targets = array_length(attack_targets)
@@ -199,26 +221,8 @@ function init_state_machine(){
 				}
 				handle_iframes();
 			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
-				
-				var interact_coord = get_interact_shape(direction);
-				var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
-				var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
-				draw_rectangle_colour(x + interact_coord[0],y + interact_coord[1],x + interact_coord[2],y + interact_coord[3],c_red,c_red,c_red,c_red,true)
-			}
-		})
-        .AddExit(function(){
-            with(owner){
-                movement_locked = false;
-				equipment_sprite = "";
-
-            }
         });
+	attack_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var stunned_state = new StatementState(struct.state_machine,"stunned")
 		.AddEnter(function(){
@@ -228,6 +232,7 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
+				direction_facing = determine_direction_facing(direction);
 				var knockback_done = false
 				var stun_done = false
 				var state_time = struct.state_machine.GetStateTime();
@@ -252,21 +257,15 @@ function init_state_machine(){
 				movement_locked = false;
 
 			}
-		})
-		.AddDraw(function(){
-			with(owner){
-				if(global.debug){
-					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2)
-				}
-			}
 		});
+	stunned_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var dead_state = new StatementState(struct.state_machine,"dead")
 		.AddEnter(function(){
 			with(owner){
-
+				
 				movement_locked = true;
-				determine_sprite()
+				//determine_sprite()
 				image_index = 0;
 				image_speed = 0;
 				struct.iframes = true;
@@ -274,18 +273,20 @@ function init_state_machine(){
 		})
 		.AddUpdate(function(){
 			with(owner){
-				
+				direction_facing = determine_direction_facing(direction);
 			}
 			}) 
 		.AddExit(function(){
 			with(owner){
 				movement_locked = true;
-				determine_sprite()
+				//determine_sprite()
 				image_index = 0;
 				image_speed = 1;
 				struct.iframes = false;
 			}
 		});
+	dead_state.AddDraw(draw_template)
+	
 	struct.state_machine
 	.AddState(idle_state)
 	.AddState(move_state)

@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_catapult_left_fire",
-    "path":"sprites/spr_catapult_left_fire/spr_catapult_left_fire.yy",
+    "name":"spr_catapult_left_idle",
+    "path":"sprites/spr_catapult_left_idle/spr_catapult_left_idle.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -6,6 +6,7 @@ global.structure_entities	= ds_map_create(); #macro TOTAL_STRUCTURE_ENTITIES 1
 global.character_stats		= ds_map_create(); #macro TOTAL_CHARACTER_STATS 1
 global.character_entities	= ds_map_create(); #macro TOTAL_CHARACTER_ENTITIES 1
 global.system_entities		= ds_map_create(); #macro TOTAL_SYSTEM_ENTITIES 1
+global.environment_stats 	= ds_map_create(); #macro TOTAL_ENVIRONMENT_STATS 1
 global.environment_entities = ds_map_create(); #macro TOTAL_ENVIRONMENT_ENTITIES 1
 
 function set_camera_follow(target){
@@ -242,14 +243,28 @@ function initialize_structure_stats(){
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	//Turret
-	entity = new Defense_Structure_Stats("turret", 
+	entity = new Tower_Stats("turret", 
 										50,
 										50,
 										false,
 										1,
 										1,
+										5, 
+										100,
+										120,
+										retrieve_entity("turret_projectile",global.environment_entities)
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	entity = new Tower_Stats("catapult", 
+										50,
+										50,
+										false,
+										5,
+										5,
 										1,
-										1
+										100,
+										120,
+										retrieve_entity("catapult_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 
@@ -310,7 +325,19 @@ function initialize_structure_entities(){
 									[obj_enemy_npc]
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
-
+	entity = new Defense_Structure("catapult",
+									obj_str_catapult,
+									grid,
+									true,
+									false,
+									retrieve_stats("catapult",target_stat_map),
+									0,
+									0,
+									[],
+									0,
+									[obj_enemy_npc]
+											);
+	ds_map_add(target_map,string_lower(entity.name),entity);
 }
 
 function initialize_system_entities(){
@@ -321,6 +348,57 @@ function initialize_system_entities(){
 									obj_mini_chopping,
 									grid,
 									true);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	
+}
+
+function initialize_environment_stats(){
+	var entity
+	var target_map = global.environment_stats;
+	ds_map_clear(target_map);
+	entity = new Projectile_Stats("turret_projectile",
+									spr_projectile_catapult_vertical,
+									1,
+									5,
+									[Projectile_Modifier.Target],
+									Path_Shape.Line,
+									Impact_Type.Default,
+									[obj_character_game],
+									[]
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+		entity = new Projectile_Stats("catapult_projectile",
+									spr_projectile_catapult_vertical,
+									10,
+									1,
+									[Projectile_Modifier.Target],
+									Path_Shape.Arc,
+									Impact_Type.Default,
+									[obj_character_game],
+									[]
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+}
+function initialize_environment_entities(){
+	var entity
+	var target_map = global.environment_entities
+	var target_stat_map = global.environment_stats
+	ds_map_clear(target_map);
+	entity = new Environment_Projectile("catapult_projectile",
+									obj_catapult_projectile,
+									grid,
+									true,
+									true,
+									retrieve_stats("catapult_projectile",target_stat_map)
+									);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	entity = new Environment_Projectile("turret_projectile",
+									obj_turret_bullet,
+									grid,
+									true,
+									true,
+									retrieve_stats("turret_projectile",target_stat_map)
+									);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	
 }

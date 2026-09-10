@@ -38,10 +38,10 @@ function Defense_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_
 	
 }
 
-function Tower_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1,new_projectile = "")
+function Tower_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_knockback_strength,new_damage_amount,new_attack_speed ,new_detection_radius,new_firing_speed,new_projectile)
  : Defense_Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction)constructor {
-	detection_radius = 40;
-	firing_speed = 120;
+	detection_radius = new_detection_radius;
+	firing_speed = new_firing_speed;
 	projectile = new_projectile;
 }
 

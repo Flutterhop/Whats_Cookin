@@ -708,23 +708,17 @@ function Environment_Game(new_name,new_object_reference,new_grid,has_sm,new_invi
 
 }
 
-function Environment_Projectile(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_projectile_type)
+function Environment_Projectile(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats)
  : Environment_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats) constructor {
-	projectile_type = "";
 	target_entity = "";
 	target_position = "";
 	target_direction = "";
+	path = "";
+	impact = "";
 	
-	static spawn_entity = function(x_pos,y_pos,new_layer){
-		if(x_pos == 0 and y_pos == 0){
-			x_pos = grid_x
-			y_pos = grid_y
-		}
+	static spawn_entity = function(x_pos,y_pos,layer_to_spawn){
 		var new_struct = self
-		var x_position = (x_pos * grid.cell_width) + grid.cell_width / 2
-		var y_position = (y_pos * grid.cell_height) + grid.cell_height / 2
-		
-		instance = instance_create_layer(x_position,y_position,layer_to_spawn,object_reference,{struct : new_struct});
+		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct});
 		call_later(30,time_source_units_frames,call_state_machine)
 		
 	}
@@ -736,14 +730,46 @@ function Environment_Projectile(new_name,new_object_reference,new_grid,has_sm,ne
 		
 	}
 	
-	path_arc = function(x_pos,y_pos,_direction){
+	path_arc = function(x_pos,y_pos,_direction,height_reached){
 		var x_speed = lengthdir_x(x_pos + stats.projectile_speed,_direction);
 		var y_speed = lengthdir_y(y_pos + stats.projectile_speed,_direction);
+		if(z_pos < stats.max_height and !height_reached){
+			z_pos += 0.5;
+		}else if(z_pos > 0 and height_reached){
+			z_pos -= 0.5;
+		}
+		if(z_pos >= stats.max_height and !height_reached){
+			instance.max_height_reached = true;
+		}
+		
+		if(z_pos >= stats.max_height and !height_reached){
+			instance.max_height_reached = true;
+		}
+		
 		move_and_collide(x_speed,y_speed,grid.instances_to_check,1,undefined,undefined,10,10);
 		
 	}
 	
+	default_impact = function(){
+		state_machine.ChangeState("inactive");
+		
+	}
 	
+	static initialize_methods = function(){
+		if(not_null(stats)){
+			switch (stats.path_shape){
+				case Path_Shape.Line:
+					path = path_line;
+				break;
+				case Path_Shape.Arc:
+					path = path_arc;
+				break;
+			}
+			impact = default_impact;
+		}
+	}
+	
+	initialize_methods();
 }
 
 function Game_Stats() constructor {

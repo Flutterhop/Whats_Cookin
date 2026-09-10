@@ -62,7 +62,7 @@
     },
     "name":"spr_outline_idle_up_1",
     "playback":1,
-    "playbackSpeed":1.0,
+    "playbackSpeed":5.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",

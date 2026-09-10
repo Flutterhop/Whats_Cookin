@@ -8,7 +8,7 @@ function player_input_right(player){
 		x_speed = 0;
 	}
 
-	determine_sprite();
+	//determine_sprite();
 }
 
 function player_input_left(player){
@@ -19,7 +19,7 @@ function player_input_left(player){
 	}else{
 		x_speed = 0;
 	}
-	determine_sprite();
+	//determine_sprite();
 }
 
 function player_input_up(player){
@@ -30,7 +30,7 @@ function player_input_up(player){
 	}else{
 		y_speed = 0;
 	}
-	determine_sprite();
+	//determine_sprite();
 }
 
 function player_input_down(player){
@@ -41,7 +41,7 @@ function player_input_down(player){
 	}else{
 		y_speed = 0;
 	}
-	determine_sprite();
+	//determine_sprite();
 
 }
 	

@@ -1,6 +1,8 @@
 // Inherit the parent event
 event_inherited();
 
+max_height_reached = false;
+
 function init_state_machine(){
 	
 	if(is_null(struct.state_machine)){struct.state_machine = new Statement(self)}
@@ -10,10 +12,14 @@ function init_state_machine(){
 				scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2);
 			}
 		}
+		if(not_null(struct.stats)){
+			draw_sprite_ext(struct.stats.projectile_sprite,image_index,x,y - struct.z_pos,1,1,0,c_white,1);
+		}
 	}
-	active_template = new StatementStateTemplate("idle")
+	active_template = new StatementStateTemplate("active")
 		.AddUpdate(function(){
 			// While active follow the path shape and read for collision.
+			
 		});
 	active_template.AddDraw(draw_template);
 	inactive_template = new StatementStateTemplate("inactive")

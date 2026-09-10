@@ -21,9 +21,7 @@ if(not_null(direction_facing)){
 }
 
 if(not_null(character_sprite)){
-	if(is_struct(character_sprite)){
-		draw_character();
-	}
+	draw_character();
 }
 //if(not_null(shadow_sprite)){
 	//draw_sprite_ext(shadow_sprite,0,x,y+z_position,1,1,0,c_white,1);

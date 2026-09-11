@@ -132,6 +132,8 @@ function init_state_machine_templates(){
 			determine_sprite();
 			handle_iframes()
 			if(is_near_target()){
+				
+				set_target();
 				struct.state_machine.ChangeState("attackwindup")
 				
 			}else{
@@ -143,10 +145,10 @@ function init_state_machine_templates(){
 	chase_template.AddDraw(draw_template);
 	attack_windup_template = new StatementStateTemplate("attackwindup")
 		.AddEnter(function(){
+			path_end();
 			determine_sprite();
 			image_index = 0;
 			image_speed = 1;
-			path_end();
 		})
 		.AddUpdate(function(){
 			var state_time = struct.state_machine.GetStateTime();
@@ -197,6 +199,7 @@ function init_state_machine_templates(){
 	stunned_template.AddDraw(draw_template);
     dead_template = new StatementStateTemplate("dead")
 		.AddEnter(function(){
+				path_end();
 				determine_sprite();
                 
 				image_index = 0;

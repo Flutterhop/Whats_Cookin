@@ -12,6 +12,9 @@ apply_knockback			= method(id,npc_apply_knockback);
 //LOOT
 spawn_loot 				= method(id,npc_spawn_loot);
 
+//DETECTION
+set_target 				=method(id,npc_set_target);
+
 //TIMERS
 get_active_timers		= method(id,npc_get_active_timers);
 idle_complete			= method(id,npc_idle_complete);

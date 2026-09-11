@@ -116,7 +116,7 @@ function initialize_character_stats(){
 							6,
 							10,
 							15,
-							120,
+							10,
 							0,
 							npc_size.medium,
 							"chicken",
@@ -250,8 +250,8 @@ function initialize_structure_stats(){
 										1,
 										1,
 										5, 
-										100,
-										120,
+										200,
+										60,
 										retrieve_entity("turret_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -263,7 +263,7 @@ function initialize_structure_stats(){
 										5,
 										1,
 										100,
-										120,
+										360,
 										retrieve_entity("catapult_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -357,13 +357,14 @@ function initialize_environment_stats(){
 	var target_map = global.environment_stats;
 	ds_map_clear(target_map);
 	entity = new Projectile_Stats("turret_projectile",
-									spr_projectile_catapult_vertical,
+									spr_item_placeholder,
 									1,
+									5,
 									5,
 									[Projectile_Modifier.Target],
 									Path_Shape.Line,
 									Impact_Type.Default,
-									[obj_character_game],
+									[obj_npc],
 									[]
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -371,10 +372,11 @@ function initialize_environment_stats(){
 									spr_projectile_catapult_vertical,
 									10,
 									1,
+									20,
 									[Projectile_Modifier.Target],
 									Path_Shape.Arc,
 									Impact_Type.Default,
-									[obj_character_game],
+									[obj_npc],
 									[]
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);

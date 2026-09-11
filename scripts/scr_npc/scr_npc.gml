@@ -174,6 +174,15 @@ function npc_spawn_loot(){
 		}
 	}
 }
+
+function npc_set_target(){
+	if(not_null(target)){
+		target_x = target.x;
+		target_y = target.y;
+	}else{
+		return;
+	}
+}
 /////////////////////////////////////////////TIMER METHODS////////////////////////////////////////////////
 		
 function npc_get_active_timers(){

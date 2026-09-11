@@ -23,7 +23,8 @@ function set_custom_states(){
 			if(not_null(target)){
 				if(not_null(struct.stats.projectile)){
 					var dir = point_direction(x,y,target.x,target.y);
-					struct.stats.projectile.spawn_entity(x,y,"Instances")
+					struct.launch_projectile(x,y,"Instances",dir)
+					
 				}
 			}
 			firing_timer = 0;

@@ -1,3 +1,4 @@
+
 /// @description Insert description here
 // You can write your code in this editor
 
@@ -91,9 +92,7 @@ function init_state_machine_templates(){
 	detect_template.AddDraw(draw_template)
 	assemble_template = new StatementStateTemplate("assemble")
 		.AddUpdate(function(){
-			with(owner){
-				
-			}
+
 	});
 	assemble_template.AddDraw(draw_template);
 	stunned_template = new StatementStateTemplate("stunned")

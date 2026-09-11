@@ -840,6 +840,7 @@
     {"id":{"name":"scr_player_actions","path":"scripts/scr_player_actions/scr_player_actions.yy",},},
     {"id":{"name":"scr_player","path":"scripts/scr_player/scr_player.yy",},},
     {"id":{"name":"scr_process_actions","path":"scripts/scr_process_actions/scr_process_actions.yy",},},
+    {"id":{"name":"scr_projectile","path":"scripts/scr_projectile/scr_projectile.yy",},},
     {"id":{"name":"scr_retro_pal_swapper_utilities","path":"scripts/scr_retro_pal_swapper_utilities/scr_retro_pal_swapper_utilities.yy",},},
     {"id":{"name":"scr_retro_pal_swapper","path":"scripts/scr_retro_pal_swapper/scr_retro_pal_swapper.yy",},},
     {"id":{"name":"scr_session","path":"scripts/scr_session/scr_session.yy",},},

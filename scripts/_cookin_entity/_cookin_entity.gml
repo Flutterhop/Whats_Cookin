@@ -144,6 +144,7 @@ function Game_Entity(new_name,new_object_reference = _obj_cookin_entity,new_grid
 		if(!iframes and !invincible and !is_dead){
 			if(variable_instance_exists(self,"stats")){
 				stats.current_hp -= amount;
+				if(stats.current_hp < 0){stats.current_hp = 0}
 				var event_message = string_concat(name," took ",amount," damage from ",source.struct.name, "!");
 				global.event_handler.create_event(ev_type.combat,event_message,ev_priority.standard);
 				if(stats.current_hp <= 0){
@@ -360,6 +361,14 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_target_objects)
 : Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
 	target_objects = new_target_objects;
+	
+	launch_projectile = function(x_pos,y_pos,layer_to_spawn,dir){
+		var new_struct = retrieve_entity(stats.projectile.name,global.environment_entities);
+		new_struct.instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,new_struct.object_reference,{struct : new_struct, 
+																						direction : dir});
+		call_later(30,time_source_units_frames,new_struct.call_state_machine)
+		
+	}
 }
 
 function Kitchen_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit)
@@ -716,37 +725,44 @@ function Environment_Projectile(new_name,new_object_reference,new_grid,has_sm,ne
 	path = "";
 	impact = "";
 	
-	static spawn_entity = function(x_pos,y_pos,layer_to_spawn){
+	static spawn_entity = function(x_pos,y_pos,layer_to_spawn,_direction){
 		var new_struct = self
-		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct});
+		instance = instance_create_layer(x_pos,y_pos,layer_to_spawn,object_reference,{struct : new_struct, 
+																						direction : _direction});
 		call_later(30,time_source_units_frames,call_state_machine)
 		
 	}
 	
 	path_line = function(x_pos,y_pos,_direction){
-		var x_speed = lengthdir_x(x_pos + stats.projectile_speed,_direction);
-		var y_speed = lengthdir_y(y_pos + stats.projectile_speed,_direction);
-		move_and_collide(x_speed,y_speed,grid.instances_to_check,1,undefined,undefined,10,10);
-		
+		var x_speed = lengthdir_x(stats.projectile_speed,_direction);
+		var y_speed = lengthdir_y(stats.projectile_speed,_direction);
+		with(instance){
+			move_and_collide(x_speed,y_speed,struct.grid.instances_to_check,1,undefined,undefined,10,10);
+		}
 	}
 	
 	path_arc = function(x_pos,y_pos,_direction,height_reached){
-		var x_speed = lengthdir_x(x_pos + stats.projectile_speed,_direction);
-		var y_speed = lengthdir_y(y_pos + stats.projectile_speed,_direction);
+		var x_speed = lengthdir_x(stats.projectile_speed,_direction);
+		var y_speed = lengthdir_y(stats.projectile_speed,_direction);
 		if(z_pos < stats.max_height and !height_reached){
-			z_pos += 0.5;
+			z_pos += 1;
 		}else if(z_pos > 0 and height_reached){
-			z_pos -= 0.5;
+			z_pos -= 1;
+		}else if(z_pos <= 0 and height_reached){
+			impact();
+			return;
 		}
 		if(z_pos >= stats.max_height and !height_reached){
 			instance.max_height_reached = true;
+			height_reached = true
 		}
 		
 		if(z_pos >= stats.max_height and !height_reached){
 			instance.max_height_reached = true;
 		}
-		
-		move_and_collide(x_speed,y_speed,grid.instances_to_check,1,undefined,undefined,10,10);
+		with(instance){
+			move_and_collide(x_speed,y_speed,struct.grid.instances_to_check,1,undefined,undefined,10,10);
+		}
 		
 	}
 	

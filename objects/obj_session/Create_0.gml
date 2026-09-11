@@ -54,8 +54,16 @@ function prototype(){
 	
 	var catapult_01 = retrieve_entity("catapult",global.structure_entities)
 	catapult_01.spawn_grid_entity(7,7,"Instances")
-	var hunter_01 = retrieve_entity("hunter",global.character_entities)
-	hunter_01.spawn_grid_entity(5,7,"Instances");
+	var turret_01 = retrieve_entity("turret",global.structure_entities)
+	turret_01.spawn_grid_entity(4,5,"Instances")
+	var hunter_02 = retrieve_entity("hunter",global.character_entities)
+	hunter_02.spawn_grid_entity(5,7,"Instances");
+	var hunter_03 = retrieve_entity("hunter",global.character_entities)
+	hunter_03.spawn_grid_entity(1,1,"Instances");
+	var hunter_04 = retrieve_entity("hunter",global.character_entities)
+	hunter_04.spawn_grid_entity(12,7,"Instances");
+	var hunter_05 = retrieve_entity("hunter",global.character_entities)
+	hunter_05.spawn_grid_entity(3,2,"Instances");
 	/*
 	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 

@@ -62,7 +62,6 @@ function draw_character_sprite(){
 				draw_sprite_ext(current_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
 			}
 		}
-		EchoDebug(string_concat("Image index = ",image_index))
 	}else{
 		sprite_index = character_sprite
 		draw_sprite_ext(character_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
@@ -75,7 +74,7 @@ function character_draw_health(){
 		if(struct.stats.current_hp < struct.stats.max_hp){
 			var current_percent = struct.stats.current_hp / struct.stats.max_hp
 			current_percent = abs(current_percent - 1)
-			var current_frame = current_percent * (sprite_get_number(spr_purple_bar) - 1)
+			var current_frame = clamp(current_percent * (sprite_get_number(spr_purple_bar) - 1),0,(sprite_get_number(spr_purple_bar)))
 			draw_sprite_ext(spr_purple_bar,current_frame,x,y - 15,.8,.8,0,c_white,1)
 		}
 	}

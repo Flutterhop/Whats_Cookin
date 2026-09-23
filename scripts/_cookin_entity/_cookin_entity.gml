@@ -283,6 +283,10 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		}
 	}
 	static insert_item = function(target_item){
+		if(is_instanceof(target_item.struct,Item_Game)){
+			target_item.struct.held = true;
+			
+		}
 		array_push(inventory,target_item)
 	}
 	static remove_item = function(){
@@ -478,10 +482,9 @@ function Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 	}
 }
 
-function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = true,new_invincible,new_stats,new_character_name = "char",new_player_number = 0)
+function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = true,new_invincible,new_stats,new_player_number = 0,new_builder = "")
 : Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats) constructor{
 	
-	character_name = new_character_name;
 	player_number = new_player_number;
 	input_allowed = true
 	equipment = "unarmed"
@@ -489,6 +492,7 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 	target_objects = [obj_enemy_npc]
     held_entity = "";
 	interaction_target = "";
+	character_builder = new Character_Builder(string_concat("player_",player_number," builder"),"","",false,self);
 	
 	///INPUT CONTROL
 	input_allowed = true;
@@ -604,7 +608,22 @@ function Item_Game(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 	static set_item_icon = function(new_icon){
 		item_icon = new_icon;
 	}
-
+	
+	static update_state = function(){
+		if(array_length(inventory) > 0 and held){
+			state_machine.ChangeState("hold");
+			disable_collision();
+		}else if(array_length(inventory) > 0 and !held){
+			state_machine.ChangeState("idle");
+			enable_collision();
+		}else if(array_length(inventory) <= 0 and held){
+			state_machine.ChangeState("hold");
+			disable_collision();
+		}else if(array_length(inventory) <= 0 and !held){
+			state_machine.ChangeState("idle");
+			enable_collision();
+		}
+	}
 }
 
 function Item_Food(new_name,new_object_reference = _obj_food_item,new_grid = "",has_sm = true,new_invincible,new_stats = "",new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder)
@@ -675,12 +694,8 @@ function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 	
 	put_item = function(target_item){
 		var item_placed = false;
-		
 		if(is_instanceof(target_item.struct,Item_Food)){
 			if(array_length(inventory) < limit){
-				if(array_length(inventory) <= 0){
-					state_machine.ChangeState("idle_occupied");
-				}
 				target_item.struct.disable_collision()
 				array_push(inventory,target_item);
 				target_item.struct.state_machine.ChangeState("hold");
@@ -688,28 +703,51 @@ function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 			}else{
 				return item_placed
 			}
-		}else{
+		}else if(is_instanceof(target_item.struct,Item_Tool)){
 			
-			return true
+			
 		}
-		
+		update_state();
 		return item_placed
 	}
 	pick_item = function(){
-		var item = "";
-		if(array_length(inventory) > 0){
-			item = array_pop(inventory);
-			if(array_length(inventory) <= 0){
-				state_machine.ChangeState("idle_empty");
-				enable_collision()
-			}
-			
-		}else{
-			disable_collision()
-			return instance
-		}
-		return instance
+		held = true;
+		update_state();
+		return instance;
 	}
+	
+	static pick_up = function(){
+		held = true;
+		update_state();
+		return instance
+	};
+	
+	static drop = function(x_pos = 0, y_pos = 0){
+		if(not_null(x_pos) or not_null(y_pos)){
+			instance.x = x_pos;
+			instance.y = y_pos;
+		}
+		held = false;
+		update_state();
+	};
+	
+	static update_state = function(){
+		if(array_length(inventory) > 0 and held){
+			state_machine.ChangeState("hold_occupied");
+			disable_collision();
+		}else if(array_length(inventory) > 0 and !held){
+			state_machine.ChangeState("idle_occupied");
+			enable_collision();
+		}else if(array_length(inventory) <= 0 and held){
+			state_machine.ChangeState("hold_empty");
+			disable_collision();
+		}else if(array_length(inventory) <= 0 and !held){
+			state_machine.ChangeState("idle_empty");
+			enable_collision();
+		}
+	}
+
+	
 }
 
 function Environment_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats)

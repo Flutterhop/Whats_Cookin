@@ -20,6 +20,7 @@ function init_state_machine_templates(){
 	draw_template = function(){
 		if(not_null(struct.state_machine)){
 			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
+
 		}
 		if(global.debug and global.debug_setting == debug_type.item_debug){
 			if(not_null(struct.state_machine)){

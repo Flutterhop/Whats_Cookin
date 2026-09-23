@@ -41,29 +41,46 @@ function Enemy_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_move_speed =
 function draw_character_sprite(){
 	switch(direction_facing){
 		case "left":
-			character_sprite = left_character_sprite
+			character_sprite = struct.character_builder.left_character_sprite
 			break;
 		case "right":
-			character_sprite = left_character_sprite
+			character_sprite = struct.character_builder.left_character_sprite
 			break;
 		case "up":
-			character_sprite = up_character_sprite
+			character_sprite = struct.character_builder.up_character_sprite
 			break;
 		case "down":
-			character_sprite = down_character_sprite
+			character_sprite = struct.character_builder.down_character_sprite
 			break;
 	}
+	
 	if(is_instanceof(character_sprite,Character_Sprite)){
-		sprite_index = character_sprite.draw_sprites[0].sprite
+		if(not_null(character_sprite.draw_sprites[1].sprite)){
+			sprite_index = character_sprite.draw_sprites[1].sprite
+		}
 		var sprite_count = array_length(character_sprite.draw_sprites);
 		for(var i = 0; i < sprite_count;i++){
-			if(asset_get_type(character_sprite.draw_sprites[i].sprite) == asset_sprite ){
-				var current_sprite = character_sprite.draw_sprites[i].sprite
-				draw_sprite_ext(current_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
+			var current_sprite = character_sprite.draw_sprites[i].sprite;
+			if(not_null(current_sprite)){
+				if(is_array(current_sprite) and character_sprite.draw_sprites[i].multiple_sprites){
+					var item_sprite_count = array_length(character_sprite.draw_sprites[i].sprite)
+					for(var j = 0;j < item_sprite_count; j++){ 
+						var current_item_sprite = character_sprite.draw_sprites[i].sprite[j];
+						if(asset_get_type(current_item_sprite) == asset_sprite){
+							draw_sprite_ext(current_item_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
+						}
+					}
+				}else{
+					if(asset_get_type(current_sprite) == asset_sprite){
+						draw_sprite_ext(current_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
+					}
+				}
+
 			}
+
 		}
 	}else{
-		sprite_index = character_sprite
+		//sprite_index = character_sprite
 		draw_sprite_ext(character_sprite,image_index,x,y - struct.z_pos,image_xscale,image_yscale,0,c_white,1);
 	}
 

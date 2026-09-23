@@ -7,11 +7,11 @@ interpret_player_controls	= method(id,input_interpret_player_controls);
 scan_inputs					= method(id,input_scan_inputs);
 reset_input					= method(id, player_reset_input);
 
-/////////////////////////////////////////STATE MACHINE METHODS////////////////////////////////////////////////////////
+///////////////////////////////////////// STATE MACHINE METHODS ////////////////////////////////////////////////////////
 change_state 				= method(id,player_change_state);
 queue_state 				= method(id,player_queue_state);
 
-/////////////////////////////////////////COLLISION METHODS///////////////////////////////////////////////////////////
+///////////////////////////////////////// COLLISION METHODS ///////////////////////////////////////////////////////////
 detect_interactions			= method(id,player_detect_interactions);
 read_structure_collision	= method(id,player_read_structure_collision);
 attack_collision            = method(id,player_attack_collision);
@@ -21,20 +21,22 @@ read_interaction_2_collision	= method(id,player_read_interaction_2_collision);
 return_collision 			= method(id,player_return_collision);
 return_multiple_collisions 	= method(id,player_return_multiple_collisions);
 
-/////////////////////////////////////////PLAYER FUNCTION/////////////////////////////////////////////////////////////
-update_sprites				= method(id,player_update_sprites);
+///////////////////////////////////////// ITEM INTERACTIONS /////////////////////////////////////////////////////////
 pick_up_item				= method(id,player_pick_up_item);
 drop_item					= method(id,player_drop_item);
 throw_item 					= method(id,player_throw_item);
+place_item 					= method(id,player_place_item);
+///////////////////////////////////////// PLAYER FUNCTION /////////////////////////////////////////////////////////////
+update_sprites				= method(id,player_update_sprites);
 handle_interaction 			= method(id,player_handle_interaction);
 draw_health 				= method(id,player_draw_health);
 
-/////////////////////////////////////////BUILDING METHODS////////////////////////////////////////////////////////////
+///////////////////////////////////////// BUILDING METHODS ////////////////////////////////////////////////////////////
 handle_holding				= method(id,player_handle_holding);
 deploy_structure			= method(id,player_deploy_structure);
 assemble_structure			= method(id,player_assemble_structure);
 
-///////////////////////////////////////////MOVEMENT METHODS//////////////////////////////////////////////////////////
+/////////////////////////////////////////// MOVEMENT METHODS //////////////////////////////////////////////////////////
 jump						= method(id,player_jump);
 handle_jumping				= method(id,player_handle_jumping);
 handle_movement				= method(id,player_handle_movement);

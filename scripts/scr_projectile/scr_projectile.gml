@@ -31,7 +31,6 @@ function projectile_detect_collisions(rect_coords,targets = "",x_pos = 0,y_pos =
 		}
 		return collision_array;
 	}else{
-		EchoDebug("no collisions found. returning blank string.");
 		return "";
 	}
 	

@@ -18,8 +18,8 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	starting_y = 0;
 	allow_diagonal = true;
 	is_precise = false;
-	obstacle_tiles_to_check = ["rocks"];
-	structure_tiles_to_check = ["kitchen_structures"];
+	obstacle_tiles_to_check = ["rocks","walls"];
+	structure_tiles_to_check = [];
 	instances_to_check = [];
 	
 	
@@ -218,10 +218,10 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			array_insert(return_array,i,layer_tilemap_get_id(obstacle_tiles_to_check[i]))
 		}
 		for(var j = 0; j < structure_layer_counter; j++){
-			array_insert(return_array,i,layer_tilemap_get_id(structure_tiles_to_check[j]))
+			array_insert(return_array,j,layer_tilemap_get_id(structure_tiles_to_check[j]))
 		}
 		for(var k = 0; k < instance_counter; k++){
-			array_insert(return_array,i,instances_to_check[k])
+			array_insert(return_array,k,instances_to_check[k])
 		}
 
 		

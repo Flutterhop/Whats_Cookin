@@ -4,20 +4,15 @@ event_user(1);
 prototype();
 
 function prototype(){
+	initialize_system_entities();
 	initialize_item_stats();
-	
 	initialize_character_stats();
 	initialize_environment_stats();
 	initialize_environment_entities();
 	initialize_structure_stats();
-	initialize_system_entities();
 	initialize_structure_entities();
 	initialize_character_entities();
 	initialize_item_entities();
-	
-	
-	var character_builder = new Character_Builder("Builder System",obj_character_manager,grid,true);
-	character_builder.spawn_entity(0,0,"System");
 	
 	var counter_01 = retrieve_entity("counter",global.structure_entities)
 	counter_01.spawn_grid_entity(3,3,"Instances")
@@ -36,36 +31,27 @@ function prototype(){
 												true,
 												false,
 												retrieve_stats("player",global.character_stats),
-												"dev",
-												0);
+												0
+												);
 	player_entity.spawn_grid_entity(8,7,"Instances")
 	var user = new User(0,"Player 0",false,player_entity,"")
 	cam_follow(player_entity.instance);
-	
-	
-	var left_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","left")
-	var down_char_sprite 	= new Character_Sprite(character_builder,player_entity,"idle","down")
-	var up_char_sprite 		= new Character_Sprite(character_builder,player_entity,"idle","up")
-	player_entity.instance.character_sprite = left_char_sprite;
-	player_entity.instance.down_character_sprite = down_char_sprite;
-	player_entity.instance.up_character_sprite = up_char_sprite;
-	player_entity.instance.left_character_sprite = left_char_sprite;
 
 	
 	var catapult_01 = retrieve_entity("catapult",global.structure_entities)
 	catapult_01.spawn_grid_entity(7,7,"Instances")
 	var turret_01 = retrieve_entity("turret",global.structure_entities)
 	turret_01.spawn_grid_entity(4,5,"Instances")
-	var hunter_02 = retrieve_entity("hunter",global.character_entities)
-	hunter_02.spawn_grid_entity(5,7,"Instances");
-	var hunter_03 = retrieve_entity("hunter",global.character_entities)
-	hunter_03.spawn_grid_entity(1,1,"Instances");
-	var hunter_04 = retrieve_entity("hunter",global.character_entities)
-	hunter_04.spawn_grid_entity(12,7,"Instances");
-	var hunter_05 = retrieve_entity("hunter",global.character_entities)
-	hunter_05.spawn_grid_entity(3,2,"Instances");
-	/*
-	event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
+	//var hunter_02 = retrieve_entity("hunter",global.character_entities)
+	//hunter_02.spawn_grid_entity(5,7,"Instances");
+	//var hunter_03 = retrieve_entity("hunter",global.character_entities)
+	//hunter_03.spawn_grid_entity(1,1,"Instances");
+	//var hunter_04 = retrieve_entity("hunter",global.character_entities)
+	//hunter_04.spawn_grid_entity(12,7,"Instances");
+	//var hunter_05 = retrieve_entity("hunter",global.character_entities)
+	//hunter_05.spawn_grid_entity(3,2,"Instances");
+	
+	//event_handler.create_event(ev_type.debug,"Hello world!",ev_priority.low);
 
 	var apple_01 = retrieve_entity("apple",global.item_entities)
 	apple_01.spawn_grid_entity(7,7,"Instances")
@@ -77,8 +63,13 @@ function prototype(){
 	chicken_01.spawn_grid_entity(5,5,"Instances")
 	
 	var plate_01 = retrieve_entity("plate",global.item_entities)
-	plate_01.spawn_grid_entity(10,12,"Instances")
+	plate_01.spawn_grid_entity(5,9,"Instances")
 	
+	var pan_1 = retrieve_entity("fryingpan",global.item_entities)
+	pan_1.spawn_grid_entity(4,13,"Instances")
+	
+	var beef_1 = retrieve_entity("beef",global.item_entities)
+	beef_1.spawn_grid_entity(5,8,"Instances")
 	//var inspector_01 = retrieve_entity("inspector",global.character_entities)
 	//inspector_01.spawn_grid_entity(15,10,"Instances")
 	
@@ -104,12 +95,7 @@ function prototype(){
 	storage.grid_x = 5
 	storage.grid_y = 5
 	storage.spawn_grid_entity(0,0,"Instances")
-	var turret_01 = retrieve_entity("turret",global.structure_entities)
-	turret_01.grid_x = 6
-	turret_01.grid_y = 4
-	turret_01.spawn_grid_entity(0,0,"Instances")
 	
-	 * */
 	grid.init_mp_grid_data();
 
 	

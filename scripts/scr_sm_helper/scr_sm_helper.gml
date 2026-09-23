@@ -17,11 +17,11 @@ function has_substates(state_name){
 	
 }
 
-function get_substates(state_name,depth = 1,return_final = false){
+function get_substates(state_name,depth = 0,return_final = false){
 	if(not_null(state_name)){
 		var state_separate = string_split(state_name,"_");
 		if(array_length(state_separate) > 1){
-			if(array_length(state_separate) >= (depth + 1)){
+			if(array_length(state_separate) >= depth){
 				var substate = state_separate[depth];
 				if(not_null(substate)){
 					return substate

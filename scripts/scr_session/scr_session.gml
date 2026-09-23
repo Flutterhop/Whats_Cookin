@@ -24,6 +24,7 @@ function initialize_item_stats(){
 	//Apple
 	entity = new Ingredient_Stats("apple",
 									2,
+									[place_allowed.counter,place_allowed.blender],
 									5,
 									[Flavor.Sweet],
 									1,
@@ -33,7 +34,8 @@ function initialize_item_stats(){
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	///Chicken
 	entity = new Ingredient_Stats("chicken",
-									5,
+									5, 
+									[place_allowed.counter,place_allowed.blender],							
 									8, 
 									[Flavor.Salty],
 									1,
@@ -41,9 +43,27 @@ function initialize_item_stats(){
 									process_type.unprocessed
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
+	///Beef
+	entity = new Ingredient_Stats("beef",
+									10,
+									8, 
+									[place_allowed.counter,place_allowed.blender],
+									[Flavor.Salty],
+									1,
+									[process_type.fry],
+									process_type.cut
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
 	///Plate
 	entity = new Tool_Stats("plate", 
-							5
+							5,
+							[place_allowed.counter,place_allowed.stove]
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	///Fryingpan
+	entity = new Tool_Stats("fryingpan", 
+							5,
+							[place_allowed.counter,place_allowed.stove]
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 }
@@ -60,10 +80,10 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
-									"",
+									retrieve_stats("apple",target_stat_map),
 									spr_item_apple,
 									spr_item_apple,
-									retrieve_stats("apple",target_stat_map)
+									true
 											);
 	ds_map_add(target_map,entity.name,entity);
 	entity = new Food_Ingredient("chicken",
@@ -71,10 +91,21 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
-									"",
+									retrieve_stats("chicken",target_stat_map),
 									spr_item_chicken,
 									spr_item_chicken,
-									retrieve_stats("chicken",target_stat_map)
+									true
+											);
+	ds_map_add(target_map,entity.name,entity);
+	entity = new Food_Ingredient("beef",
+									obj_ing_beef,
+									grid,
+									true,
+									false,
+									retrieve_stats("beef",target_stat_map),
+									spr_item_beef_cut,
+									spr_item_beef_cut,
+									true
 											);
 	ds_map_add(target_map,entity.name,entity);
 	entity = new Item_Tool("plate", 
@@ -82,13 +113,23 @@ function initialize_item_entities(){
 									grid,
 									true,
 									false,
-									"",
+									retrieve_stats("plate",target_stat_map),
 									spr_tool_plate,
 									spr_tool_plate,
-									retrieve_stats("plate",target_stat_map)
+									[]
 											);
 	ds_map_add(target_map,entity.name,entity);
-	
+	entity = new Item_Tool("fryingpan", 
+							obj_tool_fryingpan,
+									grid,
+									true,
+									false,
+									retrieve_stats("fryingpan",target_stat_map),
+									spr_tool_fryingpan,
+									spr_tool_fryingpan,
+									[]
+											);
+	ds_map_add(target_map,entity.name,entity);
 
 }
 
@@ -220,7 +261,8 @@ function initialize_structure_stats(){
 									25,
 									false,
 									"",
-									1 
+									1,
+									process_type.knead
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	///Cutting board

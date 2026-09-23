@@ -87,7 +87,8 @@ function init_state_machine(){
 	var idle_state = new StatementState(struct.state_machine,"idle")
 		.AddEnter(function(){
 			with(owner){
-				image_speed = 0;
+				struct.character_builder.set_action(struct.state_machine.GetStateName())
+				image_index = 0;
 			}
 		})
 		.AddUpdate(function(){
@@ -107,7 +108,7 @@ function init_state_machine(){
 	var move_state = new StatementState(struct.state_machine,"move")
 		.AddEnter(function(){
 			with(owner){
-				image_speed = visual_speed;
+
 			}
 		})
 		.AddUpdate(function(){
@@ -125,6 +126,12 @@ function init_state_machine(){
 	move_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var hold_state = new StatementState(struct.state_machine,"hold")
+		.AddEnter(function(){
+			with(owner){
+				struct.character_builder.set_action(struct.state_machine.GetStateName())
+				image_index = 0;
+			}
+		})
 		.AddUpdate(function(){
 			with(owner){
 				//determine_sprite("","")
@@ -138,8 +145,9 @@ function init_state_machine(){
 			}
 		})
 		.AddExit(function(){
-			with(owner){ }
-
+			with(owner){
+				
+			}
 	});
 	hold_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +155,7 @@ function init_state_machine(){
 		.AddEnter(function(){
 			with(owner){
 				movement_locked = true;	
-				image_speed = 0;
+
 			}
 		})
 		.AddUpdate(function(){
@@ -197,7 +205,6 @@ function init_state_machine(){
 				movement_locked = true;
                // determine_sprite("pan","slash")
                 image_index = 0;
-				image_speed = 1;
 			}
 		})
 		.AddUpdate(function(){
@@ -267,7 +274,6 @@ function init_state_machine(){
 				movement_locked = true;
 				//determine_sprite()
 				image_index = 0;
-				image_speed = 0;
 				struct.iframes = true;
 			}
 		})
@@ -281,7 +287,6 @@ function init_state_machine(){
 				movement_locked = true;
 				//determine_sprite()
 				image_index = 0;
-				image_speed = 1;
 				struct.iframes = false;
 			}
 		});

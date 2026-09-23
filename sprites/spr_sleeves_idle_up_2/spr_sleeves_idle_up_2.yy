@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Parts",
-    "path":"folders/Sprites/Characters/Parts.yy",
+    "name":"2",
+    "path":"folders/Sprites/Characters/Parts/idle/2.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

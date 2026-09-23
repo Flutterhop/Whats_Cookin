@@ -19,11 +19,75 @@ function player_queue_state(next_state){
 	}
 	
 }
+//////////////////////////////////////////////////// ITEM INTERACTIONS ////////////////////////////////////////////////////////////////
+
+function player_pick_up_item(target_item){
+	var item_sprites = []
+	if(is_struct(target_item.struct)){
+		target_item.struct.pick_up()
+		struct.held_entity = target_item;
+		struct.state_machine.ChangeState("hold")
+		if(is_instanceof(target_item.struct,Item_Tool)){
+			var inventory_size = array_length(target_item.struct.inventory)
+			if(inventory_size > 0){
+				item_sprites[0] = target_item.struct.item_sprite;
+				for(var i = 0;i < inventory_size; i++){
+					var current_item = target_item.struct.inventory[i]
+					if(is_instanceof(current_item.struct,Item_Game)){
+						item_sprites[i + 1] = current_item.struct.item_sprite;
+					}
+				}
+				struct.character_builder.add_item(item_sprites)
+				return;
+			}
+		}
+		struct.character_builder.add_item(target_item.struct.item_sprite)
+	}else{
+		call_later(300,time_source_units_frames,player_pick_up_item(target_item))
+	}
+}
+
+function player_drop_item(){
+	if(not_null(struct.held_entity)){
+		var item_target = detect_interactions(obj_item_game);
+		var coords = get_interact_shape(direction)
+		if(not_null(item_target)){
+			//If collisions exist then we cant place an item
+			return false
+		}
+		var x_pos = (coords[0] + coords[2])/2
+		var y_pos = (coords[1] + coords[3])/2
+		struct.held_entity.struct.drop(x + x_pos,y + y_pos);
+		struct.held_entity = "";
+		struct.state_machine.ChangeState("idle")
+		struct.character_builder.remove_item()
+		return true;
+	}
+}
+
+function player_throw_item(){
+	var strength = struct.stats.throw_strength
+	var dir = direction
+	with(struct.held_entity){
+		motion_add(dir,strength);
+	}
+	struct.held_entity.struct.throw_item();
+	struct.held_entity = "";
+	if(is_null(struct.held_entity)){struct.state_machine.ChangeState("idle")}
+}
+
+function player_place_item(){
+	struct.held_entity = "";
+	struct.state_machine.ChangeState("idle")
+	struct.character_builder.remove_item()
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function player_update_sprites(part,increment){
-	left_character_sprite.set_next_part(part,increment)
-	down_character_sprite.set_next_part(part,increment)
-	up_character_sprite.set_next_part(part,increment)
+	character_builder.left_character_sprite.set_next_part(part,increment)
+	character_builder.down_character_sprite.set_next_part(part,increment)
+	character_builder.up_character_sprite.set_next_part(part,increment)
 }
 
 function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){
@@ -53,6 +117,8 @@ function player_return_collision(rect_coords,targets = "",x_pos = 0,y_pos = 0){
 		for(var i = 0;i<total_collisions;i++){
 			target = ds_list_find_value(collisions,i);
 			if(target.struct.ignore_collision){
+				target = "";
+			}else if(target == struct.held_entity){
 				target = "";
 			}else{
 				return target
@@ -96,7 +162,6 @@ function player_return_multiple_collisions(rect_coords,targets = "",x_pos = 0,y_
 		}
 		return collision_array;
 	}else{
-		EchoDebug("no collisions found. returning blank string.");
 		return "";
 	}
 	
@@ -240,7 +305,7 @@ function player_read_interaction_1_collision(){
 	//check if the target position is occupied
 	var can_put = (get_substates(struct.state_machine.GetStateName(),1) == "hold") ? true : false
     var has_item = struct.has_item();
-	var can_pick = (!struct.state_machine.IsInState("hold") and is_null(struct.held_entity)) ? true : false;
+	var can_pick = (!(get_substates(struct.state_machine.GetStateName(),1) == "hold") and is_null(struct.held_entity)) ? true : false;
 
 	
 	//1. check for environment
@@ -256,9 +321,7 @@ function player_read_interaction_1_collision(){
 		can_put = structure_target.struct.can_put_item();
 		if(can_put and has_item){
 			structure_target.struct.insert_item(struct.held_entity);
-			struct.held_entity.struct.drop(structure_target.x,structure_target.y);
-			struct.state_machine.ChangeState("idle");
-			struct.held_entity = "";
+			place_item();
 			return;
 		}
 		var can_take = structure_target.struct.can_take_item();
@@ -277,27 +340,28 @@ function player_read_interaction_1_collision(){
 		if(is_instanceof(item_target.struct,Item_Tool)){
 			var new_item = item_target.struct.pick_item();
 			if(not_null(new_item)){
-				struct.held_entity = new_item;
-				struct.state_machine.ChangeState("hold")
+				pick_up_item(new_item)
 				return;
 			}
 		}
 		pick_up_item(item_target)
 		return
 	}else if(not_null(struct.held_entity) and can_put ){
-		if(not_null(item_target)){
-			if(is_instanceof(item_target.struct,Item_Tool)){
-				if(variable_instance_exists(item_target.struct,"inventory")){
-					if(item_target.struct.put_item(struct.held_entity)){
-						struct.held_entity = "";
-						struct.state_machine.ChangeState("idle")
-						return;
-					}
-				}
+		//When checking for interaction we dont want to put something where another item is.
+		if(is_null(item_target)){
+			if(is_instanceof(struct.held_entity.struct,Item_Tool)){
+				drop_item();
 			}
 		}else{
-			if(drop_item(struct.held_entity)){
-				struct.state_machine.ChangeState("idle")
+			if(is_instanceof(item_target.struct,Item_Tool)){
+				if(item_target.struct.put_item(struct.held_entity)){
+					place_item();
+				}
+				
+			}else{
+				if(drop_item(struct.held_entity)){
+					struct.state_machine.ChangeState("idle")
+				}
 			}
 			return
 		}
@@ -327,44 +391,6 @@ function player_read_interaction_2_collision(){
 			return;
 		}
 	}
-}
-
-function player_pick_up_item(target_item){
-	if(is_struct(target_item.struct)){
-		target_item.struct.pick_up()
-		struct.held_entity = target_item;
-		struct.state_machine.ChangeState("hold")
-	}else{
-		call_later(300,time_source_units_frames,player_pick_up_item(target_item))
-	}
-}
-
-function player_drop_item(){
-	if(not_null(struct.held_entity)){
-		var item_target = detect_interactions(obj_item_game);
-		var coords = get_interact_shape(direction)
-		if(not_null(item_target)){
-			//If collisions exist then we cant place an item
-			return false
-		}
-		var x_pos = (coords[0] + coords[2])/2
-		var y_pos = (coords[1] + coords[3])/2
-		struct.held_entity.struct.drop(x + x_pos,y + y_pos);
-		struct.held_entity = "";
-		struct.state_machine.ChangeState("idle")
-		return true;
-	}
-}
-
-function player_throw_item(){
-	var strength = struct.stats.throw_strength
-	var dir = direction
-	with(struct.held_entity){
-		motion_add(dir,strength);
-	}
-	struct.held_entity.struct.throw_item();
-	struct.held_entity = "";
-	if(is_null(struct.held_entity)){struct.state_machine.ChangeState("idle")}
 }
 
 function player_handle_interaction(){
@@ -463,19 +489,25 @@ function player_handle_movement(){
 	if(x_speed != 0 or y_speed != 0){
 		direction = InputDirection(0,INPUT_CLUSTER.NAVIGATION,struct.player_number);
 		if(!movement_locked){
-			move_and_collide(x_speed,y_speed,struct.grid.instances_to_check,6,undefined,undefined,10,10);
+			move_and_collide(x_speed,y_speed,collision_targets,6,undefined,undefined,10,10);
 			if(struct.state_machine.IsInState("idle")){
 				struct.state_machine.ChangeState("move");
 			}
-			image_speed = visual_speed;
+			if(image_speed != visual_speed){
+				image_speed = visual_speed;
+			}
 		}
 	}else{
-		move_and_collide(0,0,struct.grid.instances_to_check,3);
+		move_and_collide(0,0,collision_targets,3);
 		if(struct.state_machine.IsInState("move")){
 			struct.state_machine.ChangeState("idle");
 		}
-		image_speed = 0;
+		if(image_speed != 0){
+			image_speed = 0;
+		}
+
 	}
+	//EchoDebug(string_concat("image_speed: ",image_speed))
 	//handle_jumping()
 }
 
@@ -503,7 +535,7 @@ function player_handle_holding(){
     var is_item = is_instanceof(struct.held_entity.struct,Item_Game)
 	if(not_null(struct.held_entity) and is_item){
 		struct.held_entity.x = x;
-		struct.held_entity.y = y - 10;
+		struct.held_entity.y = y;
 	}
 	if(not_null(struct.held_entity) and is_structure){
 		var coords = get_interact_shape(direction);
@@ -574,4 +606,83 @@ function player_draw_health(){
 			draw_sprite_ext(spr_purple_bar,current_frame,x,y - 15,.8,.8,0,c_white,1)
 		}
 	}
+}
+
+function get_drop_position(query_direction,range = 0){
+	var range_mod
+	if(is_null(range)){
+		range_mod = struct.get_stat("interaction_range")
+	}else{
+		range_mod = range;
+	}
+	var top_left_x = 0
+	var top_left_y = 0
+	var bottom_right_x = 0
+	var bottom_right_y = 0
+	var x_increment = range_mod
+	var y_increment = range_mod
+	var modifier = 2;
+	switch(query_direction){
+		case dir_face.east://0
+			top_left_x += x_increment;
+			//Cut the x increment value closest to the player in half
+			//This makes the rectangle originate closer to the players body.
+			top_left_x -= (x_increment / 2);
+			top_left_y -= y_increment;
+			bottom_right_x += x_increment * modifier;
+			bottom_right_y += y_increment;
+		break;
+		case dir_face.north_east://1
+			top_left_x += x_increment;
+			top_left_x -= (x_increment / 2);
+			top_left_y -= y_increment * (modifier + .5);
+			top_left_y += (y_increment / 2);
+			bottom_right_x += x_increment * modifier;
+			bottom_right_y -= (y_increment / 2);
+		break;
+		case dir_face.north://2
+			top_left_x -= x_increment;
+			top_left_y -= y_increment * modifier;
+			bottom_right_x += x_increment;
+			bottom_right_y -= (y_increment / 2);
+		break;
+		case dir_face.north_west://3
+			top_left_x -= x_increment * modifier;
+			top_left_y -= y_increment * modifier;
+			bottom_right_x -= x_increment;
+			bottom_right_x += (x_increment / 2);
+			bottom_right_y -= y_increment;
+			bottom_right_y += (y_increment) / 2;
+		break;
+		case dir_face.west://4
+			top_left_x -= x_increment * 2;
+			top_left_y -= y_increment;
+			bottom_right_x -= (x_increment / 2) ;
+			bottom_right_y += y_increment;
+		break;
+		case dir_face.south_west://5
+			top_left_x -= x_increment * modifier;
+			top_left_y += y_increment;
+			top_left_y -= (y_increment / 2);
+			bottom_right_x -= (x_increment / 2);
+			bottom_right_y += y_increment * modifier;
+		break;
+		case dir_face.south://6
+			top_left_x -= x_increment;
+			top_left_y += y_increment;
+			top_left_y -= (y_increment / 2);
+			bottom_right_x += x_increment;
+			bottom_right_y += y_increment * modifier;
+		break;
+		case dir_face.south_east://7
+			top_left_x += (x_increment / 2);
+			top_left_y += (y_increment / 2);
+			bottom_right_x += x_increment * modifier;
+			bottom_right_y += y_increment * modifier;
+		break;
+	}
+	var x_pos = (bottom_right_x - top_left_x) + x
+	var y_pos = (bottom_right_y - top_left_y) + y
+	var return_coords = [x_pos,y_pos];
+	return return_coords
 }

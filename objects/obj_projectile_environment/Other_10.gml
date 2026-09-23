@@ -47,7 +47,6 @@ function init_state_machine(){
 					}
 				}
 			}
-			EchoDebug(string_concat("z_pos: ",struct.z_pos))
 		});//path_arc = function(x_pos,y_pos,_direction,height_reached){
 	active_template.AddDraw(draw_template);
 	inactive_template = new StatementStateTemplate("inactive")

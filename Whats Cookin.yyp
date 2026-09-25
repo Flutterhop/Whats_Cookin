@@ -415,6 +415,7 @@
     {"id":{"name":"obj_str_counter","path":"objects/obj_str_counter/obj_str_counter.yy",},},
     {"id":{"name":"obj_str_cuttingboard","path":"objects/obj_str_cuttingboard/obj_str_cuttingboard.yy",},},
     {"id":{"name":"obj_str_ingredient_storage","path":"objects/obj_str_ingredient_storage/obj_str_ingredient_storage.yy",},},
+    {"id":{"name":"obj_str_stove","path":"objects/obj_str_stove/obj_str_stove.yy",},},
     {"id":{"name":"obj_str_tower","path":"objects/obj_str_tower/obj_str_tower.yy",},},
     {"id":{"name":"obj_str_turret","path":"objects/obj_str_turret/obj_str_turret.yy",},},
     {"id":{"name":"obj_structure_game","path":"objects/obj_structure_game/obj_structure_game.yy",},},

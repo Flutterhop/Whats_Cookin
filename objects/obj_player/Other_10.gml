@@ -20,6 +20,7 @@ falling = false;
 additional_collisions = []
 collision_targets  = struct.grid.fetch_collision_array([additional_collisions]);
 
+
 struct.equipment = "pan"
 equipment_sprite = "";
 friction_amount = .7;

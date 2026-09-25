@@ -26,7 +26,8 @@ function init_state_machine_templates(){
 	struct.state_machine = new Statement(self);
 	empty_draw_template = function(){
 		if(not_null(struct.state_machine)){
-			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
+			draw_self()
+			//draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}
 		if(global.debug and global.debug_setting == debug_type.item_debug){
 			if(not_null(struct.state_machine)){
@@ -36,7 +37,8 @@ function init_state_machine_templates(){
 	}
 	idle_draw_template = function(){
 		//Draw Self if occupied but not held draw self and inventory item.
-		draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
+		draw_self()
+		//draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		//draw item
 		if(variable_instance_exists(struct,"inventory")){
 			var inventory_size = array_length(struct.inventory);
@@ -44,7 +46,7 @@ function init_state_machine_templates(){
 				for(var i = 0; i < inventory_size;i++){
 					var inventory_item = struct.inventory[i];
 					if(is_instanceof(inventory_item.struct,Game_Entity)){
-						draw_sprite_ext(inventory_item.struct.item_sprite,image_index,x,y,1,1,0,c_white,1)
+						draw_sprite_ext(inventory_item.struct.item_sprite,image_index,inventory_item.x,inventory_item.y,1,1,0,c_white,1)
 					}
 				}
 			}

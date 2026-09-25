@@ -60,6 +60,9 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		if(x_coord == 0 and y_coord == 0){
 			x_coord = grid_x
 			y_coord = grid_y
+		}else{
+			grid_x = x_coord;
+			grid_y = y_coord;
 		}
 		var new_struct = self
 		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
@@ -69,6 +72,9 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
+		}
+		if(!is_instanceof(self,Structure_Game)){
+			register_entity();
 		}
 		grid.add_collision(instance);
 	}
@@ -93,6 +99,14 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 	
 	static disable_collision = function(){
 		ignore_collision = true
+	}
+	
+	static register_entity = function(){
+		if(array_contains(grid.registered_entities,self)){
+			return;
+		}else{
+			array_push(grid.registered_entities,self);
+		}
 	}
 }
 
@@ -206,13 +220,19 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 	grid_y 		= new_grid_y;
 	inventory 	= new_inventory;
 	limit 		= new_limit;
+	inventory_pos_x = 0;
+	inventory_pos_y = -10;
 	
 	init_structure = function(x_pos,y_pos,_layer,args = []){
 		if(array_length(args) > 0){
 			//Idk if this works
 			instance = instance_create_layer(x_pos,y_pos,_layer,object_reference,args);
+			inventory_pos_x = instance.x + inventory_pos_x;
+			inventory_pos_y = instance.y + inventory_pos_y;
 		}else{
 			instance = instance_create_layer(x_pos,y_pos,_layer,object_reference);
+			inventory_pos_x = instance.x + inventory_pos_x;
+			inventory_pos_y = instance.y + inventory_pos_y;
 		}
 		instance.struct = self;
 	}
@@ -236,6 +256,8 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
 		}
+		inventory_pos_x = instance.x + inventory_pos_x;
+		inventory_pos_y = instance.y + inventory_pos_y;
 		grid.add_collision(instance)
 	}
 	
@@ -256,6 +278,8 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		y_coord = floor(y_coord)
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		call_later(30,time_source_units_frames,call_state_machine)
+		inventory_pos_x = instance.x + inventory_pos_x;
+		inventory_pos_y = instance.y + inventory_pos_y;
 		grid.add_collision(instance)
 	}
 	
@@ -288,6 +312,11 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 			
 		}
 		array_push(inventory,target_item)
+		target_item.x = inventory_pos_x;
+		target_item.y = inventory_pos_y;
+		if(!state_machine.IsInState("idle")){
+			state_machine.QueueState("idle");
+		}
 	}
 	static remove_item = function(){
 		if(array_length(inventory) > 0){
@@ -422,6 +451,7 @@ function Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		call_later(30,time_source_units_frames,call_state_machine)
 		instance.path = path_add();
 		instance.struct = self;
+		grid.add_collision(instance)
 	}
 	////@description spawns an entity at the designated coordinates in the grid map, on the provided layer.
 	////@function spawn_grid_entity
@@ -513,7 +543,23 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
 		input_add_player(self)
 		call_later(30,time_source_units_frames,call_state_machine)
-		
+		register_entity();
+
+	}
+	static spawn_grid_entity = function(x_coord,y_coord,new_layer){
+		if(x_coord == 0 and y_coord == 0){
+			x_coord = grid_x
+			y_coord = grid_y
+		}
+		var new_struct = self
+		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
+		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
+		x_coord = floor(x_coord)
+		y_coord = floor(y_coord)
+		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
+		input_add_player(self)
+		call_later(30,time_source_units_frames,call_state_machine)
+		register_entity();
 	}
 	
 	static get_interaction_range = function(){

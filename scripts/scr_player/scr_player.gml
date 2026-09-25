@@ -349,9 +349,7 @@ function player_read_interaction_1_collision(){
 	}else if(not_null(struct.held_entity) and can_put ){
 		//When checking for interaction we dont want to put something where another item is.
 		if(is_null(item_target)){
-			if(is_instanceof(struct.held_entity.struct,Item_Tool)){
-				drop_item();
-			}
+			drop_item();
 		}else{
 			if(is_instanceof(item_target.struct,Item_Tool)){
 				if(item_target.struct.put_item(struct.held_entity)){

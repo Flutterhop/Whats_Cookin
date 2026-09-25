@@ -21,6 +21,7 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	obstacle_tiles_to_check = ["rocks","walls"];
 	structure_tiles_to_check = [];
 	instances_to_check = [];
+	registered_entities = [];
 	
 	
 	//This may need to default to width = 15, height = 9
@@ -255,6 +256,27 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		if(is_instanceof(instance_to_add.struct,Structure_Game)){
 			array_push(instances_to_check,instance_to_add);
 			add_obstacles([instance_to_add])
+			update_entities_collision(instance_to_add);
+		}
+		
+	}
+	
+	static update_entities_collision = function(instance_to_add){
+		var entities_to_update = array_length(registered_entities);
+		if(entities_to_update <= 0){
+			EchoDebug("No Registered Entities available.");
+			return;
+		}
+		for(var i = 0; i < entities_to_update;i++){
+			var current_entity = registered_entities[i];
+			if(!is_instanceof(current_entity,Structure_Game)){
+				if(variable_instance_exists(current_entity.instance,"collision_targets")){
+					var current_collision_target = current_entity.instance.collision_targets;
+					if(!array_contains(current_collision_target,instance_to_add)){
+						array_push(current_collision_target,instance_to_add);
+					}
+				}
+			}
 		}
 	}
 		

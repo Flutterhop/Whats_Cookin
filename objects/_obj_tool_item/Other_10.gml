@@ -44,6 +44,18 @@ function init_state_machine_templates(){
 				}
 			}
 			
+		}else if(get_substates(struct.state_machine.GetStateName(),1,true) == "occupied" and get_substates(struct.state_machine.GetStateName(),0) == "hold"){
+			if(variable_instance_exists(struct,"inventory")){
+				var inventory_size = array_length(struct.inventory);
+				if(inventory_size > 0){
+					for(var i = 0; i < inventory_size;i++){
+						var inventory_item = struct.inventory[i];
+						if(is_instanceof(inventory_item.struct,Item_Game)){
+							draw_sprite_ext(inventory_item.struct.item_sprite,image_index,x,y,1,1,0,c_white,1)
+						}
+					}
+				}
+			}
 		}else{
 			draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
 		}

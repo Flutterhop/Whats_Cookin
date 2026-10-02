@@ -22,12 +22,10 @@
     {"$GMRInstanceLayer":"","%Name":"Structures","depth":700,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Structures","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"walls","depth":800,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"walls","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":60,"TileCompressedData":[
           -241,-2147483648,-3,0,-8,-2147483648,-2,0,-47,-2147483648,3,0,-2147483648,0,-8,-2147483648,1,0,-48,-2147483648,
-          -3,0,-236,-2147483648,-10,0,-50,-2147483648,-12,0,-48,-2147483648,-13,0,-47,-2147483648,-3,0,1,51,-4,
-          49,5,0,49,49,53,0,-47,-2147483648,-3,0,1,48,-4,1,6,0,1,1,48,0,0,-46,-2147483648,-3,0,1,48,-4,1,4,0,1,
-          1,48,-3,0,-45,-2147483648,-2,0,2,8,60,-4,1,4,0,1,1,48,-3,0,-45,-2147483648,-2,0,1,6,-5,1,4,0,1,1,48,
-          -3,0,-45,-2147483648,-2,0,2,14,58,-4,1,4,0,1,1,48,-3,0,-45,-2147483648,-3,0,1,48,-4,1,4,0,1,1,48,-3,
-          0,-45,-2147483648,-3,0,1,48,-4,1,4,0,1,1,48,-3,0,-45,-2147483648,-3,0,1,57,-4,49,4,0,49,49,55,-48,-2147483648,
-          -12,0,-48,-2147483648,-12,0,-48,-2147483648,-2,0,-598,-2147483648,
+          -3,0,-236,-2147483648,-10,0,-50,-2147483648,-12,0,-48,-2147483648,-13,0,-47,-2147483648,-13,0,-47,-2147483648,
+          -14,0,-46,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,
+          -15,0,-45,-2147483648,-15,0,-45,-2147483648,-12,0,-48,-2147483648,-12,0,-48,-2147483648,-12,0,-48,-2147483648,
+          -2,0,-598,-2147483648,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen","path":"tilesets/tls_kitchen/tls_kitchen.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"floors","depth":900,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"floors","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":60,"TileCompressedData":[
           -241,-2147483648,-2,0,-58,-2147483648,-3,0,-57,-2147483648,-3,0,-359,-2147483648,-9,0,-48,-2147483648,

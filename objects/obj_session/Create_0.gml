@@ -76,7 +76,8 @@ function prototype(){
 	//var _sq = retrieve_entity("squeebie",global.character_entities)
 	//_sq.single_direction = true;
 	//_sq.spawn_grid_entity(5,20,"Instances");
-	
+	var soupling_1 = retrieve_entity("soupling",global.character_entities)
+	soupling_1.spawn_grid_entity(2,1,"Instances")
 
 	
 	var counter = retrieve_entity("counter",global.structure_entities)
@@ -96,6 +97,8 @@ function prototype(){
 	storage.grid_y = 5
 	storage.spawn_grid_entity(0,0,"Instances")
 	
+	var builder_listener = retrieve_entity("builderlistener",global.system_entities);
+	builder_listener.spawn_entity(0,0,"System");
 	grid.init_mp_grid_data();
 
 	

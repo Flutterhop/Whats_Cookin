@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_build_listener_actions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_build_listener_actions",
+  "parent":{
+    "name":"Listener",
+    "path":"folders/Objects/System/Listener.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

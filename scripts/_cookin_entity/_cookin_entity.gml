@@ -125,7 +125,17 @@ function Customer_System(new_name,new_object_reference,new_grid,has_sm) : System
 	
 }
 
-function PlayerUI_System(new_name,new_object_reference,new_grid,has_sm,new_player,new_healthbar = "",new_viewer = "",new_equipment_viewer = ""){
+function Menu_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	menu_elements = ds_list_create();
+	
+}
+
+function Build_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	builder_grid = ds_grid_create(0,0);
+	
+}
+
+function PlayerUI_System(new_name,new_object_reference,new_grid,has_sm,new_player,new_healthbar = "",new_viewer = "",new_equipment_viewer = "")	: System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
 	player 				= new_player;
 	healthbar 			= new_healthbar;
 	viewer 				= new_viewer;

@@ -37,7 +37,7 @@ function projectile_detect_collisions(rect_coords,targets = "",x_pos = 0,y_pos =
 }
 
 function get_projectile_collision_shape(){
-	var range_mod = 32
+	var range_mod = 6
 	var top_left_x = 0
 	var top_left_y = 0
 	var bottom_right_x = 0

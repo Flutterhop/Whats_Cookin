@@ -4,7 +4,6 @@
 // Inherit the parent event
 event_inherited();
 
-
 function npc_init_enemy_states(){
-
+	
 }

@@ -6,8 +6,8 @@
   "name":"_obj_customer_manager",
   "overriddenProperties":[],
   "parent":{
-    "name":"System",
-    "path":"folders/Objects/System.yy",
+    "name":"Customer",
+    "path":"folders/Objects/System/Customer.yy",
   },
   "parentObjectId":{
     "name":"obj_system_entity",

@@ -21,7 +21,6 @@ death_time = 360;
 death_effect = "";
 
 //ATTACK PARAMETERS
-target_range = 100;
 target_x = 0;
 target_y = 0;
 collision_targets  = struct.grid.fetch_collision_array();
@@ -36,7 +35,16 @@ attack_template = "";
 attack_windup_template = "";
 stunned_template = "";
 dead_template = "";
-draw_event_template = ""
+draw_event_template = function(){
+	draw_set_alpha(.5);
+	//mp_grid_draw(character_struct.grid.mp_grid_data);
+	if(path_index != -1){
+		draw_path(path_index,x,y,true);
+	}
+	
+	draw_set_alpha(1);
+	draw_self();
+}
 
 
 function init_state_machine(){
@@ -83,7 +91,7 @@ function init_state_machine_templates(){
 				
 				handle_iframes()
 		});
-	idle_template.AddDraw(draw_template);
+	idle_template.AddDraw(draw_event_template);
 	move_template = new StatementStateTemplate("move")
 		.AddEnter(function(){
 			determine_sprite(); 
@@ -99,7 +107,7 @@ function init_state_machine_templates(){
 			handle_pathfinding();
 			manage_movement();
 		});
-	move_template.AddDraw(draw_template);
+	move_template.AddDraw(draw_event_template);
 	wander_template = new StatementStateTemplate("wander")
 		.AddEnter(function(){
 				determine_sprite(); 
@@ -116,7 +124,7 @@ function init_state_machine_templates(){
 				manage_movement();
 
 		});
-	wander_template.AddDraw(draw_template);
+	wander_template.AddDraw(draw_event_template);
 	chase_template = new StatementStateTemplate("chase")
 		.AddEnter(function(){
 			determine_sprite(); 
@@ -142,7 +150,7 @@ function init_state_machine_templates(){
 			}
 
 		});
-	chase_template.AddDraw(draw_template);
+	chase_template.AddDraw(draw_event_template);
 	attack_windup_template = new StatementStateTemplate("attackwindup")
 		.AddEnter(function(){
 			path_end();
@@ -160,7 +168,7 @@ function init_state_machine_templates(){
 			}
 			handle_iframes()
 	});
-	chase_template.AddDraw(draw_template);
+	chase_template.AddDraw(draw_event_template);
 	attack_template = new StatementStateTemplate("attack")
 		.AddEnter(function(){
 			determine_sprite();
@@ -196,7 +204,7 @@ function init_state_machine_templates(){
 		.AddExit(function(){
 			movement_locked = false;
 		});
-	stunned_template.AddDraw(draw_template);
+	stunned_template.AddDraw(draw_event_template);
     dead_template = new StatementStateTemplate("dead")
 		.AddEnter(function(){
 				path_end();
@@ -221,5 +229,5 @@ function init_state_machine_templates(){
 				}
 			} 
 	});
-	dead_template.AddDraw(draw_template);
+	dead_template.AddDraw(draw_event_template);
 }

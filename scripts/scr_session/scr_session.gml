@@ -180,6 +180,22 @@ function initialize_character_stats(){
 							60
 							);
 	ds_map_add(target_map,stats.name,stats);
+	stats = new Enemy_Stats("soupling",
+							3,
+							3,
+							2,
+							1,
+							1,
+							4,
+							30,
+							10,
+							840,
+							0,
+							npc_size.small,
+							"soupling",
+							60
+							);
+	ds_map_add(target_map,stats.name,stats);
 	stats = new NPC_Stats("inspector",
 							15,
 							15,
@@ -227,6 +243,15 @@ function initialize_character_entities(){
 							true,
 							false,
 							retrieve_stats("hunter",target_stat_map),
+							[obj_player]
+							);
+	ds_map_add(target_map,entity.name,entity);
+	entity = new NPC_Enemy("soupling",
+							obj_npc_soupling,
+							grid,
+							true,
+							false,
+							retrieve_stats("soupling",target_stat_map),
 							[obj_player]
 							);
 	ds_map_add(target_map,entity.name,entity);
@@ -286,26 +311,26 @@ function initialize_structure_stats(){
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	//Turret
 	entity = new Tower_Stats("turret", 
-										50,
-										50,
+										20,
+										20,
 										false,
 										1,
 										1,
-										5, 
-										200,
-										60,
+										20, 
+										20,
+										120,
 										retrieve_entity("turret_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Tower_Stats("catapult", 
-										50,
-										50,
+										20,
+										20,
 										false,
 										5,
 										5,
 										1,
 										100,
-										360,
+										1000,
 										retrieve_entity("catapult_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -391,7 +416,16 @@ function initialize_system_entities(){
 									grid,
 									true);
 	ds_map_add(target_map,string_lower(entity.name),entity);
-	
+	entity = new Build_System("buildersystem",
+									obj_build_manager,
+									grid,
+									true);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	entity = new Build_System("builderlistener",
+									obj_build_listener,
+									grid,
+									true);
+	ds_map_add(target_map,string_lower(entity.name),entity);
 }
 
 function initialize_environment_stats(){
@@ -465,6 +499,25 @@ function retrieve_stats(entity_key,target_map){
 		return return_struct;
 	}
 
+}
+
+function retrieve_filtered_structs(target_map,struct_to_target){
+	var structures_to_filter = [];
+	var return_structures = [];
+	var return_iterator = 0;
+	ds_map_values_to_array(target_map,structures_to_filter);
+	var entity_count = array_length(structures_to_filter);
+	for(var i = 0;i < entity_count;i++){
+		var current_entity = structures_to_filter[i];
+		if(is_struct(current_entity)){
+			if(is_instanceof(current_entity,struct_to_target)){
+				return_structures[return_iterator] = current_entity;
+				return_iterator++;
+			}
+		}
+	}
+	
+	return return_structures;
 }
 
 function retrieve_ingredient(entity_key,prc_type){

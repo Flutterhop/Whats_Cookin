@@ -132,7 +132,7 @@ function npc_read_attack_collision(){
 function npc_is_near_target(){
 	if(not_null(target)){
 		var target_distance = point_distance(target.x,target.y,x,y);
-		if(target_distance < target_range){
+		if(target_distance < struct.stats.attack_range){
 			//Within range so we return true
 			return true
 		}else{

@@ -60,10 +60,18 @@ function initialize_item_stats(){
 							[place_allowed.counter,place_allowed.stove]
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
-	///Fryingpan
-	entity = new Tool_Stats("fryingpan", 
+	///Fryingpan_tool
+	entity = new Tool_Stats("fryingpan_tool", 
 							5,
 							[place_allowed.counter,place_allowed.stove]
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	///Fryingpan_equipment
+	entity = new Equipment_Stats("fryingpan_equipment", 
+									5,
+									[place_allowed.counter,place_allowed.stove],
+									Equipment_attack_type.slash,
+									1
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 }
@@ -119,16 +127,26 @@ function initialize_item_entities(){
 									[]
 											);
 	ds_map_add(target_map,entity.name,entity);
-	entity = new Item_Tool("fryingpan", 
+	entity = new Item_Tool("fryingpan_tool", 
 							obj_tool_fryingpan,
 									grid,
 									true,
 									false,
-									retrieve_stats("fryingpan",target_stat_map),
+									retrieve_stats("fryingpan_tool",target_stat_map),
 									spr_tool_fryingpan,
 									spr_tool_fryingpan,
 									[]
 											);
+	ds_map_add(target_map,entity.name,entity);
+	entity = new Item_Equipment("fryingpan_equipment", 
+								obj_tool_fryingpan,
+								grid,
+								true,
+								false,
+								retrieve_stats("fryingpan_equipment",target_stat_map),
+								spr_tool_fryingpan,
+								spr_tool_fryingpan
+										);
 	ds_map_add(target_map,entity.name,entity);
 
 }
@@ -145,7 +163,9 @@ function initialize_character_stats(){
 							1,
 							30,
 							10,
-							15
+							10,
+							5,
+							20
 							);
 	ds_map_add(target_map,stats.name,stats);
 	stats = new Enemy_Stats("hunter",
@@ -287,7 +307,11 @@ function initialize_structure_stats(){
 									false,
 									"",
 									1,
-									process_type.knead
+									true,
+									false,
+									1,
+									process_type.knead,
+									appliance_size.large
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	///Cutting board
@@ -297,7 +321,12 @@ function initialize_structure_stats(){
 											true,
 											retrieve_entity("choppinggame",target_stat_map),
 											1,
-											process_type.cut
+											true,
+											false,
+											1,
+											process_type.cut,
+											appliance_size.small
+											
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	//Storage
@@ -306,7 +335,26 @@ function initialize_structure_stats(){
 										25,
 										true,
 										"",
-										0 
+										1,
+										true,
+										false,
+										0,
+										process_type.none,
+										appliance_size.large
+	);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	//Blender
+	entity = new Kitchen_Structure_Stats("blender",
+										25,
+										25,
+										true,
+										"",
+										1,
+										true,
+										false,
+										1,
+										process_type.blend,
+										appliance_size.small
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	//Turret
@@ -314,11 +362,15 @@ function initialize_structure_stats(){
 										20,
 										20,
 										false,
+										"",								
 										1,
-										1,
+										false,
+										true,
 										20, 
+										1,
 										20,
 										120,
+										20,
 										retrieve_entity("turret_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -326,11 +378,15 @@ function initialize_structure_stats(){
 										20,
 										20,
 										false,
+										"",								
 										5,
+										false,
+										true,
 										5,
 										1,
 										100,
 										1000,
+										100,
 										retrieve_entity("catapult_projectile",global.environment_entities)
 	);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -352,19 +408,21 @@ function initialize_structure_entities(){
 									0,
 									0,
 									[],
-									1
+									1,
+									counter_tiles1
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Kitchen_Structure("cuttingboard",
 									obj_str_cuttingboard, 
 									grid,
 									true,
-									false, 
+									false,
 									retrieve_stats("cuttingboard",target_stat_map),
 									0,
 									0,
 									[],
-									1
+									1,
+									spr_cutting_board
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Kitchen_Structure("storage",
@@ -376,7 +434,21 @@ function initialize_structure_entities(){
 									0,
 									0,
 									[],
-									20
+									20,
+									spr_storage_box
+											);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	entity = new Kitchen_Structure("blender",
+									obj_str_blender,
+									grid,
+									true,
+									false,
+									retrieve_stats("blender",target_stat_map),
+									0,
+									0,
+									[],
+									2,
+									spr_str_blender
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 	entity = new Defense_Structure("turret",
@@ -389,6 +461,7 @@ function initialize_structure_entities(){
 									0,
 									[],
 									0,
+									spr_turret_down,
 									[obj_enemy_npc]
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -402,6 +475,7 @@ function initialize_structure_entities(){
 									0,
 									[],
 									0,
+									spr_catapult_down_idle,
 									[obj_enemy_npc]
 											);
 	ds_map_add(target_map,string_lower(entity.name),entity);
@@ -425,6 +499,11 @@ function initialize_system_entities(){
 									obj_build_listener,
 									grid,
 									true);
+	ds_map_add(target_map,string_lower(entity.name),entity);
+	entity = new Bank_Menu("banksystem",
+									obj_bank_manager,
+									grid,
+									false);
 	ds_map_add(target_map,string_lower(entity.name),entity);
 }
 

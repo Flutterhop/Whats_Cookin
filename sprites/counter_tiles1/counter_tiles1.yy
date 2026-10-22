@@ -1,8 +1,8 @@
 {
   "$GMSprite":"v2",
   "%Name":"counter_tiles1",
-  "bboxMode":2,
-  "bbox_bottom":20,
+  "bboxMode":0,
+  "bbox_bottom":31,
   "bbox_left":0,
   "bbox_right":31,
   "bbox_top":0,
@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"counters",
-    "path":"folders/Sprites/Structures/Kitchen/counters.yy",
+    "path":"folders/Sprites/Structures/Kitchen/large appliances/counters.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -59,7 +59,7 @@
     },
     "name":"counter_tiles1",
     "playback":1,
-    "playbackSpeed":30.0,
+    "playbackSpeed":0.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",

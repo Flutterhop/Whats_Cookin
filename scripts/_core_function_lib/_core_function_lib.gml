@@ -6,16 +6,30 @@ enum grid_direction{
 }
 
 
-function get_screen_center_x(){
-	var width = camera_get_view_x(view_camera) * 2 + camera_get_view_width(view_camera);
+function get_screen_center_x(view_index = 0){
+	var cam
+	if(view_index != 0){
+		cam = view_get_camera(view_index);
+	}else{
+		cam = view_get_camera(view_current);
+	}
+	
+	var width = camera_get_view_x(cam) * 2 + camera_get_view_width(cam);
 	var menu_center_x = width / 2;
 
 	
 	return menu_center_x;
 }
 
-function get_screen_center_y(){
-	var height = camera_get_view_y(view_camera) * 2 + camera_get_view_height(view_camera);
+function get_screen_center_y(view_index = 0){
+	var cam
+	if(view_index != 0){
+		cam = view_get_camera(view_index);
+	}else{
+		cam = view_get_camera(view_current);
+	}
+	
+	var height = camera_get_view_y(cam) * 2 + camera_get_view_height(cam);
 	var menu_center_y = height / 2; ///to bring it up to the top of the window.
 
 	

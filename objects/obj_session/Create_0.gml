@@ -14,8 +14,14 @@ function prototype(){
 	initialize_character_entities();
 	initialize_item_entities();
 	
-	var counter_01 = retrieve_entity("counter",global.structure_entities)
-	counter_01.spawn_grid_entity(3,3,"Instances")
+	var bank = retrieve_entity("banksystem",global.system_entities);
+	bank.spawn_entity(0,0,"System");
+	bank.deposit(100);
+	bank.withdraw(50);
+	bank.deposit(25);
+	
+	var counter_01 = retrieve_entity("counter",global.structure_entities);
+	counter_01.spawn_grid_entity(3,3,"Instances");
 	
 	//var npc1 = retrieve_entity("bee",global.character_entities)
 	//npc1.spawn_entity(10,10,"Instances");
@@ -23,7 +29,6 @@ function prototype(){
 	//var turret1 = new Defense_Structure("Turret_1",structure_type.Defense,5,false,obj_str_turret,grid)
 	//turret1.spawn_entity(10,7,"Instances")
 	
-
 	
 	var player_entity = new Player_Character("Player 0",
 												obj_player,
@@ -65,37 +70,40 @@ function prototype(){
 	var plate_01 = retrieve_entity("plate",global.item_entities)
 	plate_01.spawn_grid_entity(5,9,"Instances")
 	
-	var pan_1 = retrieve_entity("fryingpan",global.item_entities)
+	var pan_1 = retrieve_entity("fryingpan_tool",global.item_entities)
 	pan_1.spawn_grid_entity(4,13,"Instances")
 	
 	var beef_1 = retrieve_entity("beef",global.item_entities)
 	beef_1.spawn_grid_entity(5,8,"Instances")
+	
 	//var inspector_01 = retrieve_entity("inspector",global.character_entities)
 	//inspector_01.spawn_grid_entity(15,10,"Instances")
 	
 	//var _sq = retrieve_entity("squeebie",global.character_entities)
 	//_sq.single_direction = true;
 	//_sq.spawn_grid_entity(5,20,"Instances");
-	var soupling_1 = retrieve_entity("soupling",global.character_entities)
-	soupling_1.spawn_grid_entity(2,1,"Instances")
+	//var soupling_1 = retrieve_entity("soupling",global.character_entities)
+	//soupling_1.spawn_grid_entity(2,1,"Instances")
 
-	
 	var counter = retrieve_entity("counter",global.structure_entities)
 	counter.grid_x = 10
 	counter.grid_y = 5
 	counter.spawn_grid_entity(0,0,"Instances")
-	var counter2 = retrieve_entity("counter",global.structure_entities)
-	counter2.grid_x = 11
-	counter2.grid_y = 6
-	counter2.spawn_grid_entity(0,0,"Instances")
+	
 	var cuttingboard = retrieve_entity("cuttingboard",global.structure_entities)
-	cuttingboard.grid_x = 11
+	cuttingboard.grid_x = 12
 	cuttingboard.grid_y = 5
 	cuttingboard.spawn_grid_entity(0,0,"Instances")
-	var storage = retrieve_entity("storage",global.structure_entities)
-	storage.grid_x = 5
-	storage.grid_y = 5
-	storage.spawn_grid_entity(0,0,"Instances")
+	counter.insert_item(cuttingboard.instance)
+	
+	var counter2 = retrieve_entity("counter",global.structure_entities)
+	counter2.grid_x = 11
+	counter2.grid_y = 5
+	counter2.spawn_grid_entity(0,0,"Instances")
+	
+	var blender = retrieve_entity("blender",global.structure_entities)
+	blender.spawn_grid_entity(0,0,"Instances")
+	counter2.insert_item(blender.instance)
 	
 	var builder_listener = retrieve_entity("builderlistener",global.system_entities);
 	builder_listener.spawn_entity(0,0,"System");

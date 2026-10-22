@@ -20,13 +20,17 @@ falling = false;
 additional_collisions = []
 collision_targets  = struct.grid.fetch_collision_array([additional_collisions]);
 
+interact_dist = struct.get_stat("interaction_distance");
+interact_range = struct.get_stat("interaction_range");
 
-struct.equipment = "pan"
+struct.equipment = retrieve_entity("fryingpan_equipment",global.item_entities);
+attack_type = struct.get_attack_type();
 equipment_sprite = "";
 friction_amount = .7;
 
 //DRAWING
 visual_speed = 1;//Speed the image should run at.
+attack_visual_speed = 2;
 stun_index = 0;//used to animate stun effect
 
 function init_state_machine(){
@@ -39,7 +43,7 @@ function init_state_machine(){
 		    	draw_sprite_ext(equipment_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
 			}
 			
-			var interact_coord = get_interact_shape(direction);
+			var interact_coord = get_interact_shape(direction,interact_range,interact_dist);
 			
 			var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
 			var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
@@ -90,6 +94,8 @@ function init_state_machine(){
 			with(owner){
 				struct.character_builder.set_action(struct.state_machine.GetStateName())
 				image_index = 0;
+				interact_dist = 0;
+				interact_range = 0;
 			}
 		})
 		.AddUpdate(function(){
@@ -203,8 +209,11 @@ function init_state_machine(){
 	var attack_state = new StatementState(struct.state_machine,"attack")
 		.AddEnter(function(){
 			with(owner){
+				struct.character_builder.add_weapon(struct.equipment)
+				struct.character_builder.set_action(string_concat("attack","_",attack_type))
 				movement_locked = true;
-               // determine_sprite("pan","slash")
+               	//determine_sprite("pan","slash")
+				image_speed = attack_visual_speed;
                 image_index = 0;
 			}
 		})
@@ -225,11 +234,18 @@ function init_state_machine(){
 				}
 				var state_time = struct.state_machine.GetStateTime();
 				if(state_time > struct.stats.attack_speed){
-					change_state("idle");
+					struct.state_machine.ChangeState("idle");
 				}
 				handle_iframes();
 			}
-        });
+        })
+		.AddExit(function(){
+			with(owner){
+				image_speed = visual_speed;
+				movement_locked = false;
+				struct.character_builder.remove_weapon()
+			}
+		});
 	attack_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var stunned_state = new StatementState(struct.state_machine,"stunned")
@@ -268,6 +284,104 @@ function init_state_machine(){
 		});
 	stunned_state.AddDraw(draw_template)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	var build_state = new StatementState(struct.state_machine,"build")
+		.AddEnter(function(){
+			with(owner){
+				struct.character_builder.set_action("idle")
+				image_index = 0;
+				interact_dist = struct.get_stat("interaction_distance") * 2;
+				interact_range = struct.get_stat("interaction_range");
+			}
+		})
+		.AddUpdate(function(){
+			with(owner){
+				direction_facing = determine_direction_facing(direction);
+				interpret_player_controls();
+				handle_movement();
+				reset_input();
+				reset_speed();
+				handle_iframes();
+			}
+			
+			
+		})
+		.AddExit(function(){
+			with(owner){
+				interact_dist = struct.get_stat("interaction_distance");
+				interact_range = struct.get_stat("interaction_range");
+
+			}
+		})
+		.AddDraw(function(){
+			with(owner){
+				if(not_null(equipment_sprite)){
+					draw_sprite_ext(equipment_sprite,image_index,x,y,image_xscale,image_yscale,0,c_white,1);
+				}
+				
+				var interact_coord = get_interact_shape(direction,interact_range,interact_dist);
+				
+				var x_pos = ((interact_coord[0] + x) + (interact_coord[2] + x))/2
+				var y_pos = ((interact_coord[1] + y) + (interact_coord[3] + y))/2
+				draw_rectangle_colour(x + interact_coord[0],y + interact_coord[1],x + interact_coord[2],y + interact_coord[3],c_black,c_black,c_black,c_black,true)
+				draw_circle_colour(x_pos,y_pos,2,c_red,c_red,true)
+				
+				
+				if(struct.stun_amount > 0){
+					draw_sprite_ext(spr_effect_stun,image_index,x,y,1,1,0,c_white,1);
+				}
+				
+				
+				if(not_null(direction_facing)){
+					switch(direction_facing){
+						case "up":
+							image_xscale = 1;
+						break;
+						case "down":
+							image_xscale = 1;
+						break;
+						case "left":
+							image_xscale = 1;
+						break;
+						case "right":
+							image_xscale = -1;
+						break;
+					}
+				}
+				
+				draw_character();
+				
+				//if(not_null(shadow_sprite)){
+					//draw_sprite_ext(shadow_sprite,0,x,y+z_position,1,1,0,c_white,1);
+				//}
+				//if(not_null(sprite_index) and sprite_index != -1){
+				//	draw_sprite_ext(sprite_index,image_index,x,y,image_xscale,image_yscale,0,c_white,1)
+				//}
+				
+				draw_health()
+			} 
+		});
+	build_state.AddDraw(draw_template)
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	var piece_select_state = new StatementState(struct.state_machine,"piece_select")
+		.AddEnter(function(){
+			with(owner){
+				struct.character_builder.set_action("idle")
+				image_index = 0;
+			}
+		})
+		.AddUpdate(function(){
+			with(owner){
+				direction_facing = determine_direction_facing(direction);
+				interpret_player_controls();
+				handle_movement();
+				reset_input();
+				reset_speed();
+				handle_iframes();
+			}
+			
+	});
+	piece_select_state.AddDraw(draw_template)
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	var dead_state = new StatementState(struct.state_machine,"dead")
 		.AddEnter(function(){
 			with(owner){
@@ -301,6 +415,8 @@ function init_state_machine(){
 	.AddState(interact_state)
 	.AddState(attack_state)
 	.AddState(stunned_state)
+	.AddState(build_state)
+	.AddState(piece_select_state)	
 	.AddState(dead_state)
 
 	struct.state_machine.ChangeState("idle")

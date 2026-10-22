@@ -1,20 +1,17 @@
 {
   "$GMObject":"",
   "%Name":"obj_str_cuttingboard",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"obj_str_cuttingboard",
   "overriddenProperties":[],
   "parent":{
-    "name":"Kitchen",
-    "path":"folders/Objects/Structures/Kitchen.yy",
+    "name":"small appliances",
+    "path":"folders/Objects/Structures/Kitchen/small appliances.yy",
   },
   "parentObjectId":{
-    "name":"obj_processing_structure",
-    "path":"objects/obj_processing_structure/obj_processing_structure.yy",
+    "name":"obj_small_appliance",
+    "path":"objects/obj_small_appliance/obj_small_appliance.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -38,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_str_cuttingboard",
-    "path":"sprites/spr_str_cuttingboard/spr_str_cuttingboard.yy",
+    "name":"spr_cutting_board",
+    "path":"sprites/spr_cutting_board/spr_cutting_board.yy",
   },
   "spriteMaskId":null,
   "visible":true,

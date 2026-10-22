@@ -7,17 +7,130 @@ event_inherited();
 idle_template = "";
 hold_template = "";
 default_state = "idle_empty"
+idle_empty_template = ""
+idle_occupied_template = ""
+hold_empty_template = ""
+hold_occupied_template = ""
 
 function init_state_machine(){
 	//	Testing something out, sub-states can help us with more complex behavior.
 	//	These sub-states are underscore delimited, so understanding the naming is key.
-	init_state_machine_templates()
-	struct.state_machine.DebugSetErrorBehavior(eStatementErrorBehavior.RETHROW);
+	//init_state_machine_templates()
+	/*struct.state_machine.DebugSetErrorBehavior(eStatementErrorBehavior.RETHROW);
 	struct.state_machine.AddStateTemplate(idle_template,{},"idle_empty")
 	struct.state_machine.AddStateTemplate(idle_template,{},"idle_occupied")
 	struct.state_machine.AddStateTemplate(hold_template,{},"hold_empty")
 	struct.state_machine.AddStateTemplate(hold_template,{},"hold_occupied")
-	struct.state_machine.QueueState(default_state)
+	 * */
+	struct.state_machine = new Statement(self);
+	draw_template = function(){
+		with(owner){
+			//	When without inventory, draw self
+			//	When inventory exists, draw self then item.
+			//	When being held, the item is drawn by the entity holding the tool.
+			
+			if(get_substates(struct.state_machine.GetStateName(),1,true) == "occupied" and get_substates(struct.state_machine.GetStateName(),0) != "hold"){
+				//Draw Self if occupied but not held draw self and inventory item.
+				draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
+				//draw item
+				if(variable_instance_exists(struct,"inventory")){
+					var inventory_size = array_length(struct.inventory);
+					if(inventory_size > 0){
+						for(var i = 0; i < inventory_size;i++){
+							var inventory_item = struct.inventory[i];
+							if(is_instanceof(inventory_item.struct,Item_Game)){
+								draw_sprite_ext(inventory_item.struct.item_sprite,image_index,x,y,1,1,0,c_white,1)
+							}
+						}
+					}
+				}
+				
+			}else if(get_substates(struct.state_machine.GetStateName(),1,true) == "occupied" and get_substates(struct.state_machine.GetStateName(),0) == "hold"){
+				if(variable_instance_exists(struct,"inventory")){
+					var inventory_size = array_length(struct.inventory);
+					if(inventory_size > 0){
+						for(var i = 0; i < inventory_size;i++){
+							var inventory_item = struct.inventory[i];
+							if(is_instanceof(inventory_item.struct,Item_Game)){
+								draw_sprite_ext(inventory_item.struct.item_sprite,image_index,x,y,1,1,0,c_white,1)
+							}
+						}
+					}
+				}
+			}else{
+				draw_sprite_ext(struct.item_sprite,image_index,x,y,1,1,0,c_white,1);
+			}
+			if(global.debug and global.debug_setting == debug_type.item_debug){
+				if(not_null(struct.state_machine)){
+					scribble(struct.state_machine.GetStateName()).starting_format("pixel_op").draw(x+debug_1_x,y+debug_1_y * 2);
+				}
+			}
+		}
+		
+	}
+	
+	idle_empty_template = new StatementState(struct.state_machine,"idle_empty")
+
+		.AddEnter(function(){
+				with(owner){
+					EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
+				}
+			})
+			.AddUpdate(function(){
+				with(owner){
+					handle_inventory();
+				}
+			});
+	
+	idle_empty_template.AddDraw(draw_template);
+	
+	idle_occupied_template = new StatementState(struct.state_machine,"idle_occupied")
+		.AddEnter(function(){
+			with(owner){
+				EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
+			}
+		})
+		.AddUpdate(function(){
+			with(owner){
+				handle_inventory();
+			}
+		});
+	idle_occupied_template.AddDraw(draw_template);
+	
+	hold_empty_template = new StatementState(struct.state_machine,"hold_empty")
+		.AddEnter(function(){
+			with(owner){
+				EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
+			}
+		})
+		.AddUpdate(function(){
+			with(owner){
+				handle_inventory();
+			}
+		});
+	hold_empty_template.AddDraw(draw_template);
+		
+	hold_occupied_template = new StatementState(struct.state_machine,"hold_occupied")
+		.AddEnter(function(){
+			with(owner){
+				EchoDebug(string_concat("entering ",struct.state_machine.GetStateName()))
+			}
+		})
+		.AddUpdate(function(){
+			with(owner){
+				handle_inventory();
+			}
+		});
+	hold_occupied_template.AddDraw(draw_template);
+	
+	
+	struct.state_machine
+	.AddState(idle_empty_template)
+	.AddState(idle_occupied_template)
+	.AddState(hold_empty_template)
+	.AddState(hold_occupied_template)
+
+	struct.state_machine.ChangeState("idle_empty")
 }
 
 

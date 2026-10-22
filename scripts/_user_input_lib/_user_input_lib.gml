@@ -435,6 +435,22 @@ function input_scan_inputs(temp_player){
 		if(InputCheck(INPUT_VERB.ACTION_4,temp_player.player_number)){if(variable_instance_exists(self,"input_action_4")){input_action_4(temp_player);}}
 		if(InputPressed(INPUT_VERB.ACTION_4,temp_player.player_number)){ if(variable_instance_exists(self,"input_action_4_pressed")){ input_action_4_pressed(temp_player);}}
 		if(InputReleased(INPUT_VERB.ACTION_4,temp_player.player_number)){if(variable_instance_exists(self,"input_action_4_released")){input_action_4_released(temp_player);}}
+		//Special 1 
+		if(InputReleased(INPUT_VERB.SPECIAL_1,temp_player.player_number)){if(variable_instance_exists(self,"input_special_1_released")){input_special_1_released(temp_player);}}
+		if(InputCheck(INPUT_VERB.SPECIAL_1,temp_player.player_number)){if(variable_instance_exists(self,"input_special_1")){input_special_1(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL_1,temp_player.player_number)){if(variable_instance_exists(self,"input_special_1_pressed")){input_special_1_pressed(temp_player);}}
+		//Special 2
+		if(InputCheck(INPUT_VERB.SPECIAL_2,temp_player.player_number)){if(variable_instance_exists(self,"input_special_2")){input_special_2(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL_2,temp_player.player_number)){if(variable_instance_exists(self,"input_special_2_pressed")){input_special_2_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.SPECIAL_2,temp_player.player_number)){if(variable_instance_exists(self,"input_special_2_released")){input_special_2_released(temp_player);}}
+		//Special 3
+		if(InputCheck(INPUT_VERB.SPECIAL_3,temp_player.player_number)){if(variable_instance_exists(self,"input_special_3")){input_special_3(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL_3,temp_player.player_number)){ if(variable_instance_exists(self,"input_special_3_pressed")){ input_special_3_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.SPECIAL_3,temp_player.player_number)){if(variable_instance_exists(self,"input_special_3_released")){input_special_3_released(temp_player);}}
+		//Special 4
+		if(InputCheck(INPUT_VERB.SPECIAL_4,temp_player.player_number)){if(variable_instance_exists(self,"input_special_4")){input_special_4(temp_player);}}
+		if(InputPressed(INPUT_VERB.SPECIAL_4,temp_player.player_number)){ if(variable_instance_exists(self,"input_special_4_pressed")){ input_special_4_pressed(temp_player);}}
+		if(InputReleased(INPUT_VERB.SPECIAL_4,temp_player.player_number)){if(variable_instance_exists(self,"input_special_4_released")){input_special_4_released(temp_player);}}
 		//PAUSE
 		if(InputCheck(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause")){input_pause(temp_player);}}
 		if(InputPressed(INPUT_VERB.PAUSE,temp_player.player_number)){if(variable_instance_exists(self,"input_pause_pressed")){input_pause_pressed(temp_player);}}

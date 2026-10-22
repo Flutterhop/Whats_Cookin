@@ -49,6 +49,10 @@ function Cookin_Entity(new_name,new_object_reference = _obj_cookin_entity,new_gr
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
 		}
+		if(!is_instanceof(self,Structure_Game) and !is_instanceof(self,System_Entity)){
+			register_entity();
+		}
+		grid.add_collision(instance);
 	}
 	
 	////@description spawns an entity at the designated coordinates in the grid map, on the provided layer.
@@ -120,18 +124,106 @@ function Minigame_System(new_name,new_object_reference,new_grid,has_sm) : System
 	
 }
 
-function Customer_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
-	
+function Session_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	customer_system = new Customer_System("customersystem",obj_customer_manager,grid,true);
+	spawn_system = new Spawn_System("spawnsystem",obj_spawn_manager,grid,true);
+	active_players = [];
 	
 }
 
-function Menu_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
-	menu_elements = ds_list_create();
+function Game_Wave(new_wave_number,new_name,new_entities,new_frequency,new_difficulty) constructor {
+	wave_number = new_wave_number;
+	name = new_name;
+	entities = new_entities;
+	frequency = new_frequency;
+	difficulty = new_difficulty;
+}
+
+
+function Spawn_System(new_name,new_object_reference,new_grid,has_sm,new_waves = []) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	waves = new_waves;
+	spawned_entities = [];
+	current_wave_number = 0;
 	
+}
+
+function Customer_Spawn(new_name,new_object_reference,new_grid,has_sm) : Spawn_System(new_name,new_object_reference,new_grid,has_sm) constructor{
+	
+}
+
+function EnemyNPC_Spawn(new_name,new_object_reference,new_grid,has_sm) : Spawn_System(new_name,new_object_reference,new_grid,has_sm) constructor{
+
+	
+}
+
+function NPC_Spawn(new_name,new_object_reference,new_grid,has_sm) : Spawn_System(new_name,new_object_reference,new_grid,has_sm) constructor{
+
+	
+}
+
+function Spawn_Wave(new_wave_number,new_name,new_entities,new_frequency,new_difficulty) : Game_Wave(new_wave_number,new_name,new_entities,new_frequency,new_difficulty) constructor{
+
+}
+
+function Customer_Wave(new_wave_number,new_name,new_entities,new_frequency,new_difficulty) : Game_Wave(new_wave_number,new_name,new_entities,new_frequency,new_difficulty) constructor{
+
+}
+function Menu_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
+	menu_elements = "";
+	
+}
+
+function Bank_Menu(new_name,new_object_reference,new_grid,has_sm = false,new_max_balance = 999) : Menu_System(new_name,new_object_reference,new_grid,has_sm) constructor{
+	current_balance = 0;
+	max_balance = new_max_balance;
+	balance_offset = 0;
+	pending_transactions = [];
+	
+	static deposit = function(amount_to_deposit,reject_if_full = false){
+		if(amount_to_deposit > max_balance){
+			if(reject_if_full){
+				EchoDebug("Cannot deposit amount which exceeds max.")
+				return;
+			}else{
+				var reduced_value = abs(max_balance - (current_balance + amount_to_deposit));
+				balance_offset = current_balance;
+				current_balance = max_balance;
+				array_push(pending_transactions,["deposit",reduced_value,0,1])
+				call_later(instance.transaction_display_time,time_source_units_seconds,instance.remove_transaction);
+			}
+		}else{
+			var reduced_value = abs(max_balance - (current_balance + amount_to_deposit));
+			balance_offset = current_balance;
+			current_balance += amount_to_deposit;
+			array_push(pending_transactions,["deposit",reduced_value,0,1])
+			call_later(instance.transaction_display_time,time_source_units_seconds,instance.remove_transaction);
+		}
+	}
+	
+	static withdraw = function(amount_to_withdraw,accept_if_empty = false){
+		if(amount_to_withdraw > current_balance){
+			if(accept_if_empty){
+				var reduced_amount = abs(amount_to_deposit - current_balance);
+				current_balance = 0;
+				array_push(pending_transactions,["withdraw",reduced_amount,0,1])
+				call_later(instance.transaction_display_time,time_source_units_seconds,instance.remove_transaction);
+			}else{
+				EchoDebug("Cannot withdraw amount which exceeds current balance.")
+				return 0;				
+			}
+
+		}else{
+			balance_offset = amount_to_withdraw;
+			current_balance -= amount_to_withdraw;
+			array_push(pending_transactions,["withdraw",amount_to_withdraw,0,1])
+			call_later(instance.transaction_display_time,time_source_units_seconds,instance.remove_transaction);
+		}
+	}
 }
 
 function Build_System(new_name,new_object_reference,new_grid,has_sm) : System_Entity(new_name,new_object_reference,new_grid,has_sm) constructor{
 	builder_grid = ds_grid_create(0,0);
+	player = "";
 	
 }
 
@@ -224,14 +316,16 @@ function Game_Entity(new_name,new_object_reference = _obj_cookin_entity,new_grid
 	}
 }
 
-function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit)
+function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_structure_sprite)
 : Game_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats) constructor{
 	grid_x 		= new_grid_x;
 	grid_y 		= new_grid_y;
 	inventory 	= new_inventory;
 	limit 		= new_limit;
+	structure_sprite = new_structure_sprite;
 	inventory_pos_x = 0;
 	inventory_pos_y = -10;
+	default_state = "idle";
 	
 	init_structure = function(x_pos,y_pos,_layer,args = []){
 		if(array_length(args) > 0){
@@ -262,7 +356,7 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		var spawn_y_pos = (y_pos * grid.cell_height) + grid.cell_height / 2
 		x_pos = floor(x_pos)
 		y_pos = floor(y_pos)
-		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
+		instance = instance_create_layer(spawn_x_pos,spawn_y_pos,new_layer,object_reference,{struct : new_struct});
 		if(has_state_machine){
 			call_later(30,time_source_units_frames,call_state_machine);
 		}
@@ -297,9 +391,7 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 	
     static can_interact = function(){
         if(not_null(stats)){
-            if(not_null(stats.has_interaction)){
-                return stats.has_interaction
-            }
+   			return stats.has_interaction
         }
 	}
 	static can_put_item = function(){
@@ -321,16 +413,38 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 			target_item.struct.held = true;
 			
 		}
+		if(is_instanceof(target_item.struct,Kitchen_Structure)){
+			target_item.struct.held = true;
+			target_item.struct.parent_structure = instance;
+			
+		}
 		array_push(inventory,target_item)
 		target_item.x = inventory_pos_x;
 		target_item.y = inventory_pos_y;
-		if(!state_machine.IsInState("idle")){
-			state_machine.QueueState("idle");
+		if(not_null(state_machine)){
+			if(!state_machine.IsInState("idle")){
+				state_machine.QueueState("idle");
+			}
 		}
+
 	}
 	static remove_item = function(){
 		if(array_length(inventory) > 0){
 			return array_pop(inventory);
+		}
+		return;
+	}
+	static remove_this_item = function(target_item){
+		if(array_length(inventory) > 0){
+			if(array_contains(inventory,target_item)){
+				var item_index = array_get_index(inventory,target_item);
+				if(not_null(item_index) or item_index == 0){
+					target_item.struct.parent_structure = "";
+					array_delete(inventory,item_index,1);
+				}
+			}
+		}else{
+			EchoDebug("_cookin_entity [remove_this_item()] does not have inventory to remove from.")
 		}
 		return;
 	}
@@ -356,14 +470,16 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		if(not_null(state_machine.GetState("assemble"))){
 			grid.remove_multiple_obstacles(x1,y1,self)
 			state_machine.ChangeState("assemble");
+			grid.remove_collision(instance);
 		}
 	}
 	static deploy = function(x_pos,y_pos){
 		var grid_cell = ds_grid_get(grid.grid_data,x_pos,y_pos);
 		if(not_null(grid_cell)){
-			if(not_null(state_machine.GetState("idle"))){
-				state_machine.QueueState("idle");
+			if(not_null(state_machine.GetState(default_state))){
+				state_machine.QueueState(default_state);
 				grid.insert_item_at(x_pos,y_pos,self)
+				grid.add_collision(instance);
 			}
 		}
 	}
@@ -401,8 +517,8 @@ function Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 	}
 }
 
-function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_target_objects)
-: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
+function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_structure_sprite,new_target_objects)
+: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_structure_sprite) constructor{
 	target_objects = new_target_objects;
 	
 	launch_projectile = function(x_pos,y_pos,layer_to_spawn,dir){
@@ -414,21 +530,39 @@ function Defense_Structure(new_name,new_object_reference,new_grid,has_sm = true,
 	}
 }
 
-function Kitchen_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit)
-: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit) constructor{
+function Kitchen_Structure(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_structure_sprite)
+: Structure_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_grid_x,new_grid_y,new_inventory,new_limit,new_structure_sprite) constructor{
 	
+	parent_structure = "";
+	held = false;
+	process_progress = 0;
+	
+	static can_fit = function(){
+		var fits = false;
+		switch(stats.size){
+			case appliance_size.large:
+				fits = false;
+			break;
+			case appliance_size.small:
+				fits = true;
+			break;
+		}
+		return fits;
+	}
+	
+	static assemble = function(x1,y1){
+		if(not_null(state_machine.GetState("assemble"))){
+			if(not_null(parent_structure)){
+				parent_structure.struct.remove_this_item(instance);
+			}
+			grid.remove_multiple_obstacles(x1,y1,self)
+			state_machine.ChangeState("assemble");
+			grid.remove_collision(instance);
+		}
+	}
 	
 }
 
-/**
- * Function Description
- * @param {any*} new_name Description
- * @param {asset.gmobject} new_object_reference Description
- * @param {any*} new_grid Description
- * @param {bool} [has_sm] Description
- * @param {bool} new_invincible Description
- * @param {any*} new_stats Description
- */
 function Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats)
 : Game_Entity(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats) constructor{
 	
@@ -456,11 +590,14 @@ function Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		var new_struct = self
 		var x_position = (x_pos * grid.cell_width) + grid.cell_width / 2
 		var y_position = (y_pos * grid.cell_height) + grid.cell_height / 2
-		
-		instance = instance_create_layer(x_position,y_position,layer_to_spawn,object_reference,{struct : new_struct});
-		call_later(30,time_source_units_frames,call_state_machine)
+		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
+		if(has_state_machine){
+			call_later(30,time_source_units_frames,call_state_machine);
+		}
+		if(!is_instanceof(self,Structure_Game)){
+			register_entity();
+		}
 		instance.path = path_add();
-		instance.struct = self;
 		grid.add_collision(instance)
 	}
 	////@description spawns an entity at the designated coordinates in the grid map, on the provided layer.
@@ -478,10 +615,14 @@ function Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invinc
 		var new_struct = self
 		var x_pos = (x_coord * grid.cell_width) + grid.cell_width / 2
 		var y_pos = (y_coord * grid.cell_height) + grid.cell_height / 2
-		
-		var new_struct = self
 		instance = instance_create_layer(x_pos,y_pos,new_layer,object_reference,{struct : new_struct});
-		call_later(30,time_source_units_frames,call_state_machine)
+		if(has_state_machine){
+			call_later(30,time_source_units_frames,call_state_machine);
+		}
+		if(!is_instanceof(self,Structure_Game)){
+			register_entity();
+		}
+		grid.add_collision(instance);
 		instance.path = path_add();
 		instance.struct = self;
 	}
@@ -526,10 +667,10 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 : Character_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats) constructor{
 	
 	player_number = new_player_number;
-	input_allowed = true
-	equipment = "unarmed"
+	input_allowed = true;
+	equipment = "";
 	single_direction = false;
-	target_objects = [obj_enemy_npc]
+	target_objects = [obj_enemy_npc];
     held_entity = "";
 	interaction_target = "";
 	character_builder = new Character_Builder(string_concat("player_",player_number," builder"),"","",false,self);
@@ -598,6 +739,26 @@ function Player_Character(new_name,new_object_reference,new_grid = "",has_sm = t
 			instance.movement_locked = false;
 		}
 		state_machine.ChangeState("idle");
+	}
+	
+	static get_attack_type = function(){
+		var return_type = "";
+		if(not_null(equipment)){
+			if(is_instanceof(equipment,Item_Equipment)){
+				return_type = equipment.stats.attack_type;
+			}
+		}
+		return return_type;
+	}
+	
+	static has_equipment = function(){
+		var equipment_found = false;
+		if(not_null(equipment)){
+			if(is_instanceof(equipment,Item_Equipment)){
+				equipment_found = true;
+			}
+		}
+		return equipment_found;
 	}
 }
 
@@ -740,7 +901,7 @@ function Food_Meal(new_name,new_object_reference = obj_meal_food,new_grid,has_sm
 
 function Item_Equipment(new_name,new_object_reference = _obj_equipment_item,new_grid,has_sm = true,new_invincible,new_stats = "",new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder)
 : Item_Game(new_name,new_object_reference,new_grid,has_sm,new_invincible,new_stats,new_item_sprite,new_item_icon) constructor {
-
+	
 }
 
 function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invincible,new_stats,new_item_sprite = spr_item_placeholder,new_item_icon = spr_item_placeholder,new_inventory = [],new_limit = 1)
@@ -752,7 +913,7 @@ function Item_Tool(new_name,new_object_reference,new_grid,has_sm = true,new_invi
 		var item_placed = false;
 		if(is_instanceof(target_item.struct,Item_Food)){
 			if(array_length(inventory) < limit){
-				target_item.struct.disable_collision()
+				target_item.struct.disable_collision();
 				array_push(inventory,target_item);
 				target_item.struct.state_machine.ChangeState("hold");
 				item_placed = true;

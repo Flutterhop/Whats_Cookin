@@ -64,6 +64,19 @@ function Character_Builder(new_name,new_object_reference = "",new_grid = "",has_
 		up_character_sprite.remove_item();
 	}
 	
+	static add_weapon = function(equipment){
+		var stats = equipment.stats;
+		left_character_sprite.assign_item(stats.attack_sprite_left);
+		down_character_sprite.assign_item(stats.attack_sprite_down);
+		up_character_sprite.assign_item(stats.attack_sprite_up);
+	}
+	
+	static remove_weapon = function(){
+		left_character_sprite.remove_item();
+		down_character_sprite.remove_item();
+		up_character_sprite.remove_item();
+	}
+	
 	static init_sprites = function(){
 		left_character_sprite= new Character_Sprite(self,"idle","left")
 		down_character_sprite= new Character_Sprite(self,"idle","down")
@@ -201,6 +214,10 @@ function Sprite_Part(new_character_sprite,new_part_name,new_index,new_order) con
 	
 	static set_sprite = function(){
 		if(multiple_sprites){
+			return;
+		}
+		if(not_null(sprite) and part_name == "items"){
+			EchoDebug("Sprite_Part items already assigned. skipping set.")
 			return;
 		}
 		if(not_null(character_sprite) and is_instanceof(character_sprite,Character_Sprite)){

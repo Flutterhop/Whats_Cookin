@@ -18,8 +18,10 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	starting_y = 0;
 	allow_diagonal = true;
 	is_precise = false;
-	obstacle_tiles_to_check = ["rocks","walls"];
+	obstacle_tiles_to_check = ["rocks"];
+	wall_tiles_to_check = ["walls"];
 	structure_tiles_to_check = [];
+	interior_tiles_to_check = ["floors"];
 	instances_to_check = [];
 	registered_entities = [];
 	
@@ -53,12 +55,24 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		var _h = room_height / mp_cell_height;
 		for (var i = 0; i < _w; i++;){
 			for (var j = 0; j < _h; j++;){
-				//Check All Tile Layers
+				//Check All Obstacle Tile Layers
 				var tile_layer_counter = array_length(obstacle_tiles_to_check)
 				for(var k = 0; k < tile_layer_counter; k++){
 					var o_tile_x_pos = (i * mp_cell_width) + (mp_cell_width / 2);
 					var o_tile_y_pos = (j * mp_cell_height) + (mp_cell_height / 2);
 					var tiles = layer_tilemap_get_id(obstacle_tiles_to_check[k])
+					var tile = tilemap_get_at_pixel(tiles,o_tile_x_pos ,o_tile_y_pos )
+					var result = (tile != -1) && (tile != 0);
+			        if(result){ // Gets the center position of the tile cell
+						mp_grid_add_cell(mp_grid_data, i, j);
+					}
+				}
+				//Check All Wall Tile Layers
+				var wall_layer_counter = array_length(wall_tiles_to_check)
+				for(var k = 0; k < wall_layer_counter; k++){
+					var o_tile_x_pos = (i * mp_cell_width) + (mp_cell_width / 2);
+					var o_tile_y_pos = (j * mp_cell_height) + (mp_cell_height / 2);
+					var tiles = layer_tilemap_get_id(wall_tiles_to_check[k])
 					var tile = tilemap_get_at_pixel(tiles,o_tile_x_pos ,o_tile_y_pos )
 					var result = (tile != -1) && (tile != 0);
 			        if(result){ // Gets the center position of the tile cell
@@ -213,16 +227,20 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 	static fetch_collision_array = function(extra_collisions = ""){
 		var return_array = array_create(0)
 		var obstacle_layer_counter = array_length(obstacle_tiles_to_check);
+		var wall_layer_counter = array_length(wall_tiles_to_check);
 		var structure_layer_counter = array_length(structure_tiles_to_check);
 		var instance_counter = array_length(instances_to_check);
 		for(var i = 0; i < obstacle_layer_counter; i++){
 			array_insert(return_array,i,layer_tilemap_get_id(obstacle_tiles_to_check[i]))
 		}
-		for(var j = 0; j < structure_layer_counter; j++){
-			array_insert(return_array,j,layer_tilemap_get_id(structure_tiles_to_check[j]))
+		for(var j = 0; j < wall_layer_counter; j++){
+			array_insert(return_array,j,layer_tilemap_get_id(wall_tiles_to_check[j]))
 		}
-		for(var k = 0; k < instance_counter; k++){
-			array_insert(return_array,k,instances_to_check[k])
+		for(var k = 0; k < structure_layer_counter; k++){
+			array_insert(return_array,k,layer_tilemap_get_id(structure_tiles_to_check[k]))
+		}
+		for(var l = 0; l < instance_counter; l++){
+			array_insert(return_array,l,instances_to_check[l])
 		}
 
 		
@@ -236,6 +254,9 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			if(not_null(array_instance)){
 				if(array_instance == instance_to_remove){
 					array_delete(instances_to_check,i,1);
+					update_entities_collision(instance_to_remove,false);
+					return;
+
 				}
 			}
 		}
@@ -256,12 +277,12 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 		if(is_instanceof(instance_to_add.struct,Structure_Game)){
 			array_push(instances_to_check,instance_to_add);
 			add_obstacles([instance_to_add])
-			update_entities_collision(instance_to_add);
+			update_entities_collision(instance_to_add,true);
 		}
 		
 	}
 	
-	static update_entities_collision = function(instance_to_add){
+	static update_entities_collision = function(instance,add_to_collision){
 		var entities_to_update = array_length(registered_entities);
 		if(entities_to_update <= 0){
 			EchoDebug("No Registered Entities available.");
@@ -272,12 +293,38 @@ function Map_Grid(_new_name,_new_width,_new_height,_new_mp_width,_new_mp_height)
 			if(!is_instanceof(current_entity,Structure_Game)){
 				if(variable_instance_exists(current_entity.instance,"collision_targets")){
 					var current_collision_target = current_entity.instance.collision_targets;
-					if(!array_contains(current_collision_target,instance_to_add)){
-						array_push(current_collision_target,instance_to_add);
+					var target_count = array_length(current_collision_target);
+					for(var j = 0; j < target_count;j++){
+						if(add_to_collision){
+							if(!array_contains(current_collision_target,instance)){
+								array_push(current_collision_target,instance);
+							}
+						}else{
+							if(array_contains(current_collision_target,instance)){
+								var target_index = array_get_index(current_collision_target,instance);
+								array_delete(current_collision_target,target_index,1);
+							}
+						}
 					}
 				}
 			}
 		}
+	}
+	
+	static is_interior = function(x_pos,y_pos){
+		var interior_found = false;
+		var tile_layer_counter = array_length(interior_tiles_to_check)
+		for(var i = 0; i < tile_layer_counter; i++){
+			var tiles = layer_tilemap_get_id(interior_tiles_to_check[i])
+			var tile = tilemap_get_at_pixel(tiles,x_pos ,y_pos)
+			var result = (tile != -1) && (tile != 0);
+			if(result){ // Gets the center position of the tile cell
+				return true;
+				
+			}
+		}
+		
+		return interior_found;
 	}
 		
 	init_grid_data();
@@ -287,6 +334,7 @@ function Grid_Cell(new_x_pos,new_y_pos,new_content = "") constructor{
 	x_pos = new_x_pos;
 	y_pos = new_y_pos;
 	cell_content = new_content;
+	is_occupied = false;
 	
 	static set_content = function(item_to_set){
 		if(not_null(item_to_set)){
@@ -297,13 +345,16 @@ function Grid_Cell(new_x_pos,new_y_pos,new_content = "") constructor{
 				show_debug_message("Cell already occupied, overwriting with new content.")
 			}
 		}
+		is_occupied = true;
 
 	}
 	static get_content = function(){
 		if(not_null(cell_content)){
+			is_occupied = true;
 			return cell_content;
 		}else{
 			show_debug_message("No content in this cell. Returning blank.");
+			is_occupied = false;
 			return "";
 		}
 
@@ -315,7 +366,7 @@ function Grid_Cell_Content(new_structure_content = 0) constructor{
 
 	structure_content = new_structure_content;
 	
-	static set_content = function(item_to_set){
+	static set_cell_content = function(item_to_set){
 		if(not_null(item_to_set)){
 			//Warn if cell is occupied.
 			if(is_null(cell_content)){
@@ -326,7 +377,7 @@ function Grid_Cell_Content(new_structure_content = 0) constructor{
 		}
 
 	}
-	static get_content = function(){
+	static get_cell_content = function(){
 		if(not_null(cell_content)){
 			return cell_content;
 		}else{

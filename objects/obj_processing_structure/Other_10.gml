@@ -2,6 +2,7 @@
 
 event_inherited();
 
+
 active_minigame = "";
 interaction_source = "";
 
@@ -11,7 +12,7 @@ function interaction(source){
 	if(not_null(struct.inventory)){
 		var inventory_space = array_length(struct.inventory);
 		if(inventory_space <= 0){
-			source.struct.state_machine.ChangeState("idle");
+			source.struct.state_machine.ChangeState(source.struct.default_state);
 			return
 		}
 		var process_target = struct.inventory[0];
@@ -24,7 +25,7 @@ function interaction(source){
 					active_minigame = struct.spawn_minigame();
 				}
 			}else{
-				sucessful_interaction = false;
+				sucessful_interspecial = false;
 				EchoDebug("item cannot process.")
 			}
 		}

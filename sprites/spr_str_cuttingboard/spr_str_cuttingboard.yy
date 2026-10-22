@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"counters",
-    "path":"folders/Sprites/Structures/Kitchen/counters.yy",
+    "path":"folders/Sprites/Structures/Kitchen/large appliances/counters.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

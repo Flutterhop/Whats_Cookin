@@ -38,8 +38,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_str_cuttingboard",
-    "path":"sprites/spr_str_cuttingboard/spr_str_cuttingboard.yy",
+    "name":"spr_stove_inactive",
+    "path":"sprites/spr_stove_inactive/spr_stove_inactive.yy",
   },
   "spriteMaskId":null,
   "visible":true,

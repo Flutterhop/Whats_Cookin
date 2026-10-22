@@ -6,7 +6,9 @@ event_inherited();
 
 listener_object = obj_build_manager;
 
-listener_instance = "";
+listener_instances = [];
+
+active_players = [];
 
 function init_state_machine(){
 	struct.state_machine = new Statement(self)
@@ -20,7 +22,6 @@ function init_state_machine(){
 		.AddEnter(function(){
 			with(owner){
 				active = true;
-				enter_build_mode();	
 			}
 
 		})
@@ -32,7 +33,6 @@ function init_state_machine(){
 		.AddExit(function(){
 			with(owner){
 				active = false;
-				exit_build_mode();
 			}
 
 		});

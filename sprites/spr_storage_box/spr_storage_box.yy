@@ -30,7 +30,7 @@
   "origin":9,
   "parent":{
     "name":"storage",
-    "path":"folders/Sprites/Structures/Kitchen/storage.yy",
+    "path":"folders/Sprites/Structures/Kitchen/large appliances/storage.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

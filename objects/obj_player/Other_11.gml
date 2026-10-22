@@ -35,6 +35,7 @@ draw_health 					= method(id,player_draw_health);
 handle_holding					= method(id,player_handle_holding);
 deploy_structure				= method(id,player_deploy_structure);
 assemble_structure				= method(id,player_assemble_structure);
+get_aim_position				= method(id,player_get_aim_position);
 
 /////////////////////////////////////////// MOVEMENT METHODS //////////////////////////////////////////////////////////
 jump							= method(id,player_jump);

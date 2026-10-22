@@ -45,3 +45,35 @@ function process_input_action_3_pressed(){
 function process_input_action_3_released(){
 	
 }
+
+function process_input_special_1(){
+	
+}
+
+function process_input_special_1_pressed(){
+	
+}
+
+function process_input_special_1_released(){
+	
+}
+
+function process_input_special_2(){
+	
+}
+
+function process_input_special_2_pressed(){
+	
+}
+
+function process_input_special_3(){
+	
+}
+
+function process_input_special_3_pressed(){
+	
+}
+
+function process_input_special_3_released(){
+	
+}

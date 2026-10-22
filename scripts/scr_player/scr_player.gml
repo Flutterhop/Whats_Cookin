@@ -167,12 +167,18 @@ function player_return_multiple_collisions(rect_coords,targets = "",x_pos = 0,y_
 	
 }
 
-function get_interact_shape(query_direction,range = 0){
+function get_interact_shape(query_direction,range = 0,distance = 0){
 	var range_mod
+	var dist_mod
 	if(is_null(range)){
 		range_mod = struct.get_stat("interaction_range")
 	}else{
 		range_mod = range;
+	}
+	if(is_null(distance)){
+		dist_mod = struct.get_stat("interaction_distance")
+	}else{
+		dist_mod = distance;
 	}
 	var top_left_x = 0
 	var top_left_y = 0
@@ -183,61 +189,61 @@ function get_interact_shape(query_direction,range = 0){
 	var modifier = 2;
 	switch(query_direction){
 		case dir_face.east://0
-			top_left_x += x_increment;
+			top_left_x += x_increment + dist_mod;
 			//Cut the x increment value closest to the player in half
 			//This makes the rectangle originate closer to the players body.
 			top_left_x -= (x_increment / 2);
 			top_left_y -= y_increment;
-			bottom_right_x += x_increment * modifier;
+			bottom_right_x += (x_increment * modifier) + dist_mod;
 			bottom_right_y += y_increment;
 		break;
 		case dir_face.north_east://1
-			top_left_x += x_increment;
+			top_left_x += x_increment + dist_mod;
 			top_left_x -= (x_increment / 2);
-			top_left_y -= y_increment * (modifier + .5);
+			top_left_y -= (y_increment * (modifier + .5)) + dist_mod;
 			top_left_y += (y_increment / 2);
-			bottom_right_x += x_increment * modifier;
-			bottom_right_y -= (y_increment / 2);
+			bottom_right_x += (x_increment * modifier) + dist_mod;
+			bottom_right_y -= (y_increment / 2) + dist_mod;
 		break;
 		case dir_face.north://2
 			top_left_x -= x_increment;
-			top_left_y -= y_increment * modifier;
+			top_left_y -= (y_increment * modifier) + dist_mod;
 			bottom_right_x += x_increment;
-			bottom_right_y -= (y_increment / 2);
+			bottom_right_y -= (y_increment / 2) + dist_mod;
 		break;
 		case dir_face.north_west://3
-			top_left_x -= x_increment * modifier;
-			top_left_y -= y_increment * modifier;
-			bottom_right_x -= x_increment;
+			top_left_x -= (x_increment * modifier) + dist_mod;
+			top_left_y -= (y_increment * modifier) + dist_mod;
+			bottom_right_x -= (x_increment) + dist_mod;
 			bottom_right_x += (x_increment / 2);
-			bottom_right_y -= y_increment;
-			bottom_right_y += (y_increment) / 2;
+			bottom_right_y -= y_increment + dist_mod;
+			bottom_right_y += (y_increment / 2);
 		break;
 		case dir_face.west://4
-			top_left_x -= x_increment * 2;
+			top_left_x -= (x_increment * 2) + dist_mod;
 			top_left_y -= y_increment;
-			bottom_right_x -= (x_increment / 2) ;
+			bottom_right_x -= (x_increment / 2) + dist_mod;
 			bottom_right_y += y_increment;
 		break;
 		case dir_face.south_west://5
-			top_left_x -= x_increment * modifier;
-			top_left_y += y_increment;
+			top_left_x -= (x_increment * modifier) + dist_mod;
+			top_left_y += y_increment + dist_mod;
 			top_left_y -= (y_increment / 2);
-			bottom_right_x -= (x_increment / 2);
-			bottom_right_y += y_increment * modifier;
+			bottom_right_x -= (x_increment / 2) + dist_mod;
+			bottom_right_y += (y_increment * modifier) + dist_mod;
 		break;
 		case dir_face.south://6
 			top_left_x -= x_increment;
-			top_left_y += y_increment;
+			top_left_y += y_increment + dist_mod;
 			top_left_y -= (y_increment / 2);
 			bottom_right_x += x_increment;
-			bottom_right_y += y_increment * modifier;
+			bottom_right_y += (y_increment * modifier) + dist_mod;
 		break;
 		case dir_face.south_east://7
-			top_left_x += (x_increment / 2);
-			top_left_y += (y_increment / 2);
-			bottom_right_x += x_increment * modifier;
-			bottom_right_y += y_increment * modifier;
+			top_left_x += (x_increment / 2) + dist_mod;
+			top_left_y += (y_increment / 2) + dist_mod;
+			bottom_right_x += (x_increment * modifier) + dist_mod;
+			bottom_right_y += (y_increment * modifier) + dist_mod;
 		break;
 	}
 	var return_coords = [top_left_x,top_left_y,bottom_right_x,bottom_right_y];
@@ -326,11 +332,15 @@ function player_read_interaction_1_collision(){
 		}
 		var can_take = structure_target.struct.can_take_item();
 		if(can_take and is_null(struct.held_entity)){
+			if(variable_instance_exists(structure_target.struct,"parent_structure")){
+				assemble_structure(structure_target);
+				return;
+			}
 			var taken_item = structure_target.struct.remove_item();
 			if(not_null(taken_item)){
 				pick_up_item(taken_item)
 				return;
-			}			
+			}
 		}
 	}
 	var item_target = detect_interactions(obj_item_game);
@@ -455,11 +465,21 @@ function player_deploy_structure(){
 		}
 		var x_pos = ((coords[0] + x) + (coords[2] + x))/2 
 		var y_pos = ((coords[1] + y) + (coords[3] + y))/2
+		var is_interior = struct.grid.is_interior(x_pos,y_pos)
+		if(is_interior and !struct.held_entity.struct.stats.allow_interior){
+			return false;
+		}
+		if(!is_interior and !struct.held_entity.struct.stats.allow_exterior){
+			return false;
+		}
 		x_pos /= struct.grid.cell_width
 		y_pos /= struct.grid.cell_height
 		x_pos = floor(x_pos)
 		y_pos = floor(y_pos)
 		struct.held_entity.struct.deploy(x_pos,y_pos);
+		if(struct.held_entity.struct.stats.size = appliance_size.small){
+			struct.held_entity.struct.state_machine.ChangeState("packed")
+		}
 		struct.held_entity = "";
 		return true
 	}
@@ -606,81 +626,50 @@ function player_draw_health(){
 	}
 }
 
-function get_drop_position(query_direction,range = 0){
+function player_get_aim_position(query_direction,range = 0){
 	var range_mod
 	if(is_null(range)){
 		range_mod = struct.get_stat("interaction_range")
 	}else{
 		range_mod = range;
 	}
-	var top_left_x = 0
-	var top_left_y = 0
-	var bottom_right_x = 0
-	var bottom_right_y = 0
-	var x_increment = range_mod
-	var y_increment = range_mod
+	var x_pos = 0
+	var y_pos = 0
+	var x_increment = range_mod * 2
+	var y_increment = range_mod * 2
 	var modifier = 2;
 	switch(query_direction){
 		case dir_face.east://0
-			top_left_x += x_increment;
-			//Cut the x increment value closest to the player in half
-			//This makes the rectangle originate closer to the players body.
-			top_left_x -= (x_increment / 2);
-			top_left_y -= y_increment;
-			bottom_right_x += x_increment * modifier;
-			bottom_right_y += y_increment;
+			x_pos += x_increment;
 		break;
 		case dir_face.north_east://1
-			top_left_x += x_increment;
-			top_left_x -= (x_increment / 2);
-			top_left_y -= y_increment * (modifier + .5);
-			top_left_y += (y_increment / 2);
-			bottom_right_x += x_increment * modifier;
-			bottom_right_y -= (y_increment / 2);
+			x_pos += x_increment;
+			y_pos -= y_increment;
 		break;
 		case dir_face.north://2
-			top_left_x -= x_increment;
-			top_left_y -= y_increment * modifier;
-			bottom_right_x += x_increment;
-			bottom_right_y -= (y_increment / 2);
+			y_pos -= y_increment;
 		break;
 		case dir_face.north_west://3
-			top_left_x -= x_increment * modifier;
-			top_left_y -= y_increment * modifier;
-			bottom_right_x -= x_increment;
-			bottom_right_x += (x_increment / 2);
-			bottom_right_y -= y_increment;
-			bottom_right_y += (y_increment) / 2;
+			x_pos -= x_increment;
+			y_pos -= y_increment;
 		break;
 		case dir_face.west://4
-			top_left_x -= x_increment * 2;
-			top_left_y -= y_increment;
-			bottom_right_x -= (x_increment / 2) ;
-			bottom_right_y += y_increment;
+			x_pos -= x_increment;
 		break;
 		case dir_face.south_west://5
-			top_left_x -= x_increment * modifier;
-			top_left_y += y_increment;
-			top_left_y -= (y_increment / 2);
-			bottom_right_x -= (x_increment / 2);
-			bottom_right_y += y_increment * modifier;
+			x_pos -= x_increment;
+			y_pos += y_increment;
 		break;
 		case dir_face.south://6
-			top_left_x -= x_increment;
-			top_left_y += y_increment;
-			top_left_y -= (y_increment / 2);
-			bottom_right_x += x_increment;
-			bottom_right_y += y_increment * modifier;
+			y_pos += y_increment;
 		break;
 		case dir_face.south_east://7
-			top_left_x += (x_increment / 2);
-			top_left_y += (y_increment / 2);
-			bottom_right_x += x_increment * modifier;
-			bottom_right_y += y_increment * modifier;
+			x_pos += x_increment;
+			y_pos += y_increment;
 		break;
 	}
-	var x_pos = (bottom_right_x - top_left_x) + x
-	var y_pos = (bottom_right_y - top_left_y) + y
+	x_pos += x;
+	y_pos += y;
 	var return_coords = [x_pos,y_pos];
 	return return_coords
 }

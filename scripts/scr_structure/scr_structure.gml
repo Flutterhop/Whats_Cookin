@@ -9,8 +9,15 @@ enum process_type{
 	mix = 204,
 	blend = 205,
 	peel = 206,
-	fry = 207
+	fry = 207,
+	none = 208
 }
+
+enum appliance_size{
+	small = 70,
+	large = 71
+}
+
 global.processes = ds_map_create()
 ds_map_add(global.processes,process_type.unprocessed,"unprocessed");
 ds_map_add(global.processes,process_type.cut,"cut");
@@ -20,7 +27,7 @@ ds_map_add(global.processes,process_type.blend,"blend");
 ds_map_add(global.processes,process_type.peel,"peel");
 ds_map_add(global.processes,process_type.fry,"fry");
 
-function Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "")	:Game_Stats() constructor {
+function Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_cost = 1,new_allow_interior = true,new_allow_exterior = true)	:Game_Stats() constructor {
 	name = new_name;
 	max_hp = new_max_hp;
 	current_hp = new_current_hp;
@@ -30,28 +37,31 @@ function Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_inte
 	upgrades = [];
     has_interaction = new_has_interaction;
 	minigame_reference = new_minigame_reference;
+	cost = new_cost;
+	allow_interior = new_allow_interior;
+	allow_exterior = new_allow_exterior;
 }
 
-function Defense_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1)
- : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction)constructor {
-	knockback_strength = new_knockback_strength
-	damage_amount = new_damage_amount
-	attack_speed = new_attack_speed
+function Defense_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_cost = 1,new_allow_interior = false,new_allow_exterior = true,new_knockback_strength = 2,new_damage_amount = 1,new_attack_speed = 1)
+ : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference,new_cost,new_allow_interior,new_allow_exterior)constructor {
+	knockback_strength = new_knockback_strength;
+	damage_amount = new_damage_amount;
+	attack_speed = new_attack_speed;
 	
 }
 
-function Tower_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_knockback_strength,new_damage_amount,new_attack_speed ,new_detection_radius,new_firing_speed,new_projectile)
- : Defense_Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction)constructor {
+function Tower_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference = "",new_cost = 1,new_allow_interior = false,new_allow_exterior = true,new_knockback_strength = 1,new_damage_amount = 1,new_attack_speed = 1,new_detection_radius = 10,new_firing_speed = 5,new_projectile = "")
+ : Defense_Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference,new_cost,new_allow_interior,new_allow_exterior)constructor {
 	detection_radius = new_detection_radius;
 	firing_speed = new_firing_speed;
 	projectile = new_projectile;
 }
 
-function Kitchen_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_process_speed = 1,new_process_type = process_type.cut)
- : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference) constructor {
+function Kitchen_Structure_Stats(new_name,new_max_hp = 1,new_current_hp = 1,new_has_interaction = false,new_minigame_reference = "",new_cost = 1,new_allow_interior = true,new_allow_exterior = false,new_process_speed = 1,new_process_type = process_type.cut,new_appliance_size = appliance_size.large)
+ : Structure_Stats(new_name,new_max_hp,new_current_hp,new_has_interaction,new_minigame_reference,new_cost,new_allow_interior,new_allow_exterior) constructor {
 	process_speed = new_process_speed;
 	str_process_type = new_process_type;
-	
+	size = new_appliance_size
 
 }
 

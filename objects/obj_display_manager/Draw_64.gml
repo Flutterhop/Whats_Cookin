@@ -10,8 +10,8 @@ draw_set_alpha(0.1); // Adjust the value for the desired transparency level (0 =
 draw_set_color(c_black); // Change color as needed
 
 // Get the size of the game view (or room)
-var view_width = room_width;  // Or view_wview[0] if you're using views
-var view_height = room_height; // Or view_hview[0] if you're using views
+var view_width = display_width;  // Or view_wview[0] if you're using views
+var view_height = display_height; // Or view_hview[0] if you're using views
 
 // Draw vertical lines
 for (var i = 0; i <= view_width; i++) {

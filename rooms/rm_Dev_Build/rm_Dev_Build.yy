@@ -20,19 +20,41 @@
     {"$GMRInstanceLayer":"","%Name":"Instances_1","depth":500,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Instances_1","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Instances","depth":600,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Structures","depth":700,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Structures","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
-    {"$GMRTileLayer":"","%Name":"walls","depth":800,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"walls","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":60,"TileCompressedData":[
-          -241,-2147483648,-3,0,-8,-2147483648,-2,0,-47,-2147483648,3,0,-2147483648,0,-8,-2147483648,1,0,-48,-2147483648,
-          -3,0,-236,-2147483648,-10,0,-50,-2147483648,-12,0,-48,-2147483648,-13,0,-47,-2147483648,-13,0,-47,-2147483648,
-          -14,0,-46,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,
-          -15,0,-45,-2147483648,-15,0,-45,-2147483648,-12,0,-48,-2147483648,-12,0,-48,-2147483648,-12,0,-48,-2147483648,
-          -2,0,-598,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen","path":"tilesets/tls_kitchen/tls_kitchen.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+    {"$GMRTileLayer":"","%Name":"walls","depth":800,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"walls","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
+          -14,-2147483648,-2,0,-111,-2147483648,-10,0,-109,-2147483648,-11,0,3,-2147483648,0,0,-107,-2147483648,
+          -12,0,12,9,10,5,6,5,6,5,6,5,6,13,12,-90,-2147483648,-3,0,-3,-2147483648,-12,0,1,11,-10,0,1,14,-90,-2147483648,
+          3,0,-2147483648,0,-3,-2147483648,-12,0,4,1,0,-2147483648,-2147483648,-3,0,1,-2147483648,-3,0,1,3,-90,
+          -2147483648,-3,0,-3,-2147483648,-12,0,1,2,-7,0,4,-2147483648,0,0,3,-96,-2147483648,-20,0,4,-2147483648,
+          0,0,3,-98,-2147483648,-12,0,1,-2147483648,-5,0,4,-2147483648,0,0,3,-98,-2147483648,-10,0,1,1,-7,0,4,
+          -2147483648,0,0,3,-89,-2147483648,-10,0,-2,-2147483648,-7,0,7,2,0,0,-2147483648,-2147483648,0,-2147483648,
+          -4,0,1,3,-89,-2147483648,-12,0,-5,-2147483648,-2,0,4,17,0,0,-2147483648,-3,0,-2,-2147483648,-2,0,1,20,
+          -89,-2147483648,-13,0,-4,-2147483648,-2,0,12,15,16,7,8,7,8,7,8,7,8,19,18,-89,-2147483648,-13,0,-4,-2147483648,
+          -4,0,-3,-2147483648,-7,0,-89,-2147483648,-14,0,-4,-2147483648,-13,0,-89,-2147483648,-15,0,-3,-2147483648,
+          -12,0,-90,-2147483648,-15,0,-9,-2147483648,-3,0,-93,-2147483648,-15,0,-105,-2147483648,-15,0,-105,-2147483648,
+          -15,0,-105,-2147483648,-15,0,-105,-2147483648,-12,0,-108,-2147483648,-12,0,-108,-2147483648,-12,0,-108,
+          -2147483648,-2,0,-5278,-2147483648,
+        ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen_walls","path":"tilesets/tls_kitchen_walls/tls_kitchen_walls.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"floors","depth":900,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"floors","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":60,"TileCompressedData":[
-          -241,-2147483648,-2,0,-58,-2147483648,-3,0,-57,-2147483648,-3,0,-359,-2147483648,-9,0,-48,-2147483648,
+          -14,-2147483648,-2,0,-51,-2147483648,-2,0,1,8,-5,4,2,15,0,-49,-2147483648,-3,0,1,6,-5,1,5,11,0,-2147483648,
+          0,0,-47,-2147483648,-2,0,1,6,-5,1,1,11,-5,0,-40,-2147483648,-3,0,-3,-2147483648,-2,0,1,6,-5,1,1,11,-13,
+          0,-32,-2147483648,3,0,-2147483648,0,-3,-2147483648,-2,0,1,6,-5,1,1,11,-5,0,-6,-2147483648,-3,0,-31,-2147483648,
+          -3,0,-3,-2147483648,-2,0,1,13,-5,12,1,14,-6,0,-6,-2147483648,-2,0,-37,-2147483648,-15,0,-6,-2147483648,
+          -3,0,-38,-2147483648,-12,0,-7,-2147483648,-3,0,-38,-2147483648,-12,0,-7,-2147483648,-3,0,-29,-2147483648,
+          -10,0,-2,-2147483648,-9,0,-7,-2147483648,-3,0,-29,-2147483648,-12,0,-5,-2147483648,-3,0,-4,-2147483648,
+          -2,0,-2,-2147483648,-3,0,-29,-2147483648,-13,0,-4,-2147483648,-3,0,-5,-2147483648,-2,0,1,-2147483648,
+          -3,0,-29,-2147483648,-13,0,-4,-2147483648,-4,0,-3,-2147483648,-7,0,-29,-2147483648,-14,0,-4,-2147483648,
+          -13,0,-29,-2147483648,-15,0,-3,-2147483648,-12,0,-30,-2147483648,-15,0,-9,-2147483648,-3,0,-33,-2147483648,
+          -15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-15,0,-45,-2147483648,-12,0,-48,-2147483648,
+          -12,0,-48,-2147483648,-12,0,-48,-2147483648,-2,0,-598,-2147483648,
+        ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen_floor","path":"tilesets/tls_kitchen_floor/tls_kitchen_floor.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+    {"$GMRTileLayer":"","%Name":"interior","depth":1000,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"interior","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":34,"SerialiseWidth":60,"TileCompressedData":[
+          -68,-2147483648,-7,0,-53,-2147483648,-8,0,-51,-2147483648,-9,0,-45,-2147483648,-2,0,-4,-2147483648,-10,
+          0,-44,-2147483648,-3,0,-4,-2147483648,-8,0,-45,-2147483648,-3,0,-4,-2147483648,-10,0,-51,-2147483648,
+          -10,0,-54,-2147483648,-5,0,-55,-2147483648,-5,0,-56,-2147483648,-2,0,-107,-2147483648,-9,0,-48,-2147483648,
           -13,0,-47,-2147483648,-17,0,-43,-2147483648,-17,0,-43,-2147483648,-17,0,-43,-2147483648,-18,0,-43,-2147483648,
           -17,0,-43,-2147483648,-17,0,-44,-2147483648,-16,0,-46,-2147483648,1,0,-8,-2147483648,-3,0,-764,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen_floor","path":"tilesets/tls_kitchen_floor/tls_kitchen_floor.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRTileLayer":"","%Name":"rocks","depth":1000,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"rocks","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
+        ],"TileDataFormat":1,},"tilesetId":{"name":"tls_kitchen_interior_2","path":"tilesets/tls_kitchen_interior_2/tls_kitchen_interior_2.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+    {"$GMRTileLayer":"","%Name":"rocks","depth":1100,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"rocks","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
           -13,-2147483648,-2,0,-2,-2147483648,-6,0,-3,-2147483648,3,0,-2147483648,0,-102,-2147483648,6,0,-2147483648,
           0,0,-2147483648,-2147483648,-3,0,3,-2147483648,0,0,-3,-2147483648,-3,0,-8,-2147483648,1,2,-91,-2147483648,
           5,0,-2147483648,0,-2147483648,-2147483648,-3,0,-2,-2147483648,2,0,-2147483648,-8,0,-4,-2147483648,1,
@@ -50,7 +72,7 @@
           1,1,-5,-2147483648,1,2,-90,-2147483648,1,1,-351,-2147483648,1,2,-151,-2147483648,1,2,-233,-2147483648,
           1,2,-3082,-2147483648,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tls_rocks","path":"tilesets/tls_rocks/tls_rocks.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRTileLayer":"","%Name":"Ground_dirt","depth":1100,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Ground_dirt","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
+    {"$GMRTileLayer":"","%Name":"Ground_dirt","depth":1200,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Ground_dirt","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
           -366,-2147483648,1,1,-4,2,1,3,-113,-2147483648,2,1,14,-4,5,2,13,3,-112,-2147483648,1,4,-6,5,1,6,-112,
           -2147483648,1,4,-6,5,1,6,-112,-2147483648,2,7,12,-4,5,2,11,9,-113,-2147483648,1,7,-4,8,1,9,-842,-2147483648,
           1,1,-7,2,1,3,-111,-2147483648,1,4,-7,5,1,6,-111,-2147483648,1,4,-7,5,1,6,-111,-2147483648,1,7,-3,8,1,
@@ -70,7 +92,7 @@
           4,11,9,10,10,-109,-2147483648,2,10,4,-3,5,3,11,8,9,-3,10,-109,-2147483648,5,10,4,5,5,11,-5,10,-111,-2147483648,
           4,7,8,8,9,-4,10,-114,-2147483648,-5,10,-113,-2147483648,-4,10,-3088,-2147483648,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tls_dirt","path":"tilesets/tls_dirt/tls_dirt.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRTileLayer":"","%Name":"Ground_grass","depth":1200,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Ground_grass","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
+    {"$GMRTileLayer":"","%Name":"Ground_grass","depth":1300,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Ground_grass","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":68,"SerialiseWidth":120,"TileCompressedData":[
           -56,8,-64,-2147483648,-4,8,-11,1,-41,8,-64,-2147483648,-3,8,-3,1,1,8,-4,12,1,8,-3,1,-41,8,-64,-2147483648,
           -3,8,-2,1,1,18,-6,8,4,17,8,1,1,-40,8,-64,-2147483648,-2,8,-2,1,1,13,-8,8,1,11,-3,1,-39,8,-64,-2147483648,
           -2,8,-2,1,1,13,-8,8,1,11,-3,1,-39,8,-64,-2147483648,-2,8,-2,1,1,13,-8,8,1,11,-3,1,-39,8,-64,-2147483648,
@@ -88,7 +110,7 @@
           -64,-2147483648,-56,8,-64,-2147483648,-56,8,-64,-2147483648,-56,8,-64,-2147483648,-56,8,-64,-2147483648,
           -56,8,-64,-2147483648,-56,8,-64,-2147483648,-56,8,-2464,-2147483648,
         ],"TileDataFormat":1,},"tilesetId":{"name":"tls_grass","path":"tilesets/tls_grass/tls_grass.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
-    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":1300,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":true,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
+    {"$GMRBackgroundLayer":"","%Name":"Background","animationFPS":15.0,"animationSpeedType":0,"colour":4278190080,"depth":1400,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":true,"hspeed":0.0,"htiled":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Background","properties":[],"resourceType":"GMRBackgroundLayer","resourceVersion":"2.0","spriteId":null,"stretch":false,"userdefinedAnimFPS":false,"userdefinedDepth":false,"visible":true,"vspeed":0.0,"vtiled":false,"x":0,"y":0,},
   ],
   "name":"rm_Dev_Build",
   "parent":{
